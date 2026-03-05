@@ -82,9 +82,21 @@
 16. Slide 22 (Two Paths): Reframed as Augment vs Replace, added Block/Klarna/hiring news
 17. Typewriter data cleaned up, all 34 slides numbered correctly
 18. Closing slide 34: "Go build something." with neon glow
+19. **Slide 4 (VUCA):** Added Trudeau Davos punchline + S&P 500 company lifespan stat (67yr -> 15yr)
+20. **Slide 6 (Carousel):** Removed auto-advance, manual arrows only
+21. **Slide 9 (Ceiling Quote):** Redesigned as centered typography with "intellectual labor" magenta glow
+22. **Slide 10 (Conflicting Views):** Real headshot photos (Wikipedia) replacing SVG letter avatars, source links on all 4 cards
+23. **Slide 11 (AI Progression):** Benchmark definitions panel (SWE-bench, GPQA, AIME, Arena ELO, LiveCodeBench), real-world signal stats, sub-page scroll works with deck navigation
+24. **Slide 12 (AGI):** Kurzweil exponential chart with 12 milestone events from Life (3.8B yrs) to Singularity (2045?)
+25. **Removed slides 15 (Why Software First) and 16 (single engineers quote)** - merged content into Cost=Zero
+26. **Moved Real Consequences** to position 15 (after AI Adoption)
+27. **Slide 15 (Real Consequences):** Rebuilt with 6 news headline cards (Block, Klarna, Salesforce, TCS, India IT, US macro) with Fortune/CNBC source links
+28. **Slide 16 (Voices):** 4 compact tweet cards (Karpathy earthquake, Boris Cherny 259 PRs, Karpathy vibe coding, Dario Amodei 90% code) with source links, Google/Pragmatic Engineer footer stats
+29. **Click navigation:** Guards interactive elements (buttons, links) from triggering deck page changes
+30. Total: 36 -> 34 slides after removing 2 redundant ones
 
-## Current Slide Order (36 slides)
-1. Title | 2. Anxiety Poll (live bar chart + survey page) | 3. ACT I: We've Been Here Before | 4. VUCA | 5. Production Function | 6. Waves of Creative Destruction (GDP graph + historical headlines carousel + Lump of Labor Fallacy) | **7. NEW: Technology Democratizes, Then We Abstract Higher** | 8. Each Wave Climbed Higher (reversed order, year ranges on employment) | 9. Ceiling Quote | 10. Conflicting Views (SVG avatars, Sam Altman contradictions) | 11. AI Progression (scrollable: general → frontier models → SWE-bench, includes Opus 4.6/Grok 4.20) | 12. 5 Levels of AGI (with dates, Kurzweil's Law) | 13. ACT III: Ground Zero Software | **14. NEW: AI Adoption Across Industries** | 15. Why Software First | 16. New Reality Quote | 17. Voices from the Field (Karpathy productivity focus, Boris Cherny) | 18. Cost = Zero | 19. Role Fusion / Builder | 20. Real Consequences | 21. The New Battle (Distribution) | 22. Diffusion Problem | 23. ACT IV: Who Captures the Value | 24. Two Paths | 25. AI Value Chain | 26. Where Value Lives | 27. ACT V: From the Inside | 28. Microsoft's AI Journey | 29. Project Nebula | 30. The Learning | 31. ACT VI: Your Move | 32. AI Organizations | 33. Two Skills | 34. Age of the Polymath | 35. What You Should Do | 36. Closing
+## Current Slide Order (34 slides)
+1. Title | 2. Anxiety Poll (live bar chart + survey page) | 3. ACT I: We've Been Here Before | 4. VUCA (Trudeau quote + S&P 500 stat) | 5. Production Function | 6. Waves of Creative Destruction (GDP graph + headlines carousel, manual arrows only) | 7. Technology Democratizes, Then We Abstract Higher | 8. Each Wave Climbed Higher | 9. Ceiling Quote (centered typography, magenta glow) | 10. Conflicting Views (real headshot photos, source links) | 11. AI Progression (3-page scroll, benchmark definitions, real-world signal) | 12. 5 Levels of AGI (Kurzweil exponential chart with milestones) | 13. ACT III: Ground Zero Software | 14. AI Adoption Across Industries | 15. Real Consequences (6 news headline cards with sources) | 16. Voices from the Field (4 tweet cards: Karpathy x2, Boris Cherny, Dario Amodei) | 17. Cost = Zero (+ single engineers card) | 18. Role Fusion / Builder | 19. The New Battle: Distribution | 20. Diffusion Problem | 21. ACT IV: Who Captures the Value | 22. Two Paths | 23. AI Value Chain | 24. Where Value Lives | 25. ACT V: From the Inside | 26. Microsoft's AI Journey | 27. Project Nebula | 28. The Learning | 29. ACT VI: Your Move | 30. AI Organizations | 31. Two Skills | 32. Age of the Polymath | 33. What You Should Do | 34. Closing
 
 ## GitHub Repository
 - **Repo:** https://github.com/ashishmuralidharan/iisc-talk (private)
