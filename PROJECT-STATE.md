@@ -83,8 +83,8 @@
 17. Typewriter data cleaned up, all 34 slides numbered correctly
 18. Closing slide 34: "Go build something." with neon glow
 
-## Current Slide Order (34 slides)
-1. Title | 2. Anxiety Poll (live bar chart) | 3. ACT I: We've Been Here Before | 4. VUCA | 5. Production Function | 6. Waves of Creative Destruction (GDP graph + Lump of Labor Fallacy) | 7. Each Wave Climbed Higher (disruption hierarchy + ladder) | 8. Ceiling Quote | 9. Conflicting Views | 10. AI Progression | 11. 5 Levels of AGI | 12. ACT III: Ground Zero Software | 13. Why Software First | 14. New Reality Quote | 15. Voices from the Field | 16. Cost = Zero | 17. Role Fusion / Builder | 18. Real Consequences | 19. The New Battle (Distribution) | 20. Diffusion Problem | 21. ACT IV: Who Captures the Value | 22. Two Paths | 23. AI Value Chain | 24. Where Value Lives | 25. ACT V: From the Inside | 26. Microsoft's AI Journey | 27. Project Nebula | 28. The Learning | 29. ACT VI: Your Move | 30. AI Organizations | 31. Two Skills | 32. Age of the Polymath | 33. What You Should Do | 34. Closing
+## Current Slide Order (36 slides)
+1. Title | 2. Anxiety Poll (live bar chart + survey page) | 3. ACT I: We've Been Here Before | 4. VUCA | 5. Production Function | 6. Waves of Creative Destruction (GDP graph + historical headlines carousel + Lump of Labor Fallacy) | **7. NEW: Technology Democratizes, Then We Abstract Higher** | 8. Each Wave Climbed Higher (reversed order, year ranges on employment) | 9. Ceiling Quote | 10. Conflicting Views (SVG avatars, Sam Altman contradictions) | 11. AI Progression (scrollable: general → frontier models → SWE-bench, includes Opus 4.6/Grok 4.20) | 12. 5 Levels of AGI (with dates, Kurzweil's Law) | 13. ACT III: Ground Zero Software | **14. NEW: AI Adoption Across Industries** | 15. Why Software First | 16. New Reality Quote | 17. Voices from the Field (Karpathy productivity focus, Boris Cherny) | 18. Cost = Zero | 19. Role Fusion / Builder | 20. Real Consequences | 21. The New Battle (Distribution) | 22. Diffusion Problem | 23. ACT IV: Who Captures the Value | 24. Two Paths | 25. AI Value Chain | 26. Where Value Lives | 27. ACT V: From the Inside | 28. Microsoft's AI Journey | 29. Project Nebula | 30. The Learning | 31. ACT VI: Your Move | 32. AI Organizations | 33. Two Skills | 34. Age of the Polymath | 35. What You Should Do | 36. Closing
 
 ## GitHub Repository
 - **Repo:** https://github.com/ashishmuralidharan/iisc-talk (private)
@@ -92,10 +92,8 @@
 - **Last push:** March 5, 2026 ~4:30 AM
 
 ## Still TODO
-- [ ] **Firebase setup for live poll:** Replace dummy simulation with real Firebase voting. Create Firebase project, add credentials to poll-config.js, host poll/ folder
-- [ ] **Notion doc update:** TALK-NARRATIVE.md updated locally but Notion token expired
+- [ ] **Firebase setup for live poll:** Replace dummy simulation with real Firebase voting. Create Firebase project, add credentials to poll-config.js, host poll/ folder. NOTE: survey.html now works via BroadcastChannel for local testing.
 - [ ] **Act naming:** More interesting narrative names for each act section divider
-- [ ] **TALK-NARRATIVE.md update:** Sync master narrative to match new 34-slide structure
 
 ## Narrative Changes Made to TALK-NARRATIVE.md
 1. Disruption pattern: Replaced "Shipping" with Carlota Perez framework (Physical > Electrical > Information > Cognitive Power)

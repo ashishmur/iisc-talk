@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AI & The New Management Playbook - Live Poll</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #08080C;
+    color: #F0F0F5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .header .event-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    color: #3B82F6;
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 16px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #F0F0F5;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    font-size: 0.85rem;
+    color: #7A7A8E;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 18px 20px;
+    background: #111118;
+    border: 1.5px solid #1E1E28;
+    border-radius: 14px;
+    color: #F0F0F5;
+    font-size: 1.05rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .option-btn:active {
+    transform: scale(0.97);
+  }
+
+  .option-btn:hover {
+    border-color: #3B82F6;
+    background: #14141e;
+    box-shadow: 0 0 20px rgba(59,130,246,0.08);
+  }
+
+  .option-btn .emoji {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .option-btn.selected {
+    border-color: #3B82F6;
+    background: #0c1629;
+    color: #3B82F6;
+    box-shadow: 0 0 20px rgba(59,130,246,0.15);
+  }
+
+  .option-btn.selected.anxious {
+    border-color: #EC4899;
+    background: #1a0a15;
+    color: #EC4899;
+    box-shadow: 0 0 20px rgba(236,72,153,0.15);
+  }
+
+  .option-btn.selected::after {
+    content: '';
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: #3B82F6;
+    border-radius: 50%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .option-btn.selected.anxious::after {
+    background-color: #EC4899;
+  }
+
+  .option-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Thank you state */
+  .thank-you {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .thank-you.visible {
+    display: block;
+  }
+
+  .thank-you .checkmark {
+    width: 72px;
+    height: 72px;
+    background: #3B82F6;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 30px rgba(59,130,246,0.3);
+  }
+
+  .thank-you .checkmark svg {
+    width: 36px;
+    height: 36px;
+    stroke: #fff;
+  }
+
+  .thank-you h2 {
+    font-size: 1.5rem;
+    color: #F0F0F5;
+    margin-bottom: 8px;
+  }
+
+  .thank-you p {
+    color: #7A7A8E;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .thank-you .insight {
+    margin-top: 24px;
+    padding: 16px;
+    background: #111118;
+    border: 1px solid #1E1E28;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: #7A7A8E;
+    line-height: 1.5;
+  }
+
+  .thank-you .insight strong {
+    color: #3B82F6;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+  }
+
+  .footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #3a3a4a;
+    letter-spacing: 0.5px;
+  }
+
+  .footer a {
+    color: #3B82F6;
+    text-decoration: none;
+  }
+
+  /* Top neon line */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3B82F6, #EC4899, transparent);
+    box-shadow: 0 0 12px rgba(59,130,246,0.4);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Poll content -->
+  <div id="poll-content">
+    <div class="header">
+      <div class="event-tag">IISc DoMS &middot; March 6, 2026</div>
+      <h1>How anxious do you feel about your future because of AI?</h1>
+      <p>Tap to vote. Your response is anonymous.</p>
+    </div>
+
+    <div class="options" id="options">
+      <button class="option-btn" data-key="very_anxious" data-anxious="true" onclick="castVote(this)">
+        <span class="emoji">&#x1F630;</span>
+        <span>Very anxious</span>
+      </button>
+      <button class="option-btn" data-key="somewhat_anxious" data-anxious="true" onclick="castVote(this)">
+        <span class="emoji">&#x1F61F;</span>
+        <span>Somewhat anxious</span>
+      </button>
+      <button class="option-btn" data-key="not_anxious" onclick="castVote(this)">
+        <span class="emoji">&#x1F610;</span>
+        <span>Not really</span>
+      </button>
+      <button class="option-btn" data-key="excited" onclick="castVote(this)">
+        <span class="emoji">&#x1F680;</span>
+        <span>Excited about it!</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Thank you -->
+  <div class="thank-you" id="thank-you">
+    <div class="checkmark">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    <h2>Vote recorded!</h2>
+    <p>Watch the main screen for live results.</p>
+    <div class="insight">
+      <strong>Fun fact:</strong> This same anxiety pattern has repeated with every major technology wave for over 250 years. We'll explore that in the talk.
+    </div>
+  </div>
+
+  <div class="footer">
+    AI & The New Management Playbook &middot; <a href="https://linkedin.com/in/ashish-muralidharan-4a202991" target="_blank">Ashish Muralidharan</a>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  var VOTED_KEY = 'iisc_poll_voted_march2026';
+  var channel = null;
+
+  // Set up BroadcastChannel for real-time sync with presenter deck
+  try {
+    channel = new BroadcastChannel('iisc-poll-channel');
+  } catch(e) {
+    // BroadcastChannel not supported, fall back to localStorage
+  }
+
+  // Check if already voted
+  if (localStorage.getItem(VOTED_KEY)) {
+    showThankYou();
+    return;
+  }
+
+  window.castVote = function(btn) {
+    var key = btn.getAttribute('data-key');
+    var isAnxious = btn.getAttribute('data-anxious') === 'true';
+
+    // Disable all buttons
+    var allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(function(b) { b.disabled = true; });
+    btn.classList.add('selected');
+    if (isAnxious) btn.classList.add('anxious');
+
+    // Store vote in localStorage (for cross-tab sync)
+    localStorage.setItem(VOTED_KEY, key);
+
+    // Increment vote count in localStorage
+    var votes = JSON.parse(localStorage.getItem('iisc_poll_votes') || '{"very_anxious":0,"somewhat_anxious":0,"not_anxious":0,"excited":0}');
+    votes[key] = (votes[key] || 0) + 1;
+    localStorage.setItem('iisc_poll_votes', JSON.stringify(votes));
+
+    // Broadcast vote to presenter deck
+    if (channel) {
+      channel.postMessage({ type: 'vote', option: key, votes: votes });
+    }
+
+    // Also fire a storage event for cross-tab fallback
+    localStorage.setItem('iisc_poll_last_vote', JSON.stringify({ option: key, ts: Date.now() }));
+
+    setTimeout(showThankYou, 500);
+  };
+
+  function showThankYou() {
+    document.getElementById('poll-content').style.display = 'none';
+    document.getElementById('thank-you').classList.add('visible');
+  }
+})();
+</script>
+</body>
+</html>
