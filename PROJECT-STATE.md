@@ -1,5 +1,5 @@
 # IISc Talk: AI & The New Management Playbook
-## Project State (last updated: March 5, 2026 ~3:30 AM)
+## Project State (last updated: March 5, 2026 ~4:30 AM)
 
 ## Event Details
 - **Date:** Friday March 6, 2026 (TOMORROW)
@@ -23,7 +23,7 @@
     concept-d-aurora.html    -- 34 slides, Inter, canvas aurora, glassmorphism
     concept-e-brutalist.html -- 34 slides, Space Grotesk, B&W+red, hard-cut
     concept-f-hybrid.html    -- 34 slides, Terminal+Brutalist merged, SVG visualizations
-    concept-g-neon.html      -- 35 slides, PRIMARY DECK, Neon Noir (see below)
+    concept-g-neon.html      -- 34 slides, PRIMARY DECK, Neon Noir (see below)
     poll/                    -- Firebase live poll system (QR + real-time results)
       poll-config.js         -- Firebase config (needs real credentials)
       vote.html              -- Mobile voting page
@@ -61,36 +61,41 @@
 - **Visualizations:** 8 slides have SVG diagrams (neon circles, stacked blocks, glowing bars, vertical meter, diamond nodes, pipeline, hexagons, icon cards)
 - **Transitions:** Smooth opacity + translateY, 600ms
 
-## Updates Applied to Neon Noir (all voice memos 1-4)
+## Updates Applied to Neon Noir (all voice memos 1-4 + latest session)
 1. Font changed to Geist (from Space Grotesk)
-2. Slide 2: QR code poll placeholder added, now clickable link
-3. Slide 4 (VUCA): Real examples (NVIDIA $589B loss, Goldman zero productivity, 1.2M layoffs, HBR burnout)
+2. Slide 2: Live poll with animated bar chart, dummy vote simulation (142 votes), pulsing "LIVE RESULTS" indicator
+3. Slide 4 (VUCA): Real examples (NVIDIA $589B loss, Goldman zero productivity, 1.2M layoffs, HBR burnout). Ambiguity changed to McKinsey vs Goldman measurement paradox.
 4. Slide 5 (Production Function): Renamed from "Economic Equation", A = Total Factor Productivity
-5. Slide 6: Disruption circles with explicit replacement explanations (Physical/Electrical/Information/Cognitive)
-6. Slide 7 (Running Out of Rungs): Removed "Technology arrives" step, now 3 steps only
-7. Slide 8 (Waves): Economic cycles graph with GDP per capita, Perez framework, crash markers
-8. **NEW Slide 10: Conflicting Views** (Sam Altman, Acemoglu, Autor, Susskind + lump of labor fallacy)
-9. **NEW Slide 11: AI Intelligence Progression** (GPT-1 through Agents timeline, bar exam data)
-10. Slide 12 (5 Levels of AGI): Added Bloomberg source link
-11. Slide 13: "What is an Agent?" slide REMOVED per feedback
-12. Slide 16 (Voices): Karpathy + Naval tweet screenshots embedded as base64
-13. Slide 17 (Cost = Zero): Added real data cards (YC 25% AI-generated, Pieter Levels $1M/17 days, Replit CEO quote)
-14. **NEW Slide 18: Role Fusion / The Builder** (Boris Cherny quote, 3 trends: fewer engineers, merging roles, builder emerges)
-15. Slide 19-20: Reordered (Real Consequences BEFORE Distribution)
-16. Slide 20 (Distribution): Blue Ocean/Red Ocean definitions on slide, better intro about bottleneck shift
-17. **NEW Slide 21: Diffusion Problem** (Context + Physical World barriers, robots moved here)
-18. Slide 23 (Two Paths): Reframed as Augment vs Replace, added Block/Klarna/hiring news
-19. Typewriter data cleaned up, all 35 slides numbered correctly
-20. Closing slide 35: "Go build something." with neon glow
+5. **Slides 6-8 MERGED into 2 slides** (35 -> 34 total):
+   - Slide 6: "Waves of Creative Destruction" with GDP graph + Lump of Labor Fallacy card + job creation examples
+   - Slide 7: "Each Wave Climbed Higher" with disruption hierarchy cards + 3-step ladder + employment data
+6. **NEW Slide 9: Conflicting Views** (Sam Altman, Acemoglu, Autor, Susskind + lump of labor fallacy)
+7. **NEW Slide 10: AI Intelligence Progression** (GPT-1 through Agents timeline, bar exam data)
+8. Slide 11 (5 Levels of AGI): Added Bloomberg source link
+9. Slide 12: "What is an Agent?" slide REMOVED per feedback
+10. Slide 15 (Voices): Karpathy + Naval tweet screenshots embedded as base64
+11. Slide 16 (Cost = Zero): Added real data cards (YC 25% AI-generated, Pieter Levels $1M/17 days, Replit CEO quote)
+12. **NEW Slide 17: Role Fusion / The Builder** (Boris Cherny quote, 3 trends: fewer engineers, merging roles, builder emerges)
+13. Slide 18-19: Reordered (Real Consequences BEFORE Distribution)
+14. Slide 19 (Distribution): Blue Ocean/Red Ocean definitions on slide, better intro about bottleneck shift
+15. **NEW Slide 20: Diffusion Problem** (Context + Physical World barriers, robots moved here)
+16. Slide 22 (Two Paths): Reframed as Augment vs Replace, added Block/Klarna/hiring news
+17. Typewriter data cleaned up, all 34 slides numbered correctly
+18. Closing slide 34: "Go build something." with neon glow
 
-## Current Slide Order (35 slides)
-1. Title | 2. Anxiety Poll | 3. ACT I: We've Been Here Before | 4. VUCA | 5. Production Function | 6. Disruption Pattern | 7. Running Out of Rungs | 8. Waves of Creative Destruction | 9. Ceiling Quote | 10. Conflicting Views | 11. AI Progression | 12. 5 Levels of AGI | 13. ACT III: Ground Zero Software | 14. Why Software First | 15. New Reality Quote | 16. Voices from the Field | 17. Cost = Zero | 18. Role Fusion / Builder | 19. Real Consequences | 20. The New Battle (Distribution) | 21. Diffusion Problem | 22. ACT IV: Who Captures the Value | 23. Two Paths | 24. AI Value Chain | 25. Where Value Lives | 26. ACT V: From the Inside | 27. Microsoft's AI Journey | 28. Project Nebula | 29. The Learning | 30. ACT VI: Your Move | 31. AI Organizations | 32. Two Skills | 33. Age of the Polymath | 34. What You Should Do | 35. Closing
+## Current Slide Order (34 slides)
+1. Title | 2. Anxiety Poll (live bar chart) | 3. ACT I: We've Been Here Before | 4. VUCA | 5. Production Function | 6. Waves of Creative Destruction (GDP graph + Lump of Labor Fallacy) | 7. Each Wave Climbed Higher (disruption hierarchy + ladder) | 8. Ceiling Quote | 9. Conflicting Views | 10. AI Progression | 11. 5 Levels of AGI | 12. ACT III: Ground Zero Software | 13. Why Software First | 14. New Reality Quote | 15. Voices from the Field | 16. Cost = Zero | 17. Role Fusion / Builder | 18. Real Consequences | 19. The New Battle (Distribution) | 20. Diffusion Problem | 21. ACT IV: Who Captures the Value | 22. Two Paths | 23. AI Value Chain | 24. Where Value Lives | 25. ACT V: From the Inside | 26. Microsoft's AI Journey | 27. Project Nebula | 28. The Learning | 29. ACT VI: Your Move | 30. AI Organizations | 31. Two Skills | 32. Age of the Polymath | 33. What You Should Do | 34. Closing
+
+## GitHub Repository
+- **Repo:** https://github.com/ashishmuralidharan/iisc-talk (private)
+- **Branch:** main
+- **Last push:** March 5, 2026 ~4:30 AM
 
 ## Still TODO
-- [ ] **Firebase setup for live poll:** Create Firebase project, add credentials to poll-config.js, host poll/ folder
+- [ ] **Firebase setup for live poll:** Replace dummy simulation with real Firebase voting. Create Firebase project, add credentials to poll-config.js, host poll/ folder
 - [ ] **Notion doc update:** TALK-NARRATIVE.md updated locally but Notion token expired
 - [ ] **Act naming:** More interesting narrative names for each act section divider
-- [ ] **TALK-NARRATIVE.md update:** Sync master narrative to match new 35-slide structure
+- [ ] **TALK-NARRATIVE.md update:** Sync master narrative to match new 34-slide structure
 
 ## Narrative Changes Made to TALK-NARRATIVE.md
 1. Disruption pattern: Replaced "Shipping" with Carlota Perez framework (Physical > Electrical > Information > Cognitive Power)
