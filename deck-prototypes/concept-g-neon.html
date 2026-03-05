@@ -603,6 +603,167 @@ html, body {
   font-weight: 500;
 }
 
+/* Slide 12: Two-page crossfade system */
+.agi-page-container {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+#agi-page-1, #agi-page-2 {
+  transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+#agi-page-1 {
+  opacity: 1;
+  transform: translateX(0);
+}
+#agi-page-1.out {
+  opacity: 0;
+  transform: translateX(-40px);
+  pointer-events: none;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+}
+#agi-page-2 {
+  opacity: 0;
+  transform: translateX(40px);
+  pointer-events: none;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+}
+#agi-page-2.in {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  position: relative;
+}
+
+.agent-def-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.agent-def-card.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.agent-example-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.agent-example-card.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.agent-example-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.company-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px 2px 3px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--dim);
+  margin-right: 3px;
+  margin-top: 3px;
+  vertical-align: middle;
+}
+.company-badge img {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  object-fit: contain;
+}
+
+/* Compact AGI levels for page 2 */
+.agi-levels-compact {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.agi-levels-compact .agi-pill {
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-family: var(--font-headline);
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+}
+.agi-pill.done {
+  background: rgba(59,130,246,0.08);
+  border-color: rgba(59,130,246,0.25);
+  color: var(--primary);
+  opacity: 0.6;
+}
+.agi-pill.current {
+  background: linear-gradient(90deg, rgba(59,130,246,0.25), rgba(59,130,246,0.1));
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 0 15px var(--glow-strong);
+  animation: glow-pulse 2.5s ease-in-out infinite;
+}
+.agi-pill.future {
+  border-style: dashed;
+  color: var(--dim);
+  opacity: 0.4;
+}
+
+.agent-play-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--dim);
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+.agent-play-btn:hover {
+  background: rgba(59,130,246,0.15);
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 0 10px var(--glow);
+}
+.agent-play-btn svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+  margin-left: 1px;
+}
+
 /* Slide 13: Agent nodes */
 .agent-diagram {
   position: relative;
@@ -1678,7 +1839,9 @@ html, body {
 <div class="slide" data-slide="12" style="padding:50px 80px;">
   <div class="headline headline-medium" id="tw-12"></div>
   <div class="neon-line mt-16"></div>
-  <div style="display:flex;gap:28px;margin-top:16px;align-items:start;">
+  <div class="agi-page-container" style="margin-top:12px;">
+  <!-- PAGE 1: AGI Meter + Kurzweil Graph -->
+  <div id="agi-page-1" style="display:flex;gap:28px;align-items:start;">
     <!-- Left: AGI meter with dates -->
     <div style="flex:1;">
       <div class="agi-meter" id="agi-viz">
@@ -1801,6 +1964,112 @@ html, body {
       </div>
     </div>
   </div>
+
+  <!-- PAGE 2: Agent Definition (branching from Level 3) -->
+  <div id="agi-page-2" style="display:flex;gap:28px;align-items:start;">
+    <!-- Left: Compact levels + Agent definition -->
+    <div style="flex:1;">
+      <!-- Compact level pills showing full progression -->
+      <div class="agi-levels-compact">
+        <div class="agi-pill done">L1 Conversational</div>
+        <span style="color:var(--dim);font-size:10px;">&rarr;</span>
+        <div class="agi-pill done">L2 Reasoning</div>
+        <span style="color:var(--dim);font-size:10px;">&rarr;</span>
+        <div class="agi-pill current">L3 Agents</div>
+        <span style="color:var(--dim);font-size:10px;">&rarr;</span>
+        <div class="agi-pill future">L4 Innovators</div>
+        <span style="color:var(--dim);font-size:10px;">&rarr;</span>
+        <div class="agi-pill future">L5 Organizations</div>
+      </div>
+      <div style="font-family:var(--font-headline);font-size:11px;font-weight:500;color:var(--secondary);margin-top:-8px;margin-bottom:12px;">WE ARE HERE &middot; 2025</div>
+      <!-- Agent definition -->
+      <div style="font-family:var(--font-headline);font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px;">What is an agent?</div>
+      <div style="font-size:13px;color:var(--dim);margin-bottom:14px;line-height:1.5;">A system that <span style="color:var(--text);font-weight:500;">repeatedly pursues a goal</span> by:</div>
+      <!-- Three components — no icons, clean left-border cards -->
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="agent-def-card" data-delay="0" style="border-left:3px solid var(--primary);">
+          <div style="font-family:var(--font-headline);font-size:13px;font-weight:600;color:var(--primary);">i) Planning and Reasoning</div>
+          <div style="font-size:11px;color:var(--dim);margin-top:3px;">Breaking down complex goals into steps, evaluating options, making decisions</div>
+        </div>
+        <div class="agent-def-card" data-delay="1" style="border-left:3px solid var(--secondary);">
+          <div style="font-family:var(--font-headline);font-size:13px;font-weight:600;color:var(--secondary);">ii) Acting on the Environment using Tools</div>
+          <div style="font-size:11px;color:var(--dim);margin-top:3px;">Writing code, searching the web, calling APIs, sending messages, editing files</div>
+        </div>
+        <div class="agent-def-card" data-delay="2" style="border-left:3px solid #A78BFA;">
+          <div style="font-family:var(--font-headline);font-size:13px;font-weight:600;color:#A78BFA;">iii) Context and Memory</div>
+          <div style="font-size:11px;color:var(--dim);margin-top:3px;">Retaining knowledge across interactions, learning from past outcomes, building on prior work</div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: Agent examples with company logos -->
+    <div style="flex:1;">
+      <div style="font-family:var(--font-headline);font-size:15px;font-weight:600;color:var(--text);margin-bottom:10px;">AI agents are already here</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="agent-example-card" data-delay="0">
+          <div style="flex:1;">
+            <div style="font-family:var(--font-headline);font-size:12px;font-weight:600;color:var(--primary);margin-bottom:2px;">Coding Agent</div>
+            <div style="font-size:10px;color:var(--dim);">Reads specs, writes code, runs tests, fixes bugs, deploys</div>
+            <div style="margin-top:5px;">
+              <span class="company-badge" style="border-color:rgba(59,130,246,0.3);"><img src="screenshots/logos/anthropic.png" alt="">Claude Code</span>
+              <span class="company-badge" style="border-color:rgba(255,255,255,0.15);"><img src="screenshots/logos/cursor.png" alt="">Cursor</span>
+              <span class="company-badge" style="border-color:rgba(255,255,255,0.15);"><img src="screenshots/logos/github.png" alt="">Copilot</span>
+              <span class="company-badge" style="border-color:rgba(167,139,250,0.3);"><img src="screenshots/logos/devin.png" alt="">Devin</span>
+            </div>
+          </div>
+          <button class="agent-play-btn" onclick="event.stopPropagation();playYT('fjHtjT7GO1c')" title="Watch Devin demo"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        </div>
+        <div class="agent-example-card" data-delay="1">
+          <div style="flex:1;">
+            <div style="font-family:var(--font-headline);font-size:12px;font-weight:600;color:var(--secondary);margin-bottom:2px;">Research Agent</div>
+            <div style="font-size:10px;color:var(--dim);">Searches, reads papers, synthesizes findings, generates reports</div>
+            <div style="margin-top:5px;">
+              <span class="company-badge" style="border-color:rgba(255,255,255,0.15);"><img src="screenshots/logos/perplexity.png" alt="">Perplexity</span>
+              <span class="company-badge" style="border-color:rgba(59,130,246,0.3);"><img src="screenshots/logos/google.png" alt="">Deep Research</span>
+              <span class="company-badge" style="border-color:rgba(52,211,153,0.3);"><img src="screenshots/logos/elicit.png" alt="">Elicit</span>
+            </div>
+          </div>
+          <button class="agent-play-btn" onclick="event.stopPropagation();playYT('dS4EaSpFtGQ')" title="Watch Deep Research demo"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        </div>
+        <div class="agent-example-card" data-delay="2">
+          <div style="flex:1;">
+            <div style="font-family:var(--font-headline);font-size:12px;font-weight:600;color:#A78BFA;margin-bottom:2px;">Customer Service Agent</div>
+            <div style="font-size:10px;color:var(--dim);">Handles queries, resolves issues, escalates when needed, 24/7</div>
+            <div style="margin-top:5px;">
+              <span class="company-badge" style="border-color:rgba(167,139,250,0.3);"><img src="screenshots/logos/sierra.png" alt="">Sierra AI</span>
+              <span class="company-badge" style="border-color:rgba(59,130,246,0.3);"><img src="screenshots/logos/intercom.png" alt="">Intercom Fin</span>
+              <span class="company-badge" style="border-color:rgba(251,191,36,0.3);"><img src="screenshots/logos/zendesk.png" alt="">Zendesk AI</span>
+            </div>
+          </div>
+          <button class="agent-play-btn" onclick="event.stopPropagation();playYT('YBrBnkXkSFs',33)" title="Watch Intercom Fin demo"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        </div>
+        <div class="agent-example-card" data-delay="3">
+          <div style="flex:1;">
+            <div style="font-family:var(--font-headline);font-size:12px;font-weight:600;color:#FBBF24;margin-bottom:2px;">Data Analysis Agent</div>
+            <div style="font-size:10px;color:var(--dim);">Queries databases, finds patterns, creates visualizations</div>
+            <div style="margin-top:5px;">
+              <span class="company-badge" style="border-color:rgba(251,191,36,0.3);"><img src="screenshots/logos/julius.png" alt="">Julius AI</span>
+              <span class="company-badge" style="border-color:rgba(236,72,153,0.3);"><img src="screenshots/logos/databricks.png" alt="">Databricks</span>
+              <span class="company-badge" style="border-color:rgba(59,130,246,0.3);"><img src="screenshots/logos/microsoft.png" alt="">Copilot</span>
+            </div>
+          </div>
+          <button class="agent-play-btn" onclick="event.stopPropagation();playYT('5ZVDNStqUCk',59)" title="Watch Copilot Analyst demo"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        </div>
+        <div class="agent-example-card" data-delay="4">
+          <div style="flex:1;">
+            <div style="font-family:var(--font-headline);font-size:12px;font-weight:600;color:#34D399;margin-bottom:2px;">Creative Agent</div>
+            <div style="font-size:10px;color:var(--dim);">Generates copy, designs, produces content, iterates on feedback</div>
+            <div style="margin-top:5px;">
+              <span class="company-badge" style="border-color:rgba(52,211,153,0.3);"><img src="screenshots/logos/jasper.png" alt="">Jasper</span>
+              <span class="company-badge" style="border-color:rgba(34,211,238,0.3);"><img src="screenshots/logos/canva.png" alt="">Canva AI</span>
+              <span class="company-badge" style="border-color:rgba(167,139,250,0.3);"><img src="screenshots/logos/midjourney.png" alt="">Midjourney</span>
+            </div>
+          </div>
+          <button class="agent-play-btn" onclick="event.stopPropagation();playYT('DvBRj--sUMU')" title="Watch Adobe Firefly trailer"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /agi-page-container -->
 </div>
 
 
@@ -2490,14 +2759,52 @@ html, body {
     setTimeout(() => { isAnimating = false; }, 650);
   }
 
-  // AI sub-page scroll state (slide 11 has 3 pages)
+  // AI sub-page scroll state (slide 11 has 4 pages)
     var aiScrollPage = 0;
     var aiScrollTotal = 4;
+
+    // AGI slide 12 sub-page state (page 0 = Kurzweil, page 1 = Agent definition)
+    var agiSubPage = 0;
+
+    function showAGIPage2() {
+      var p1 = document.getElementById('agi-page-1');
+      var p2 = document.getElementById('agi-page-2');
+      if (p1) p1.classList.add('out');
+      if (p2) {
+        p2.classList.add('in');
+        // Stagger-animate definition cards
+        var defCards = p2.querySelectorAll('.agent-def-card');
+        defCards.forEach(function(card, i) {
+          setTimeout(function() { card.classList.add('animate'); }, 300 + i * 150);
+        });
+        // Stagger-animate example cards
+        var exCards = p2.querySelectorAll('.agent-example-card');
+        exCards.forEach(function(card, i) {
+          setTimeout(function() { card.classList.add('animate'); }, 350 + i * 120);
+        });
+      }
+    }
+
+    function showAGIPage1() {
+      var p1 = document.getElementById('agi-page-1');
+      var p2 = document.getElementById('agi-page-2');
+      if (p2) {
+        p2.classList.remove('in');
+        p2.querySelectorAll('.agent-def-card').forEach(function(c) { c.classList.remove('animate'); });
+        p2.querySelectorAll('.agent-example-card').forEach(function(c) { c.classList.remove('animate'); });
+      }
+      if (p1) p1.classList.remove('out');
+    }
 
     function next() {
       if (current === 11 && aiScrollPage < aiScrollTotal - 1) {
         aiScrollPage++;
         if (typeof window.scrollAISlide === 'function') window.scrollAISlide(0, aiScrollPage);
+        return;
+      }
+      if (current === 12 && agiSubPage === 0) {
+        agiSubPage = 1;
+        showAGIPage2();
         return;
       }
       goTo(current + 1);
@@ -2506,6 +2813,11 @@ html, body {
       if (current === 11 && aiScrollPage > 0) {
         aiScrollPage--;
         if (typeof window.scrollAISlide === 'function') window.scrollAISlide(0, aiScrollPage);
+        return;
+      }
+      if (current === 12 && agiSubPage === 1) {
+        agiSubPage = 0;
+        showAGIPage1();
         return;
       }
       goTo(current - 1);
@@ -2677,6 +2989,17 @@ html, body {
     if (num === 6 && typeof resetCycleGraph === 'function') resetCycleGraph();
     if (num === 7) resetStack();
     if (num === 11) resetAGI();
+    if (num === 12) {
+      agiSubPage = 0;
+      var p1 = document.getElementById('agi-page-1');
+      var p2 = document.getElementById('agi-page-2');
+      if (p1) p1.classList.remove('out');
+      if (p2) {
+        p2.classList.remove('in');
+        p2.querySelectorAll('.agent-def-card').forEach(function(c) { c.classList.remove('animate'); });
+        p2.querySelectorAll('.agent-example-card').forEach(function(c) { c.classList.remove('animate'); });
+      }
+    }
     if (num === 23) resetPipeline();
     if (num === 31) resetHexagons();
     if (num === 33) resetActions();
@@ -3286,6 +3609,18 @@ html, body {
     });
     observer.observe(document.querySelector('.deck'), { subtree: true, attributes: true, attributeFilter: ['class'] });
   })();
+
+  // ---- YouTube Player ----
+  // Opens in a centered popup window (avoids file:// embed restrictions)
+  window.playYT = function(videoId, start) {
+    var url = 'https://www.youtube.com/watch?v=' + videoId;
+    if (start) url += '&t=' + start;
+    var w = 960, h = 540;
+    var left = (screen.width - w) / 2;
+    var top = (screen.height - h) / 2;
+    window.open(url, 'yt_player', 'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top + ',toolbar=no,menubar=no,location=no,status=no');
+  };
 </script>
+
 </body>
 </html>

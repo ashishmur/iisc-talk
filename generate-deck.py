@@ -357,29 +357,53 @@ add_logo(s)
 
 
 # ═════════════════════════════════════════════════════════
-# SLIDE 12: WHAT IS AN AGENT?
+# SLIDE 12: AGENTS — BRANCHING FROM LEVEL 3
 # ═════════════════════════════════════════════════════════
 s = new_slide(prs); set_bg(s, C['dark_bg'])
-add_text(s, 0.5, 0.5, 12.333, 0.7, "What is an agent?", sz=28, bold=True, color=C['dark_fg'])
-add_line(s, 0.5, 1.3, 5.0)
-add_text(s, 1.0, 2.0, 11.0, 1.2,
-    "A system that can pursue a goal repeatedly\nby reasoning, planning, using tools to act,\nand learning from memory and context.",
-    sz=26, color=C['dark_fg'], align='center', lsp=10)
+add_text(s, 0.5, 0.3, 12.333, 0.7, "Level 3: Agents", sz=28, bold=True, color=C['dark_fg'])
+add_text(s, 0.5, 0.85, 4.0, 0.3, "We are here, 2025", sz=16, bold=True, color=C['gold'])
+add_line(s, 0.5, 1.2, 5.0)
 
-loop_items = [
-    ("Signal", C['accent']), ("Understand", C['teal']), ("Reason", C['purple']),
-    ("Plan", C['gold']), ("Act", C['orange']), ("Close", C['green']),
+# Left side: Agent definition with 3 components
+add_text(s, 0.5, 1.5, 5.5, 0.5,
+    "What is an agent?", sz=20, bold=True, color=C['accent'])
+add_text(s, 0.5, 2.0, 5.5, 0.6,
+    "A system that repeatedly pursues a goal by:",
+    sz=16, color=C['dark_fg'])
+
+agent_components = [
+    ("i)", "Planning and reasoning", "Break down complex goals into steps", C['accent']),
+    ("ii)", "Acting on the environment", "Using tools to execute actions", C['teal']),
+    ("iii)", "Context and memory", "Retaining knowledge across interactions", C['purple']),
 ]
-for i, (step, clr) in enumerate(loop_items):
-    x = 1.2 + i * 1.9
-    add_rect(s, x, 4.2, 1.5, 0.6, clr, rounded=True)
-    add_text(s, x, 4.25, 1.5, 0.5, step, sz=14, bold=True, color=C['white'], align='center')
-    if i < 5:
-        add_text(s, x+1.5, 4.25, 0.4, 0.5, "\u2192", sz=20, color=C['dark_fg2'], align='center')
+for i, (num, title, desc, clr) in enumerate(agent_components):
+    y = 2.7 + i * 1.0
+    add_rect(s, 0.7, y, 5.1, 0.85, C['dark_srf'], rounded=True)
+    add_rect(s, 0.7, y, 0.06, 0.85, clr)
+    add_text(s, 0.95, y+0.08, 4.7, 0.35, f"{num}  {title}", sz=16, bold=True, color=clr)
+    add_text(s, 0.95, y+0.45, 4.7, 0.35, desc, sz=13, color=C['dark_fg2'])
 
-add_text(s, 1.0, 5.2, 11.0, 0.5,
+# Right side: Examples of AI agents
+add_text(s, 6.8, 1.5, 5.5, 0.5,
+    "Examples of AI agents", sz=20, bold=True, color=C['gold'])
+
+agent_examples = [
+    ("Coding Agent", "Writes, tests, and deploys code", C['accent']),
+    ("Research Agent", "Finds, synthesizes, and summarizes information", C['teal']),
+    ("Customer Service Agent", "Handles queries, resolves issues 24/7", C['purple']),
+    ("Data Analysis Agent", "Processes data, generates insights", C['gold']),
+    ("Creative Agent", "Generates content, designs, and copy", C['orange']),
+]
+for i, (name, desc, clr) in enumerate(agent_examples):
+    y = 2.1 + i * 0.85
+    add_rect(s, 7.0, y, 5.3, 0.7, C['dark_srf'], rounded=True)
+    add_rect(s, 7.0, y, 0.06, 0.7, clr)
+    add_text(s, 7.25, y+0.05, 4.8, 0.3, name, sz=15, bold=True, color=clr)
+    add_text(s, 7.25, y+0.35, 4.8, 0.3, desc, sz=12, color=C['dark_fg2'])
+
+add_text(s, 0.5, 5.8, 12.333, 0.5,
     "For the first time, the entire signal-to-closure loop has been completely automated.",
-    sz=16, color=C['gold'], align='center')
+    sz=16, bold=True, color=C['gold'], align='center')
 add_logo(s)
 
 

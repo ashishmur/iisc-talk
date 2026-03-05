@@ -1,8 +1,8 @@
 # IISc Talk: AI & The New Management Playbook
-## Project State (last updated: March 5, 2026 ~7:30 PM)
+## Project State (last updated: March 6, 2026 — talk day)
 
 ## Event Details
-- **Date:** Friday March 6, 2026 (TOMORROW)
+- **Date:** Friday March 6, 2026 (TODAY)
 - **Time:** Originally 11:00-12:30, check if updated
 - **Venue:** IISc DoMS seminar hall, 80-seat capacity, projector (16:9)
 - **Audience:** Cross-departmental: M.Mgt, PhD, engineering, science students
@@ -35,6 +35,10 @@
       sam-altman-headshot.png, daron-acemoglu-headshot.png, david-autor-headshot.png, daniel-susskind-headshot.png
       andrej-karpathy-headshot.png, boris-cherny-headshot.png, dario-amodei-headshot.png, satya-nadella-headshot.png
       karpathy-vibe-coding-tweet.png, naval-*.png, aakash-*.png, ashish-*.png
+      logos/                 -- 16 company favicons (64x64 PNG) for agent examples
+        anthropic.png, cursor.png, github.png, devin.png, perplexity.png, google.png,
+        elicit.png, sierra.png, intercom.png, zendesk.png, julius.png, databricks.png,
+        microsoft.png, jasper.png, canva.png, midjourney.png
     SLIDE-PLAN-34.md         -- Master 34-slide content plan
     DESIGN-REFERENCES.md     -- All Behance links + design principles
     RESEARCH-DATA.md         -- Economic cycle data, VUCA examples, Perez waves, GDP data
@@ -95,9 +99,19 @@
 34. **Slide 11:** Added HLE + FrontierMath definitions to "What These Measure" panel
 35. **Slide 11:** Added announcement links to all model timeline entries, corrected GPT-5 AIME from 100% to 94.6%
 36. **Slide 16 (Voices):** Redesigned as white Twitter/X-style cards with real profile photos (Karpathy, Boris Cherny, Dario Amodei from Wikipedia/GitHub), verified badges, X logos
+37. **Slide 12 (AGI) Page 2: Agents Expanded View** -- pressing next arrow on slide 12 crossfades from Kurzweil graph to agent detail view:
+    - Compact breadcrumb pills: L1 Chatbots (done) > L2 Reasoners (done) > L3 Agents (current, glowing) > L4 Innovators (future) > L5 Organizations (future) + "WE ARE HERE - 2025"
+    - Left column: Agent definition with 3 colored-border cards (Plan/Reason, Act with Tools, Context/Memory)
+    - Right column: 5 agent category cards (Coding, Research, Customer Service, Data Analysis, Creative) with real company favicon logos
+    - Company logos: Claude Code, Cursor, GitHub Copilot, Devin, Perplexity, Google Deep Research, Elicit, Sierra AI, Intercom Fin, Zendesk AI, Julius AI, Databricks, Microsoft Copilot, Jasper, Canva AI, Midjourney
+    - YouTube play buttons on each category card open popup windows (window.open, not iframe due to file:// restrictions)
+    - Videos: Devin launch demo, Google Deep Research roundtable, Intercom Fin demo, Microsoft Copilot Analyst, Adobe Firefly trailer
+    - CSS crossfade transition with translateX + opacity + cubic-bezier easing
+    - Staggered card animations on reveal
+38. **Slide 12:** Sub-page navigation (agiSubPage state) integrated into next()/prev() functions, resets on slide change
 
 ## Current Slide Order (34 slides)
-1. Title | 2. Anxiety Poll (live bar chart + survey page) | 3. ACT I: We've Been Here Before | 4. VUCA (Trudeau quote + S&P 500 stat) | 5. Production Function (Satya Nadella GDP quote, Cobb-Douglas) | 6. Waves of Creative Destruction (GDP graph + headlines carousel, manual arrows only) | 7. Technology Democratizes (Yesterday/Today split) | 8. Each Wave Climbed Higher | 9. Ceiling Quote (centered typography, magenta glow) | 10. Conflicting Views (real headshot photos, source links) | 11. AI Progression (4-page scroll: timeline, frontier models, SWE-bench, benchmark saturation + HLE + FrontierMath + Dario quote) | 12. 5 Levels of AGI (Kurzweil exponential chart with milestones) | 13. ACT III: Ground Zero Software | 14. AI Adoption Across Industries | 15. Real Consequences (6 news headline cards with sources) | 16. Voices from the Field (Twitter-style white cards: Karpathy x2, Boris Cherny, Dario Amodei, with real photos) | 17. Cost = Zero (+ single engineers card) | 18. Role Fusion / Builder | 19. The New Battle: Distribution | 20. Diffusion Problem | 21. ACT IV: Who Captures the Value | 22. Two Paths | 23. AI Value Chain | 24. Where Value Lives | 25. ACT V: From the Inside | 26. Microsoft's AI Journey | 27. Project Nebula | 28. The Learning | 29. ACT VI: Your Move | 30. AI Organizations | 31. Two Skills | 32. Age of the Polymath | 33. What You Should Do | 34. Closing
+1. Title | 2. Anxiety Poll (live bar chart + survey page) | 3. ACT I: We've Been Here Before | 4. VUCA (Trudeau quote + S&P 500 stat) | 5. Production Function (Satya Nadella GDP quote, Cobb-Douglas) | 6. Waves of Creative Destruction (GDP graph + headlines carousel, manual arrows only) | 7. Technology Democratizes (Yesterday/Today split) | 8. Each Wave Climbed Higher | 9. Ceiling Quote (centered typography, magenta glow) | 10. Conflicting Views (real headshot photos, source links) | 11. AI Progression (4-page scroll: timeline, frontier models, SWE-bench, benchmark saturation + HLE + FrontierMath + Dario quote) | 12. 5 Levels of AGI (Kurzweil chart + page 2: agent definition, examples with logos, YouTube demos) | 13. ACT III: Ground Zero Software | 14. AI Adoption Across Industries | 15. Real Consequences (6 news headline cards with sources) | 16. Voices from the Field (Twitter-style white cards: Karpathy x2, Boris Cherny, Dario Amodei, with real photos) | 17. Cost = Zero (+ single engineers card) | 18. Role Fusion / Builder | 19. The New Battle: Distribution | 20. Diffusion Problem | 21. ACT IV: Who Captures the Value | 22. Two Paths | 23. AI Value Chain | 24. Where Value Lives | 25. ACT V: From the Inside | 26. Microsoft's AI Journey | 27. Project Nebula | 28. The Learning | 29. ACT VI: Your Move | 30. AI Organizations | 31. Two Skills | 32. Age of the Polymath | 33. What You Should Do | 34. Closing
 
 ## GitHub Repository
 - **Repo:** https://github.com/ashishmuralidharan/iisc-talk (private)
