@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poll System - Local Test</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 40px;
+  }
+
+  h1 { font-size: 24px; color: #fff; margin-bottom: 8px; }
+  p.subtitle { color: #888; margin-bottom: 32px; font-size: 14px; }
+
+  .test-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .phone-mock {
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 24px;
+    padding: 20px;
+    max-width: 350px;
+  }
+
+  .phone-mock h3 {
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .mock-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mock-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 16px;
+    background: #1a1a1a;
+    border: 2px solid #2a2a2a;
+    border-radius: 12px;
+    color: #e0e0e0;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .mock-btn:hover {
+    border-color: #444;
+    background: #222;
+  }
+
+  .mock-btn:active {
+    transform: scale(0.97);
+  }
+
+  .mock-btn .emoji { font-size: 1.3rem; }
+
+  #presenter-view {
+    min-height: 400px;
+  }
+
+  .controls {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .controls button {
+    padding: 10px 20px;
+    background: #222;
+    border: 1px solid #444;
+    color: #aaa;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .controls button:hover {
+    background: #333;
+    color: #fff;
+  }
+
+  .info-banner {
+    background: #0a2a15;
+    border: 1px solid #1a4a2a;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    font-size: 14px;
+    color: #4ade80;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Poll System - Local Test Mode</h1>
+  <p class="subtitle">No Firebase needed. Click the phone buttons to simulate audience votes.</p>
+
+  <div class="info-banner">
+    This test page simulates both the audience voting (left) and the presenter's live results (right).
+    In production, these are separate pages connected via Firebase Realtime Database.
+  </div>
+
+  <div class="test-layout">
+    <!-- Simulated phone -->
+    <div class="phone-mock">
+      <h3>Audience Phone View</h3>
+      <div class="mock-options" id="mock-options"></div>
+      <div class="controls">
+        <button onclick="addRandomVotes(5)">+5 random</button>
+        <button onclick="addRandomVotes(20)">+20 random</button>
+        <button onclick="resetLocalVotes()">Reset</button>
+      </div>
+    </div>
+
+    <!-- Presenter view -->
+    <div id="presenter-view"></div>
+  </div>
+
+  <script>
+    // ── Local mock config (no Firebase) ──
+    var POLL_CONFIG = {
+      pollId: 'test-local',
+      question: 'How anxious do you feel about AI?',
+      options: [
+        { key: 'very_anxious',     label: 'Very anxious',     emoji: '\uD83D\uDE30', color: '#ef4444' },
+        { key: 'somewhat_anxious', label: 'Somewhat anxious', emoji: '\uD83D\uDE1F', color: '#f59e0b' },
+        { key: 'not_anxious',      label: 'Not anxious',      emoji: '\uD83D\uDE10', color: '#3b82f6' },
+        { key: 'excited',          label: 'Excited!',         emoji: '\uD83D\uDE80', color: '#4ade80' },
+      ],
+      voteUrl: 'https://example.com/vote.html'
+    };
+
+    var localVotes = {};
+    POLL_CONFIG.options.forEach(function(o) { localVotes[o.key] = 0; });
+
+    // ── Render mock phone buttons ──
+    var mockEl = document.getElementById('mock-options');
+    POLL_CONFIG.options.forEach(function(opt) {
+      var btn = document.createElement('button');
+      btn.className = 'mock-btn';
+      btn.innerHTML = '<span class="emoji">' + opt.emoji + '</span><span>' + opt.label + '</span>';
+      btn.onclick = function() { addVote(opt.key); };
+      mockEl.appendChild(btn);
+    });
+
+    // ── Chart rendering (same as widget) ──
+    function renderChart(votes) {
+      var total = 0;
+      POLL_CONFIG.options.forEach(function(opt) { total += (votes[opt.key] || 0); });
+
+      var html = '<div style="font-family:-apple-system,sans-serif;">';
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">';
+      html += '<div style="font-size:24px;font-weight:700;color:#fff;">' + POLL_CONFIG.question + '</div>';
+      html += '<div style="font-size:14px;color:#4ade80;"><span style="display:inline-block;width:8px;height:8px;background:#4ade80;border-radius:50%;margin-right:8px;animation:pulse 1.5s infinite;"></span>Live</div>';
+      html += '</div>';
+
+      POLL_CONFIG.options.forEach(function(opt) {
+        var count = votes[opt.key] || 0;
+        var pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        html += '<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">';
+        html += '<div style="width:180px;font-size:18px;color:#e0e0e0;text-align:right;white-space:nowrap;">' + opt.emoji + ' ' + opt.label + '</div>';
+        html += '<div style="flex:1;height:36px;background:#1a1a2e;border-radius:8px;overflow:hidden;">';
+        html += '<div style="width:' + pct + '%;height:100%;background:' + opt.color + ';border-radius:8px;transition:width 0.4s ease;"></div>';
+        html += '</div>';
+        html += '<div style="width:90px;font-size:20px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;">' + count + ' <span style="font-size:14px;font-weight:400;color:#888;">(' + pct + '%)</span></div>';
+        html += '</div>';
+      });
+
+      html += '<div style="text-align:center;margin-top:20px;font-size:16px;color:#666;">Total responses: ' + total + '</div>';
+      html += '</div>';
+
+      document.getElementById('presenter-view').innerHTML = html;
+    }
+
+    function addVote(key) {
+      localVotes[key] = (localVotes[key] || 0) + 1;
+      renderChart(localVotes);
+    }
+
+    function addRandomVotes(n) {
+      for (var i = 0; i < n; i++) {
+        var keys = POLL_CONFIG.options.map(function(o) { return o.key; });
+        // Weighted: more people tend to be somewhat anxious or excited
+        var weights = [0.15, 0.35, 0.2, 0.3];
+        var r = Math.random(), cumul = 0;
+        for (var j = 0; j < keys.length; j++) {
+          cumul += weights[j];
+          if (r <= cumul) { addVote(keys[j]); break; }
+        }
+      }
+    }
+
+    function resetLocalVotes() {
+      POLL_CONFIG.options.forEach(function(o) { localVotes[o.key] = 0; });
+      renderChart(localVotes);
+    }
+
+    // Initial render
+    renderChart(localVotes);
+  </script>
+
+  <style>
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  </style>
+</body>
+</html>

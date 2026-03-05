@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & The New Management Playbook | Concept F: Hybrid</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #060608;
+  --surface: #0E0E10;
+  --border: #1C1C20;
+  --text: #EAEAEA;
+  --dim: #666;
+  --muted: #444;
+  --accent: #00D4AA;
+  --accent-dim: rgba(0,212,170,0.08);
+  --accent-glow: rgba(0,212,170,0.3);
+  --danger: #FF3B3B;
+  --danger-dim: rgba(255,59,59,0.08);
+  --danger-glow: rgba(255,59,59,0.3);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  cursor: default;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Canvas (particle network) ── */
+#particleCanvas {
+  position: fixed; inset: 0;
+  z-index: 0;
+  width: 100%; height: 100%;
+}
+
+/* ── Scanline overlay ── */
+.scanlines {
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 2px,
+    rgba(255,255,255,0.006) 2px,
+    rgba(255,255,255,0.006) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Viewport scaler ── */
+#viewport {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1;
+}
+
+#scaler {
+  width: 1920px; height: 1080px;
+  position: relative;
+  transform-origin: center center;
+}
+
+/* ── Slides ── */
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 120px 160px;
+  opacity: 0;
+  transform: scale(0.98);
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* ── Teal dot marker (top-left) ── */
+.slide-dot {
+  position: absolute;
+  top: 48px; left: 48px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ── Progress bar ── */
+#progress {
+  position: fixed; bottom: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow), 0 0 4px var(--accent);
+  z-index: 100;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Counter ── */
+#counter {
+  position: fixed; bottom: 28px; right: 48px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px; font-weight: 400;
+  color: var(--muted);
+  z-index: 100;
+  letter-spacing: 0.05em;
+}
+
+/* ── Typography ── */
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+.headline {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.headline .cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.85em;
+  background: var(--accent);
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.accent-line {
+  width: 48px; height: 2px;
+  background: var(--accent);
+  margin: 24px 0;
+}
+
+.accent-line-danger {
+  width: 48px; height: 2px;
+  background: var(--danger);
+  margin: 24px 0;
+}
+
+.body-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--dim);
+}
+
+.meta-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ── Quote slides ── */
+.quote-block {
+  border-left: 3px solid var(--accent);
+  padding-left: 40px;
+  max-width: 900px;
+}
+
+.quote-block.danger {
+  border-left-color: var(--danger);
+}
+
+.quote-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 34px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.quote-attribution {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 32px;
+}
+
+/* ── Section dividers ── */
+.section-divider {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 24px;
+}
+
+.section-line {
+  width: 48px; height: 2px;
+  background: var(--accent);
+  margin: 20px auto;
+}
+
+/* ── Content cards ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 36px 40px;
+  margin-bottom: 16px;
+  border-radius: 2px;
+}
+
+.card-accent {
+  border-left: 2px solid var(--accent);
+}
+
+.card-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.card-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--dim);
+  line-height: 1.6;
+}
+
+/* ── Staggered reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide.active .reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Grid layouts ── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 24px;
+}
+
+/* ── SVG visualizations ── */
+.viz-container {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.viz-container svg {
+  width: 100%;
+  overflow: visible;
+}
+
+/* ── Closing slide glow ── */
+.closing-glow {
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+/* ── Keyboard hint ── */
+#keyboard-hint {
+  position: fixed;
+  bottom: 24px; left: 48px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  z-index: 100;
+  opacity: 0.5;
+  transition: opacity 2s;
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+<div class="scanlines"></div>
+
+<div id="viewport">
+<div id="scaler">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 01: TITLE
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="1">
+  <div class="slide-dot" style="width: 14px; height: 14px;"></div>
+  <div class="headline" style="font-size: 64px; font-weight: 700; max-width: 1000px;" data-typewriter="AI &amp; The New Management Playbook"></div>
+  <div class="accent-line reveal" style="margin: 32px 0;"></div>
+  <div class="reveal" style="display: flex; flex-direction: column; gap: 8px;">
+    <span class="meta-text" style="font-size: 20px; color: var(--dim);">Ashish Muralidharan</span>
+    <span class="meta-text">Product Manager, Microsoft</span>
+    <span class="meta-text" style="color: var(--muted);">IISc DoMS / March 6, 2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 02: OPENING POLL (Quote style)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="2">
+  <div class="slide-dot"></div>
+  <div class="quote-block reveal">
+    <div class="quote-text">"How many of you feel anxious about your future, your career, your relevance, because of AI?"</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 03: SECTION DIVIDER - ACT I
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide section-divider" data-slide="3">
+  <div class="slide-dot"></div>
+  <div class="section-number reveal">ACT I</div>
+  <div class="section-line reveal"></div>
+  <div class="section-subtitle reveal">THE TENSION</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 04: VUCA FRAMEWORK
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="4">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="VUCA"></div>
+  <div style="margin-top: 48px;" class="grid-2">
+    <div class="card card-accent reveal">
+      <div class="card-label">V</div>
+      <div class="card-title">Volatility</div>
+      <div class="card-body">Speed and magnitude of change are increasing exponentially</div>
+    </div>
+    <div class="card card-accent reveal">
+      <div class="card-label">U</div>
+      <div class="card-title">Uncertainty</div>
+      <div class="card-body">Outcomes are becoming fundamentally unpredictable</div>
+    </div>
+    <div class="card card-accent reveal">
+      <div class="card-label">C</div>
+      <div class="card-title">Complexity</div>
+      <div class="card-body">Interconnected systems create cascading effects</div>
+    </div>
+    <div class="card card-accent reveal">
+      <div class="card-label">A</div>
+      <div class="card-title">Ambiguity</div>
+      <div class="card-body">The rules of the game are being rewritten in real time</div>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top: 32px;">
+    <span class="body-text" style="font-style: italic;">"It's a one-way street going upwards."</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 05: PATTERN OF DISRUPTION (TIMELINE VIZ)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="5">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="The Pattern of Disruption"></div>
+  <div class="viz-container" style="margin-top: 80px;">
+    <svg id="viz-timeline" viewBox="0 0 1600 280" style="max-height: 280px;">
+      <!-- Timeline line -->
+      <line id="tl-line" x1="100" y1="140" x2="100" y2="140" stroke="#00D4AA" stroke-width="2" stroke-dasharray="4,4" opacity="0.4"/>
+      <!-- Nodes -->
+      <g id="tl-node-1" opacity="0">
+        <circle cx="200" cy="140" r="24" fill="none" stroke="#444" stroke-width="2"/>
+        <circle cx="200" cy="140" r="8" fill="#444"/>
+        <text x="200" y="200" text-anchor="middle" fill="#666" font-family="JetBrains Mono" font-size="14" font-weight="500">SHIPPING</text>
+        <text x="200" y="224" text-anchor="middle" fill="#444" font-family="Inter" font-size="12">1500s</text>
+      </g>
+      <g id="tl-node-2" opacity="0">
+        <circle cx="560" cy="140" r="24" fill="none" stroke="#444" stroke-width="2"/>
+        <circle cx="560" cy="140" r="8" fill="#444"/>
+        <text x="560" y="200" text-anchor="middle" fill="#666" font-family="JetBrains Mono" font-size="14" font-weight="500">INDUSTRIAL</text>
+        <text x="560" y="224" text-anchor="middle" fill="#444" font-family="Inter" font-size="12">1800s</text>
+      </g>
+      <g id="tl-node-3" opacity="0">
+        <circle cx="920" cy="140" r="24" fill="none" stroke="#444" stroke-width="2"/>
+        <circle cx="920" cy="140" r="8" fill="#444"/>
+        <text x="920" y="200" text-anchor="middle" fill="#666" font-family="JetBrains Mono" font-size="14" font-weight="500">INFORMATION</text>
+        <text x="920" y="224" text-anchor="middle" fill="#444" font-family="Inter" font-size="12">1990s</text>
+      </g>
+      <g id="tl-node-4" opacity="0">
+        <circle cx="1280" cy="140" r="24" fill="none" stroke="#00D4AA" stroke-width="2"/>
+        <circle cx="1280" cy="140" r="10" fill="#00D4AA"/>
+        <circle cx="1280" cy="140" r="32" fill="none" stroke="#00D4AA" stroke-width="1" opacity="0.3">
+          <animate attributeName="r" values="32;44;32" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.3;0.08;0.3" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <text x="1280" y="200" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="14" font-weight="700">ARTIFICIAL INTELLIGENCE</text>
+        <text x="1280" y="224" text-anchor="middle" fill="#00D4AA" font-family="Inter" font-size="12" opacity="0.7">2024+</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 06: THE ECONOMIC EQUATION
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="6">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="The Economic Equation"></div>
+  <div style="margin-top: 48px; display: flex; gap: 24px; align-items: center;">
+    <div class="card reveal" style="flex: 1; text-align: center; padding: 48px 32px;">
+      <div class="card-label">Factor 1</div>
+      <div class="card-title" style="font-size: 28px;">Land</div>
+    </div>
+    <div class="card reveal" style="flex: 1; text-align: center; padding: 48px 32px;">
+      <div class="card-label">Factor 2</div>
+      <div class="card-title" style="font-size: 28px;">Labor</div>
+    </div>
+    <div class="card reveal" style="flex: 1; text-align: center; padding: 48px 32px;">
+      <div class="card-label">Factor 3</div>
+      <div class="card-title" style="font-size: 28px;">Capital</div>
+    </div>
+    <div class="card reveal" style="flex: 1; text-align: center; padding: 48px 32px; border-left: 2px solid var(--accent);">
+      <div class="card-label">The Disruptor</div>
+      <div class="card-title" style="font-size: 28px; color: var(--accent);">Technology</div>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top: 40px;">
+    <span class="body-text" style="font-style: italic;">"Technology is fundamentally replacing labor."</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 07: SECTION DIVIDER - ACT II
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide section-divider" data-slide="7">
+  <div class="slide-dot"></div>
+  <div class="section-number reveal">ACT II</div>
+  <div class="section-line reveal"></div>
+  <div class="section-subtitle reveal">THE PATTERN</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 08: TECH VS LABOR CYCLE (CIRCULAR DIAGRAM)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="8">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="Technology vs. Labor"></div>
+  <div class="viz-container" style="margin-top: 40px; display: flex; justify-content: center;">
+    <svg id="viz-cycle" viewBox="0 0 800 500" style="max-width: 900px; max-height: 440px;">
+      <!-- Cycle boxes -->
+      <g id="cy-step-1" opacity="0">
+        <rect x="280" y="20" width="240" height="64" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="400" y="58" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="15" font-weight="500">Technology Arrives</text>
+      </g>
+      <g id="cy-step-2" opacity="0">
+        <rect x="560" y="190" width="220" height="64" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="670" y="216" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="14" font-weight="500">Physical Labor</text>
+        <text x="670" y="240" text-anchor="middle" fill="#666" font-family="Inter" font-size="13">Displaced</text>
+      </g>
+      <g id="cy-step-3" opacity="0">
+        <rect x="280" y="370" width="240" height="64" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="400" y="396" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="14" font-weight="500">Operational Labor</text>
+        <text x="400" y="420" text-anchor="middle" fill="#666" font-family="Inter" font-size="13">Displaced</text>
+      </g>
+      <g id="cy-step-4" opacity="0">
+        <rect x="20" y="190" width="220" height="64" rx="2" fill="#0E0E10" stroke="#FF3B3B" stroke-width="2"/>
+        <text x="130" y="216" text-anchor="middle" fill="#FF3B3B" font-family="JetBrains Mono" font-size="14" font-weight="500">Intellectual Labor</text>
+        <text x="130" y="240" text-anchor="middle" fill="#FF3B3B" font-family="Inter" font-size="13" opacity="0.7">Displaced</text>
+      </g>
+      <!-- Arrows -->
+      <path id="cy-arrow-1" d="M 520 52 Q 600 52 600 120 Q 600 160 580 190" fill="none" stroke="#00D4AA" stroke-width="2" stroke-dasharray="500" stroke-dashoffset="500" opacity="0.6">
+        <animate attributeName="stroke-dashoffset" from="500" to="0" dur="0.6s" begin="indefinite" fill="freeze"/>
+      </path>
+      <polygon id="cy-arrowhead-1" points="580,190 573,178 587,178" fill="#00D4AA" opacity="0"/>
+      <path id="cy-arrow-2" d="M 600 254 Q 600 320 520 370" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="500" stroke-dashoffset="500" opacity="0.6">
+        <animate attributeName="stroke-dashoffset" from="500" to="0" dur="0.6s" begin="indefinite" fill="freeze"/>
+      </path>
+      <polygon id="cy-arrowhead-2" points="520,370 530,358 536,372" fill="#666" opacity="0"/>
+      <path id="cy-arrow-3" d="M 280 402 Q 200 402 200 340 Q 200 290 220 254" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="500" stroke-dashoffset="500" opacity="0.6">
+        <animate attributeName="stroke-dashoffset" from="500" to="0" dur="0.6s" begin="indefinite" fill="freeze"/>
+      </path>
+      <polygon id="cy-arrowhead-3" points="220,254 213,266 227,266" fill="#666" opacity="0"/>
+      <path id="cy-arrow-4" d="M 130 190 Q 130 120 200 60 Q 230 38 280 34" fill="none" stroke="#FF3B3B" stroke-width="2" stroke-dasharray="500" stroke-dashoffset="500" opacity="0.6">
+        <animate attributeName="stroke-dashoffset" from="500" to="0" dur="0.6s" begin="indefinite" fill="freeze"/>
+      </path>
+      <polygon id="cy-arrowhead-4" points="280,34 268,27 268,41" fill="#FF3B3B" opacity="0"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 09: RUNNING OUT OF RUNGS (LADDER VIZ)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="9">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="Running Out of Rungs"></div>
+  <div class="viz-container" style="margin-top: 48px; display: flex; justify-content: center;">
+    <svg id="viz-ladder" viewBox="0 0 1000 420" style="max-width: 1100px; max-height: 400px;">
+      <!-- Ladder sides -->
+      <line x1="80" y1="40" x2="120" y2="380" stroke="#1C1C20" stroke-width="3"/>
+      <line x1="920" y1="40" x2="880" y2="380" stroke="#1C1C20" stroke-width="3"/>
+      <!-- Rung 4 (top - broken) -->
+      <g id="ld-rung-4" opacity="0">
+        <line x1="90" y1="80" x2="910" y2="80" stroke="#1C1C20" stroke-width="2" stroke-dasharray="8,6"/>
+        <rect x="150" y="60" width="0" height="40" rx="1" fill="var(--danger)" opacity="0.2">
+          <animate id="ld-bar-4" attributeName="width" from="0" to="112" dur="0.8s" begin="indefinite" fill="freeze"/>
+        </rect>
+        <text x="150" y="48" fill="#FF3B3B" font-family="JetBrains Mono" font-size="14" font-weight="500">???</text>
+        <text x="920" y="86" text-anchor="end" fill="#FF3B3B" font-family="JetBrains Mono" font-size="20" font-weight="700">15%</text>
+      </g>
+      <!-- Rung 3 -->
+      <g id="ld-rung-3" opacity="0">
+        <line x1="100" y1="180" x2="900" y2="180" stroke="#1C1C20" stroke-width="2"/>
+        <rect x="150" y="160" width="0" height="40" rx="1" fill="#00D4AA" opacity="0.25">
+          <animate id="ld-bar-3" attributeName="width" from="0" to="337" dur="0.8s" begin="indefinite" fill="freeze"/>
+        </rect>
+        <text x="150" y="148" fill="#EAEAEA" font-family="JetBrains Mono" font-size="14" font-weight="500">INTELLECTUAL</text>
+        <text x="920" y="186" text-anchor="end" fill="#00D4AA" font-family="JetBrains Mono" font-size="20" font-weight="700">45%</text>
+      </g>
+      <!-- Rung 2 -->
+      <g id="ld-rung-2" opacity="0">
+        <line x1="108" y1="280" x2="892" y2="280" stroke="#1C1C20" stroke-width="2"/>
+        <rect x="150" y="260" width="0" height="40" rx="1" fill="#00D4AA" opacity="0.4">
+          <animate id="ld-bar-2" attributeName="width" from="0" to="540" dur="0.8s" begin="indefinite" fill="freeze"/>
+        </rect>
+        <text x="150" y="248" fill="#EAEAEA" font-family="JetBrains Mono" font-size="14" font-weight="500">OPERATIONAL</text>
+        <text x="920" y="286" text-anchor="end" fill="#00D4AA" font-family="JetBrains Mono" font-size="20" font-weight="700">72%</text>
+      </g>
+      <!-- Rung 1 (bottom - widest) -->
+      <g id="ld-rung-1" opacity="0">
+        <line x1="116" y1="370" x2="884" y2="370" stroke="#1C1C20" stroke-width="2"/>
+        <rect x="150" y="350" width="0" height="40" rx="1" fill="#00D4AA" opacity="0.6">
+          <animate id="ld-bar-1" attributeName="width" from="0" to="713" dur="0.8s" begin="indefinite" fill="freeze"/>
+        </rect>
+        <text x="150" y="338" fill="#EAEAEA" font-family="JetBrains Mono" font-size="14" font-weight="500">PHYSICAL</text>
+        <text x="920" y="376" text-anchor="end" fill="#00D4AA" font-family="JetBrains Mono" font-size="20" font-weight="700">95%</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 10: THE CEILING QUOTE (Danger)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="10">
+  <div class="slide-dot"></div>
+  <div class="quote-block danger reveal">
+    <div class="quote-text" style="color: var(--text);">"If you don't need intellectual labor anymore, what's left?"</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 11: ROBOTS & THE PHYSICAL FRONTIER
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="11">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="The Physical Frontier"></div>
+  <div style="margin-top: 48px;" class="grid-3">
+    <div class="card card-accent reveal" style="text-align: center; padding: 48px 32px;">
+      <div class="card-label">Tesla</div>
+      <div class="card-title" style="font-size: 24px;">Optimus</div>
+      <div class="card-body" style="margin-top: 12px;">Humanoid robotics at scale</div>
+    </div>
+    <div class="card card-accent reveal" style="text-align: center; padding: 48px 32px;">
+      <div class="card-label">Unitree</div>
+      <div class="card-title" style="font-size: 24px;">G1 / H1</div>
+      <div class="card-body" style="margin-top: 12px;">Affordable agile robotics</div>
+    </div>
+    <div class="card card-accent reveal" style="text-align: center; padding: 48px 32px;">
+      <div class="card-label">Hyundai</div>
+      <div class="card-title" style="font-size: 24px;">Atlas</div>
+      <div class="card-body" style="margin-top: 12px;">Industrial-grade mobility</div>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top: 40px;">
+    <span class="body-text" style="font-style: italic;">"Complete replacement across every dimension."</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 12: 5 LEVELS OF AGI (VERTICAL TOWER VIZ)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="12">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="5 Levels of AGI"></div>
+  <div class="viz-container" style="margin-top: 32px; display: flex; justify-content: center;">
+    <svg id="viz-tower" viewBox="0 0 900 480" style="max-width: 1000px; max-height: 460px;">
+      <!-- Level 5 (top - dashed) -->
+      <g id="tw-level-5" opacity="0">
+        <rect x="250" y="10" width="400" height="72" rx="2" fill="none" stroke="#1C1C20" stroke-width="2" stroke-dasharray="6,4"/>
+        <text x="270" y="38" fill="#444" font-family="JetBrains Mono" font-size="13" font-weight="500">L5</text>
+        <text x="320" y="38" fill="#444" font-family="JetBrains Mono" font-size="16" font-weight="500">Artificial General Intelligence</text>
+        <text x="320" y="60" fill="#333" font-family="Inter" font-size="13">Unknown timeline</text>
+      </g>
+      <!-- Level 4 (dashed) -->
+      <g id="tw-level-4" opacity="0">
+        <rect x="250" y="100" width="400" height="72" rx="2" fill="none" stroke="#1C1C20" stroke-width="2" stroke-dasharray="6,4"/>
+        <text x="270" y="128" fill="#444" font-family="JetBrains Mono" font-size="13" font-weight="500">L4</text>
+        <text x="320" y="128" fill="#444" font-family="JetBrains Mono" font-size="16" font-weight="500">AI Organizations</text>
+        <text x="320" y="150" fill="#333" font-family="Inter" font-size="13">Emerging signals</text>
+      </g>
+      <!-- Level 3 (active - pulsing) -->
+      <g id="tw-level-3" opacity="0">
+        <rect x="250" y="190" width="400" height="72" rx="2" fill="rgba(0,212,170,0.08)" stroke="#00D4AA" stroke-width="2">
+          <animate attributeName="stroke-opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+        </rect>
+        <text x="270" y="218" fill="#00D4AA" font-family="JetBrains Mono" font-size="13" font-weight="700">L3</text>
+        <text x="320" y="218" fill="#00D4AA" font-family="JetBrains Mono" font-size="16" font-weight="700">Agents</text>
+        <text x="320" y="240" fill="#00D4AA" font-family="Inter" font-size="13" opacity="0.7">We are HERE</text>
+        <circle cx="630" cy="226" r="6" fill="#00D4AA">
+          <animate attributeName="r" values="6;10;6" dur="1.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+      <!-- Level 2 (solid - complete) -->
+      <g id="tw-level-2" opacity="0">
+        <rect x="250" y="280" width="400" height="72" rx="2" fill="rgba(0,212,170,0.15)" stroke="#00D4AA" stroke-width="2"/>
+        <text x="270" y="308" fill="#00D4AA" font-family="JetBrains Mono" font-size="13" font-weight="500">L2</text>
+        <text x="320" y="308" fill="#EAEAEA" font-family="JetBrains Mono" font-size="16" font-weight="500">Reasoning</text>
+        <text x="320" y="330" fill="#666" font-family="Inter" font-size="13">Achieved (o1, Claude, Gemini)</text>
+        <text x="620" y="314" fill="#00D4AA" font-family="JetBrains Mono" font-size="11">DONE</text>
+      </g>
+      <!-- Level 1 (solid - complete) -->
+      <g id="tw-level-1" opacity="0">
+        <rect x="250" y="370" width="400" height="72" rx="2" fill="rgba(0,212,170,0.2)" stroke="#00D4AA" stroke-width="2"/>
+        <text x="270" y="398" fill="#00D4AA" font-family="JetBrains Mono" font-size="13" font-weight="500">L1</text>
+        <text x="320" y="398" fill="#EAEAEA" font-family="JetBrains Mono" font-size="16" font-weight="500">Conversational AI</text>
+        <text x="320" y="420" fill="#666" font-family="Inter" font-size="13">Achieved (ChatGPT, Copilot)</text>
+        <text x="620" y="404" fill="#00D4AA" font-family="JetBrains Mono" font-size="11">DONE</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 13: WHAT IS AN AGENT (FLOW DIAGRAM)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="13">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="What Is An Agent?"></div>
+  <div class="viz-container" style="margin-top: 60px; display: flex; justify-content: center;">
+    <svg id="viz-flow" viewBox="0 0 1400 240" style="max-width: 1400px; max-height: 240px;">
+      <!-- Signal box -->
+      <g id="fl-box-1" opacity="0">
+        <rect x="20" y="60" width="260" height="100" rx="2" fill="#0E0E10" stroke="#00D4AA" stroke-width="2"/>
+        <text x="150" y="100" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="12" font-weight="500">01</text>
+        <text x="150" y="128" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="18" font-weight="500">Signal</text>
+        <text x="150" y="148" text-anchor="middle" fill="#666" font-family="Inter" font-size="12">Receives a goal</text>
+      </g>
+      <!-- Arrow 1 -->
+      <g id="fl-arrow-1" opacity="0">
+        <line x1="280" y1="110" x2="360" y2="110" stroke="#00D4AA" stroke-width="2"/>
+        <polygon points="360,110 350,104 350,116" fill="#00D4AA"/>
+      </g>
+      <!-- Cognition box -->
+      <g id="fl-box-2" opacity="0">
+        <rect x="360" y="60" width="260" height="100" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="490" y="100" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="12" font-weight="500">02</text>
+        <text x="490" y="128" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="18" font-weight="500">Cognition</text>
+        <text x="490" y="148" text-anchor="middle" fill="#666" font-family="Inter" font-size="12">Reasons &amp; plans</text>
+      </g>
+      <!-- Arrow 2 -->
+      <g id="fl-arrow-2" opacity="0">
+        <line x1="620" y1="110" x2="700" y2="110" stroke="#00D4AA" stroke-width="2"/>
+        <polygon points="700,110 690,104 690,116" fill="#00D4AA"/>
+      </g>
+      <!-- Action box -->
+      <g id="fl-box-3" opacity="0">
+        <rect x="700" y="60" width="260" height="100" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="830" y="100" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="12" font-weight="500">03</text>
+        <text x="830" y="128" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="18" font-weight="500">Action</text>
+        <text x="830" y="148" text-anchor="middle" fill="#666" font-family="Inter" font-size="12">Uses tools</text>
+      </g>
+      <!-- Arrow 3 -->
+      <g id="fl-arrow-3" opacity="0">
+        <line x1="960" y1="110" x2="1040" y2="110" stroke="#00D4AA" stroke-width="2"/>
+        <polygon points="1040,110 1030,104 1030,116" fill="#00D4AA"/>
+      </g>
+      <!-- Closure box -->
+      <g id="fl-box-4" opacity="0">
+        <rect x="1040" y="60" width="260" height="100" rx="2" fill="#0E0E10" stroke="#00D4AA" stroke-width="2"/>
+        <text x="1170" y="100" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="12" font-weight="500">04</text>
+        <text x="1170" y="128" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="18" font-weight="500">Closure</text>
+        <text x="1170" y="148" text-anchor="middle" fill="#666" font-family="Inter" font-size="12">Delivers &amp; learns</text>
+      </g>
+    </svg>
+  </div>
+  <div class="reveal" style="margin-top: 40px; max-width: 900px;">
+    <span class="body-text" style="font-style: italic;">"A system that can pursue a goal by reasoning, planning, using tools, and continuously learning."</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 14: SECTION DIVIDER - ACT III
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide section-divider" data-slide="14">
+  <div class="slide-dot"></div>
+  <div class="section-number reveal">ACT III</div>
+  <div class="section-line reveal"></div>
+  <div class="section-subtitle reveal">GROUND ZERO</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 15: WHY SOFTWARE FIRST?
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="15">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="Why Software First?"></div>
+  <div style="margin-top: 48px;" class="grid-3">
+    <div class="card card-accent reveal" style="padding: 48px 32px;">
+      <div class="card-label">Property 1</div>
+      <div class="card-title" style="font-size: 24px;">100% Digital</div>
+      <div class="card-body" style="margin-top: 12px;">No atoms to move. Pure information, infinitely replicable.</div>
+    </div>
+    <div class="card card-accent reveal" style="padding: 48px 32px;">
+      <div class="card-label">Property 2</div>
+      <div class="card-title" style="font-size: 24px;">Signal to Closure</div>
+      <div class="card-body" style="margin-top: 12px;">The entire workflow can be automated end-to-end by agents.</div>
+    </div>
+    <div class="card card-accent reveal" style="padding: 48px 32px;">
+      <div class="card-label">Property 3</div>
+      <div class="card-title" style="font-size: 24px;">Rich Training Data</div>
+      <div class="card-body" style="margin-top: 12px;">Decades of code, docs, and patterns to learn from.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 16: THE NEW REALITY (Quote)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="16">
+  <div class="slide-dot"></div>
+  <div class="quote-block reveal">
+    <div class="quote-text">"Single engineers spin up 20 agents that build the entire product end-to-end."</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 17: VOICES FROM THE FIELD
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="17">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="Voices from the Field"></div>
+  <div style="margin-top: 48px;" class="grid-2">
+    <div class="card card-accent reveal" style="padding: 48px 40px;">
+      <div class="card-label">Andrej Karpathy</div>
+      <div class="card-title" style="font-size: 22px; margin-top: 12px;">"Vibe Coding"</div>
+      <div class="card-body" style="margin-top: 16px;">You describe the intent. The AI writes the code. You just steer.</div>
+    </div>
+    <div class="card card-accent reveal" style="padding: 48px 40px;">
+      <div class="card-label">Naval Ravikant</div>
+      <div class="card-title" style="font-size: 22px; margin-top: 12px;">"PM is Vibe Coding"</div>
+      <div class="card-body" style="margin-top: 16px;">"Engineering is prompt engineering." The roles are converging.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 18: COST TO BUILD (Danger Quote)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="18">
+  <div class="slide-dot"></div>
+  <div class="quote-block danger reveal">
+    <div class="quote-text">"The cost to build software has come down to zero."</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 19: THE NEW BATTLE
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="19">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="The New Battle"></div>
+  <div style="margin-top: 48px;">
+    <div class="card card-accent reveal" style="padding: 48px 40px; max-width: 800px;">
+      <div class="card-label">The Shift</div>
+      <div class="card-title" style="font-size: 28px;">Distribution & Marketing</div>
+      <div class="card-body" style="margin-top: 16px; font-size: 18px;">When building costs nothing, the only moat is distribution. Getting to users is the game now.</div>
+    </div>
+    <div class="reveal" style="margin-top: 32px;">
+      <span class="body-text" style="font-style: italic;">"The new job for everyone has become marketing."</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 20: REAL CONSEQUENCES
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="20">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="Real Consequences"></div>
+  <div style="margin-top: 48px;" class="grid-3">
+    <div class="card reveal" style="padding: 48px 32px; text-align: center; border-top: 2px solid var(--danger);">
+      <div class="card-title" style="font-size: 48px; color: var(--danger); font-weight: 700;">50%</div>
+      <div class="card-body" style="margin-top: 16px; font-size: 16px;">Block Inc. layoffs across engineering</div>
+    </div>
+    <div class="card reveal" style="padding: 48px 32px; text-align: center; border-top: 2px solid var(--danger);">
+      <div class="card-title" style="font-size: 48px; color: var(--danger); font-weight: 700;">-30%</div>
+      <div class="card-body" style="margin-top: 16px; font-size: 16px;">IT services stocks down in 12 months</div>
+    </div>
+    <div class="card reveal" style="padding: 48px 32px; text-align: center; border-top: 2px solid var(--danger);">
+      <div class="card-title" style="font-size: 36px; color: var(--danger); font-weight: 700;">Innovator's Dilemma</div>
+      <div class="card-body" style="margin-top: 16px; font-size: 16px;">Playing out in real-time across industries</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 21: SECTION DIVIDER - ACT IV
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide section-divider" data-slide="21">
+  <div class="slide-dot"></div>
+  <div class="section-number reveal">ACT IV</div>
+  <div class="section-line reveal"></div>
+  <div class="section-subtitle reveal">THE ECONOMICS</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 22: THE ABUNDANCE THESIS
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="22">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="The Abundance Thesis"></div>
+  <div style="margin-top: 48px; display: flex; gap: 16px; align-items: center;">
+    <div class="card card-accent reveal" style="flex: 1; text-align: center; padding: 40px 24px;">
+      <div class="card-label">Step 1</div>
+      <div class="card-title" style="font-size: 18px;">Remove Humans<br/>From Process</div>
+    </div>
+    <div class="reveal" style="color: var(--accent); font-size: 32px; font-family: 'JetBrains Mono';">&rarr;</div>
+    <div class="card card-accent reveal" style="flex: 1; text-align: center; padding: 40px 24px;">
+      <div class="card-label">Step 2</div>
+      <div class="card-title" style="font-size: 18px;">Cost Deflation</div>
+    </div>
+    <div class="reveal" style="color: var(--accent); font-size: 32px; font-family: 'JetBrains Mono';">&rarr;</div>
+    <div class="card card-accent reveal" style="flex: 1; text-align: center; padding: 40px 24px;">
+      <div class="card-label">Step 3</div>
+      <div class="card-title" style="font-size: 18px;">Goods Get<br/>Cheaper</div>
+    </div>
+    <div class="reveal" style="color: var(--accent); font-size: 32px; font-family: 'JetBrains Mono';">&rarr;</div>
+    <div class="card reveal" style="flex: 1; text-align: center; padding: 40px 24px; border: 2px solid var(--accent);">
+      <div class="card-label">Outcome</div>
+      <div class="card-title" style="font-size: 18px; color: var(--accent);">Era of<br/>Abundance</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 23: AI VALUE CHAIN (PIPELINE VIZ)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="23">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="The AI Value Chain"></div>
+  <div class="viz-container" style="margin-top: 60px; display: flex; justify-content: center;">
+    <svg id="viz-pipeline" viewBox="0 0 1600 200" style="max-width: 1600px; max-height: 200px;">
+      <!-- Pipeline segments -->
+      <g id="pp-seg-1" opacity="0">
+        <rect x="0" y="50" width="200" height="80" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="100" y="84" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="11" font-weight="500">01</text>
+        <text x="100" y="108" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="15" font-weight="500">Energy</text>
+      </g>
+      <g id="pp-conn-1" opacity="0">
+        <line x1="200" y1="90" x2="228" y2="90" stroke="#00D4AA" stroke-width="2"/>
+        <polygon points="228,90 220,84 220,96" fill="#00D4AA"/>
+      </g>
+      <g id="pp-seg-2" opacity="0">
+        <rect x="228" y="50" width="200" height="80" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="328" y="84" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="11" font-weight="500">02</text>
+        <text x="328" y="108" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="15" font-weight="500">Chips</text>
+      </g>
+      <g id="pp-conn-2" opacity="0">
+        <line x1="428" y1="90" x2="456" y2="90" stroke="#00D4AA" stroke-width="2"/>
+        <polygon points="456,90 448,84 448,96" fill="#00D4AA"/>
+      </g>
+      <g id="pp-seg-3" opacity="0">
+        <rect x="456" y="50" width="200" height="80" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="556" y="84" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="11" font-weight="500">03</text>
+        <text x="556" y="108" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="15" font-weight="500">Fabricators</text>
+      </g>
+      <g id="pp-conn-3" opacity="0">
+        <line x1="656" y1="90" x2="684" y2="90" stroke="#00D4AA" stroke-width="2"/>
+        <polygon points="684,90 676,84 676,96" fill="#00D4AA"/>
+      </g>
+      <g id="pp-seg-4" opacity="0">
+        <rect x="684" y="50" width="200" height="80" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="784" y="84" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="11" font-weight="500">04</text>
+        <text x="784" y="108" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="14" font-weight="500">Frontier Labs</text>
+      </g>
+      <g id="pp-conn-4" opacity="0">
+        <line x1="884" y1="90" x2="912" y2="90" stroke="#00D4AA" stroke-width="2"/>
+        <polygon points="912,90 904,84 904,96" fill="#00D4AA"/>
+      </g>
+      <g id="pp-seg-5" opacity="0">
+        <rect x="912" y="50" width="200" height="80" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="1012" y="84" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="11" font-weight="500">05</text>
+        <text x="1012" y="108" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="14" font-weight="500">Hyperscalers</text>
+      </g>
+      <g id="pp-conn-5" opacity="0">
+        <line x1="1112" y1="90" x2="1140" y2="90" stroke="#00D4AA" stroke-width="2"/>
+        <polygon points="1140,90 1132,84 1132,96" fill="#00D4AA"/>
+      </g>
+      <g id="pp-seg-6" opacity="0">
+        <rect x="1140" y="50" width="200" height="80" rx="2" fill="#0E0E10" stroke="#1C1C20" stroke-width="2"/>
+        <text x="1240" y="84" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="11" font-weight="500">06</text>
+        <text x="1240" y="108" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="15" font-weight="500">App Layer</text>
+      </g>
+      <g id="pp-conn-6" opacity="0">
+        <line x1="1340" y1="90" x2="1368" y2="90" stroke="#00D4AA" stroke-width="2"/>
+        <polygon points="1368,90 1360,84 1360,96" fill="#00D4AA"/>
+      </g>
+      <g id="pp-seg-7" opacity="0">
+        <rect x="1368" y="50" width="210" height="80" rx="2" fill="#0E0E10" stroke="#00D4AA" stroke-width="2"/>
+        <text x="1473" y="84" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="11" font-weight="500">07</text>
+        <text x="1473" y="108" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="15" font-weight="700">Distribution</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 24: WHERE VALUE LIVES
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="24">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="Where Value Lives"></div>
+  <div style="margin-top: 48px;">
+    <div class="card reveal" style="padding: 32px 40px; border-top: 2px solid var(--danger); margin-bottom: 24px; max-width: 600px;">
+      <div class="card-title" style="font-size: 20px; color: var(--muted); text-decoration: line-through;">The Model</div>
+      <div class="card-body" style="margin-top: 8px;">Models are commoditizing. This is not the moat.</div>
+    </div>
+    <div class="grid-3" style="max-width: 1200px;">
+      <div class="card card-accent reveal" style="padding: 40px 32px;">
+        <div class="card-label">Moat 1</div>
+        <div class="card-title" style="font-size: 24px;">Compute</div>
+        <div class="card-body" style="margin-top: 12px;">Access to massive GPU infrastructure</div>
+      </div>
+      <div class="card card-accent reveal" style="padding: 40px 32px;">
+        <div class="card-label">Moat 2</div>
+        <div class="card-title" style="font-size: 24px;">Context</div>
+        <div class="card-body" style="margin-top: 12px;">Proprietary data and domain expertise</div>
+      </div>
+      <div class="card card-accent reveal" style="padding: 40px 32px;">
+        <div class="card-label">Moat 3</div>
+        <div class="card-title" style="font-size: 24px;">Distribution</div>
+        <div class="card-body" style="margin-top: 12px;">Reach and user relationships at scale</div>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top: 32px;">
+      <span class="body-text" style="font-style: italic;">"Agents don't need UI."</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 25: SECTION DIVIDER - ACT V
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide section-divider" data-slide="25">
+  <div class="slide-dot"></div>
+  <div class="section-number reveal">ACT V</div>
+  <div class="section-line reveal"></div>
+  <div class="section-subtitle reveal">FROM THE INSIDE</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 26: MICROSOFT'S AI JOURNEY
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="26">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="Microsoft's AI Journey"></div>
+  <div style="margin-top: 48px;" class="grid-2">
+    <div class="card reveal" style="padding: 48px 40px; border-top: 2px solid var(--danger);">
+      <div class="card-label" style="color: var(--danger);">What Failed</div>
+      <div class="card-title" style="font-size: 22px; margin-top: 12px;">Top-Down Mandates</div>
+      <div class="card-body" style="margin-top: 16px;">Forcing AI adoption through policy and directives. People resisted. Output quality was low.</div>
+    </div>
+    <div class="card card-accent reveal" style="padding: 48px 40px;">
+      <div class="card-label">What Worked</div>
+      <div class="card-title" style="font-size: 22px; margin-top: 12px;">Bottom-Up Enablement</div>
+      <div class="card-body" style="margin-top: 16px;">Unlimited compute + incentive alignment = 20x productivity. Let builders build.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 27: PROJECT NEBULA
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="27">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="Project Nebula"></div>
+  <div style="margin-top: 48px;" class="grid-3">
+    <div class="card card-accent reveal" style="padding: 40px 32px; text-align: center;">
+      <div class="card-title" style="font-size: 48px; color: var(--accent); font-weight: 700;">100</div>
+      <div class="card-body" style="margin-top: 8px;">Product Managers</div>
+    </div>
+    <div class="card card-accent reveal" style="padding: 40px 32px; text-align: center;">
+      <div class="card-title" style="font-size: 48px; color: var(--accent); font-weight: 700;">600</div>
+      <div class="card-body" style="margin-top: 8px;">Engineers</div>
+    </div>
+    <div class="card card-accent reveal" style="padding: 40px 32px; text-align: center;">
+      <div class="card-title" style="font-size: 48px; color: var(--accent); font-weight: 700;">50</div>
+      <div class="card-body" style="margin-top: 8px;">Designers</div>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top: 32px;">
+    <div class="card" style="padding: 32px 40px; max-width: 700px;">
+      <div class="card-body" style="font-size: 18px;">Weekly AI upskilling sessions. Tribal knowledge shared across teams. Everyone experiments, everyone learns.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 28: THE LEARNING (Quote)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="28">
+  <div class="slide-dot"></div>
+  <div class="quote-block reveal">
+    <div class="quote-text">"The most valuable managers will be the ones who figure out how to diffuse AI throughout the company."</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 29: SECTION DIVIDER - ACT VI
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide section-divider" data-slide="29">
+  <div class="slide-dot"></div>
+  <div class="section-number reveal">ACT VI</div>
+  <div class="section-line reveal"></div>
+  <div class="section-subtitle reveal">THE NEW PLAYBOOK</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 30: AI ORGANIZATIONS
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="30">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="AI Organizations"></div>
+  <div style="margin-top: 48px;">
+    <div class="card card-accent reveal" style="padding: 40px; max-width: 1000px;">
+      <div class="card-label">The Principle</div>
+      <div class="card-title" style="font-size: 24px; margin-top: 8px;">Design Workflows for Agents Like You Design Them for Humans</div>
+      <div class="card-body" style="margin-top: 20px; font-size: 18px;">A PM workflow today: gather signal, synthesize context, draft spec, align stakeholders, ship decision. Each step can be an agent. The manager becomes the orchestrator.</div>
+    </div>
+    <div class="grid-2 reveal" style="margin-top: 24px; max-width: 1000px;">
+      <div class="card" style="padding: 28px 32px;">
+        <div class="card-label">Before</div>
+        <div class="card-body" style="font-size: 16px;">Manager assigns tasks to 8 humans. Coordinates via meetings. Reviews output manually.</div>
+      </div>
+      <div class="card" style="padding: 28px 32px; border-left: 2px solid var(--accent);">
+        <div class="card-label">After</div>
+        <div class="card-body" style="font-size: 16px;">Manager orchestrates 8 agents. Coordinates via prompts. Reviews output with evals.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 31: TWO SKILLS (CIRCLE VIZ)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="31">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="Two Skills That Matter"></div>
+  <div class="viz-container" style="margin-top: 48px; display: flex; justify-content: center;">
+    <svg id="viz-circles" viewBox="0 0 1200 440" style="max-width: 1200px; max-height: 440px;">
+      <!-- Circle 1: Prompting -->
+      <g id="sk-circle-1" opacity="0">
+        <circle cx="320" cy="220" r="160" fill="none" stroke="#1C1C20" stroke-width="3"/>
+        <circle id="sk-fill-1" cx="320" cy="220" r="160" fill="#00D4AA" opacity="0.12"
+                stroke="none" stroke-dasharray="1005" stroke-dashoffset="1005" transform="rotate(-90 320 220)"/>
+        <text x="320" y="180" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="16" font-weight="500">01</text>
+        <text x="320" y="224" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="32" font-weight="700">PROMPTING</text>
+        <text x="320" y="264" text-anchor="middle" fill="#666" font-family="Inter" font-size="16">Instruct precisely</text>
+      </g>
+      <!-- Circle 2: Evaluations -->
+      <g id="sk-circle-2" opacity="0">
+        <circle cx="880" cy="220" r="160" fill="none" stroke="#1C1C20" stroke-width="3"/>
+        <circle id="sk-fill-2" cx="880" cy="220" r="160" fill="#00D4AA" opacity="0.12"
+                stroke="none" stroke-dasharray="1005" stroke-dashoffset="1005" transform="rotate(-90 880 220)"/>
+        <text x="880" y="180" text-anchor="middle" fill="#00D4AA" font-family="JetBrains Mono" font-size="16" font-weight="500">02</text>
+        <text x="880" y="224" text-anchor="middle" fill="#EAEAEA" font-family="JetBrains Mono" font-size="32" font-weight="700">EVALUATIONS</text>
+        <text x="880" y="264" text-anchor="middle" fill="#666" font-family="Inter" font-size="16">Measure AI quality</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 32: AGE OF THE POLYMATH
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="32">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="The Age of the Polymath"></div>
+  <div style="margin-top: 48px;">
+    <div class="card card-accent reveal" style="padding: 48px 40px; max-width: 900px;">
+      <div class="card-label">The Shift</div>
+      <div class="card-title" style="font-size: 26px; margin-top: 8px;">"Everyone is becoming a generalist."</div>
+      <div class="card-body" style="margin-top: 20px; font-size: 18px;">When AI handles the depth, humans provide the breadth. The one-person billion-dollar startup is no longer a meme. It is the trajectory.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 33: WHAT YOU SHOULD DO (2x2 ICON GRID)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="33">
+  <div class="slide-dot"></div>
+  <div class="headline" style="font-size: 44px;" data-typewriter="What You Should Do"></div>
+  <div class="viz-container" style="margin-top: 40px;">
+    <div class="grid-2x2" id="viz-actions" style="max-width: 1100px;">
+      <div class="card card-accent reveal" style="padding: 40px; display: flex; align-items: flex-start; gap: 24px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="flex-shrink: 0; margin-top: 4px;">
+          <rect x="8" y="12" width="32" height="24" rx="2" stroke="#00D4AA" stroke-width="2" fill="none"/>
+          <line x1="8" y1="20" x2="40" y2="20" stroke="#00D4AA" stroke-width="2"/>
+          <line x1="24" y1="20" x2="24" y2="36" stroke="#00D4AA" stroke-width="2"/>
+          <circle cx="16" cy="28" r="3" fill="#00D4AA" opacity="0.5"/>
+          <circle cx="32" cy="28" r="3" fill="#00D4AA" opacity="0.5"/>
+        </svg>
+        <div>
+          <div class="card-label">Action 1</div>
+          <div class="card-title" style="font-size: 22px;">AI Budget</div>
+          <div class="card-body" style="margin-top: 8px;">Allocate a monthly budget to experiment with AI tools. Treat it as an investment.</div>
+        </div>
+      </div>
+      <div class="card card-accent reveal" style="padding: 40px; display: flex; align-items: flex-start; gap: 24px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="flex-shrink: 0; margin-top: 4px;">
+          <path d="M24 8 L24 20 M18 14 L24 8 L30 14" stroke="#00D4AA" stroke-width="2" fill="none"/>
+          <rect x="12" y="22" width="24" height="18" rx="2" stroke="#00D4AA" stroke-width="2" fill="none"/>
+          <circle cx="20" cy="31" r="2" fill="#00D4AA" opacity="0.5"/>
+          <circle cx="28" cy="31" r="2" fill="#00D4AA" opacity="0.5"/>
+          <line x1="18" y1="36" x2="30" y2="36" stroke="#00D4AA" stroke-width="1.5" opacity="0.5"/>
+        </svg>
+        <div>
+          <div class="card-label">Action 2</div>
+          <div class="card-title" style="font-size: 22px;">Build AI Fluency</div>
+          <div class="card-body" style="margin-top: 8px;">Use AI tools daily. Not just ChatGPT. Learn prompting, agents, evaluations.</div>
+        </div>
+      </div>
+      <div class="card card-accent reveal" style="padding: 40px; display: flex; align-items: flex-start; gap: 24px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="flex-shrink: 0; margin-top: 4px;">
+          <rect x="6" y="20" width="12" height="12" rx="2" stroke="#00D4AA" stroke-width="2" fill="none"/>
+          <rect x="30" y="10" width="12" height="12" rx="2" stroke="#00D4AA" stroke-width="2" fill="none"/>
+          <rect x="30" y="28" width="12" height="12" rx="2" stroke="#00D4AA" stroke-width="2" fill="none"/>
+          <line x1="18" y1="24" x2="30" y2="16" stroke="#00D4AA" stroke-width="1.5"/>
+          <line x1="18" y1="28" x2="30" y2="34" stroke="#00D4AA" stroke-width="1.5"/>
+        </svg>
+        <div>
+          <div class="card-label">Action 3</div>
+          <div class="card-title" style="font-size: 22px;">Think in Workflows</div>
+          <div class="card-body" style="margin-top: 8px;">Break your work into steps. Identify which steps agents can own entirely.</div>
+        </div>
+      </div>
+      <div class="card card-accent reveal" style="padding: 40px; display: flex; align-items: flex-start; gap: 24px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="flex-shrink: 0; margin-top: 4px;">
+          <polygon points="24,6 29,18 42,18 31,26 35,38 24,30 13,38 17,26 6,18 19,18" stroke="#00D4AA" stroke-width="2" fill="none"/>
+          <circle cx="24" cy="22" r="4" fill="#00D4AA" opacity="0.3"/>
+        </svg>
+        <div>
+          <div class="card-label">Action 4</div>
+          <div class="card-title" style="font-size: 22px;">Become a Generalist</div>
+          <div class="card-body" style="margin-top: 8px;">Let AI handle the depth. You provide the breadth, the judgment, the taste.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 34: CLOSING
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="34" style="align-items: center; text-align: center;">
+  <div class="slide-dot"></div>
+  <div class="closing-glow"></div>
+  <div class="reveal" style="margin-bottom: 48px;">
+    <span style="font-family: 'Inter'; font-size: 22px; font-style: italic; color: var(--dim);">So let me ask again...</span>
+  </div>
+  <div class="headline" style="font-size: 72px; font-weight: 700;" data-typewriter="Go build something."></div>
+</div>
+
+</div><!-- end scaler -->
+</div><!-- end viewport -->
+
+<div id="progress" style="width: 0%;"></div>
+<div id="counter">01 / 34</div>
+<div id="keyboard-hint">&larr; &rarr; or click to navigate</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+
+  // ── Configuration ──
+  const TOTAL = 34;
+  const TYPEWRITER_SPEED = 30; // ms per char
+  const STAGGER_DELAY = 120;  // ms between reveal elements
+
+  // ── State ──
+  let current = 1;
+  let isTransitioning = false;
+  let typewriterTimeouts = [];
+
+  // ── DOM refs ──
+  const slides = document.querySelectorAll('.slide');
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  const hint = document.getElementById('keyboard-hint');
+
+  // ── Viewport scaling ──
+  function scaleViewport() {
+    const scaler = document.getElementById('scaler');
+    const sw = window.innerWidth / 1920;
+    const sh = window.innerHeight / 1080;
+    const s = Math.min(sw, sh);
+    scaler.style.transform = `scale(${s})`;
+  }
+  scaleViewport();
+  window.addEventListener('resize', scaleViewport);
+
+  // ══════════════════════════════════════════════
+  //  PARTICLE NETWORK
+  // ══════════════════════════════════════════════
+  const particles = [];
+  const PARTICLE_COUNT = 40;
+  const CONNECTION_DIST = 120;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function createParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 1.5 + 0.5
+    };
+  }
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push(createParticle());
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Update positions
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    }
+
+    // Draw connections
+    ctx.strokeStyle = 'rgba(0, 212, 170, 0.08)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECTION_DIST) {
+          const alpha = (1 - dist / CONNECTION_DIST) * 0.08;
+          ctx.strokeStyle = `rgba(0, 212, 170, ${alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw particles
+    for (const p of particles) {
+      ctx.fillStyle = 'rgba(0, 212, 170, 0.25)';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  // ══════════════════════════════════════════════
+  //  TYPEWRITER EFFECT
+  // ══════════════════════════════════════════════
+  function clearTypewriters() {
+    for (const t of typewriterTimeouts) clearTimeout(t);
+    typewriterTimeouts = [];
+  }
+
+  function typewrite(el) {
+    const text = el.getAttribute('data-typewriter');
+    if (!text) return;
+    el.innerHTML = '<span class="cursor"></span>';
+    let i = 0;
+    function tick() {
+      if (i < text.length) {
+        // Insert character before cursor
+        const cursor = el.querySelector('.cursor');
+        const span = document.createTextNode(text[i]);
+        el.insertBefore(span, cursor);
+        i++;
+        const tid = setTimeout(tick, TYPEWRITER_SPEED);
+        typewriterTimeouts.push(tid);
+      }
+    }
+    const startTid = setTimeout(tick, 200);
+    typewriterTimeouts.push(startTid);
+  }
+
+  // ══════════════════════════════════════════════
+  //  STAGGERED REVEALS
+  // ══════════════════════════════════════════════
+  function revealElements(slideEl) {
+    const reveals = slideEl.querySelectorAll('.reveal');
+    reveals.forEach((r, i) => {
+      r.classList.remove('visible');
+      const tid = setTimeout(() => r.classList.add('visible'), 300 + i * STAGGER_DELAY);
+      typewriterTimeouts.push(tid);
+    });
+  }
+
+  function resetReveals(slideEl) {
+    slideEl.querySelectorAll('.reveal').forEach(r => r.classList.remove('visible'));
+  }
+
+  // ══════════════════════════════════════════════
+  //  SVG VISUALIZATION ANIMATORS
+  // ══════════════════════════════════════════════
+
+  // Slide 5: Timeline
+  function animateTimeline() {
+    const line = document.getElementById('tl-line');
+    if (!line) return;
+    // Reset
+    line.setAttribute('x2', '100');
+    for (let i = 1; i <= 4; i++) {
+      const node = document.getElementById('tl-node-' + i);
+      if (node) node.setAttribute('opacity', '0');
+    }
+    // Animate line
+    let lineProgress = 100;
+    const lineTarget = 1500;
+    const nodePositions = [200, 560, 920, 1280];
+    let nodeIndex = 0;
+
+    function animateLine() {
+      lineProgress += 8;
+      if (lineProgress > lineTarget) lineProgress = lineTarget;
+      line.setAttribute('x2', lineProgress);
+
+      // Show nodes as line passes them
+      while (nodeIndex < nodePositions.length && lineProgress >= nodePositions[nodeIndex]) {
+        const node = document.getElementById('tl-node-' + (nodeIndex + 1));
+        if (node) {
+          node.style.transition = 'opacity 0.4s';
+          node.setAttribute('opacity', '1');
+        }
+        nodeIndex++;
+      }
+
+      if (lineProgress < lineTarget) {
+        const tid = requestAnimationFrame(animateLine);
+      }
+    }
+    const tid = setTimeout(() => requestAnimationFrame(animateLine), 400);
+    typewriterTimeouts.push(tid);
+  }
+
+  // Slide 8: Cycle diagram
+  function animateCycle() {
+    // Reset
+    for (let i = 1; i <= 4; i++) {
+      const step = document.getElementById('cy-step-' + i);
+      const ah = document.getElementById('cy-arrowhead-' + i);
+      if (step) step.setAttribute('opacity', '0');
+      if (ah) ah.setAttribute('opacity', '0');
+      const arrow = document.getElementById('cy-arrow-' + i);
+      if (arrow) arrow.setAttribute('stroke-dashoffset', '500');
+    }
+
+    const delays = [400, 1000, 1600, 2200];
+    const arrowDelays = [700, 1300, 1900, 2500];
+
+    for (let i = 0; i < 4; i++) {
+      const tid1 = setTimeout(() => {
+        const step = document.getElementById('cy-step-' + (i + 1));
+        if (step) {
+          step.style.transition = 'opacity 0.5s';
+          step.setAttribute('opacity', '1');
+        }
+      }, delays[i]);
+      typewriterTimeouts.push(tid1);
+
+      const tid2 = setTimeout(() => {
+        const arrow = document.getElementById('cy-arrow-' + (i + 1));
+        if (arrow) {
+          const anim = arrow.querySelector('animate');
+          if (anim) anim.beginElement();
+        }
+        const ah = document.getElementById('cy-arrowhead-' + (i + 1));
+        if (ah) {
+          ah.style.transition = 'opacity 0.3s';
+          ah.setAttribute('opacity', '1');
+        }
+      }, arrowDelays[i]);
+      typewriterTimeouts.push(tid2);
+    }
+  }
+
+  // Slide 9: Ladder
+  function animateLadder() {
+    // Reset
+    for (let i = 1; i <= 4; i++) {
+      const rung = document.getElementById('ld-rung-' + i);
+      if (rung) rung.setAttribute('opacity', '0');
+      // Reset bar widths
+      const bar = document.querySelector('#ld-rung-' + i + ' rect');
+      if (bar) bar.setAttribute('width', '0');
+    }
+
+    const delays = [400, 800, 1200, 1600];
+    const order = [1, 2, 3, 4]; // bottom to top
+
+    for (let idx = 0; idx < order.length; idx++) {
+      const i = order[idx];
+      const tid = setTimeout(() => {
+        const rung = document.getElementById('ld-rung-' + i);
+        if (rung) {
+          rung.style.transition = 'opacity 0.4s';
+          rung.setAttribute('opacity', '1');
+          // Trigger bar animation
+          const anim = document.getElementById('ld-bar-' + i);
+          if (anim) anim.beginElement();
+        }
+      }, delays[idx]);
+      typewriterTimeouts.push(tid);
+    }
+  }
+
+  // Slide 12: Tower
+  function animateTower() {
+    for (let i = 1; i <= 5; i++) {
+      const level = document.getElementById('tw-level-' + i);
+      if (level) level.setAttribute('opacity', '0');
+    }
+
+    const order = [1, 2, 3, 4, 5]; // bottom to top
+    const delays = [400, 700, 1000, 1300, 1600];
+
+    for (let idx = 0; idx < order.length; idx++) {
+      const tid = setTimeout(() => {
+        const level = document.getElementById('tw-level-' + order[idx]);
+        if (level) {
+          level.style.transition = 'opacity 0.5s';
+          level.setAttribute('opacity', '1');
+        }
+      }, delays[idx]);
+      typewriterTimeouts.push(tid);
+    }
+  }
+
+  // Slide 13: Flow diagram
+  function animateFlow() {
+    for (let i = 1; i <= 4; i++) {
+      const box = document.getElementById('fl-box-' + i);
+      if (box) box.setAttribute('opacity', '0');
+      if (i < 4) {
+        const arrow = document.getElementById('fl-arrow-' + i);
+        if (arrow) arrow.setAttribute('opacity', '0');
+      }
+    }
+
+    for (let i = 1; i <= 4; i++) {
+      const boxDelay = 300 + (i - 1) * 400;
+      const arrowDelay = boxDelay + 200;
+
+      const tid1 = setTimeout(() => {
+        const box = document.getElementById('fl-box-' + i);
+        if (box) {
+          box.style.transition = 'opacity 0.4s';
+          box.setAttribute('opacity', '1');
+        }
+      }, boxDelay);
+      typewriterTimeouts.push(tid1);
+
+      if (i < 4) {
+        const tid2 = setTimeout(() => {
+          const arrow = document.getElementById('fl-arrow-' + i);
+          if (arrow) {
+            arrow.style.transition = 'opacity 0.3s';
+            arrow.setAttribute('opacity', '1');
+          }
+        }, arrowDelay);
+        typewriterTimeouts.push(tid2);
+      }
+    }
+  }
+
+  // Slide 23: Pipeline
+  function animatePipeline() {
+    for (let i = 1; i <= 7; i++) {
+      const seg = document.getElementById('pp-seg-' + i);
+      if (seg) seg.setAttribute('opacity', '0');
+      if (i < 7) {
+        const conn = document.getElementById('pp-conn-' + i);
+        if (conn) conn.setAttribute('opacity', '0');
+      }
+    }
+
+    for (let i = 1; i <= 7; i++) {
+      const segDelay = 300 + (i - 1) * 250;
+      const connDelay = segDelay + 150;
+
+      const tid1 = setTimeout(() => {
+        const seg = document.getElementById('pp-seg-' + i);
+        if (seg) {
+          seg.style.transition = 'opacity 0.4s';
+          seg.setAttribute('opacity', '1');
+        }
+      }, segDelay);
+      typewriterTimeouts.push(tid1);
+
+      if (i < 7) {
+        const tid2 = setTimeout(() => {
+          const conn = document.getElementById('pp-conn-' + i);
+          if (conn) {
+            conn.style.transition = 'opacity 0.3s';
+            conn.setAttribute('opacity', '1');
+          }
+        }, connDelay);
+        typewriterTimeouts.push(tid2);
+      }
+    }
+  }
+
+  // Slide 31: Two circles
+  function animateCircles() {
+    const c1 = document.getElementById('sk-circle-1');
+    const c2 = document.getElementById('sk-circle-2');
+    const f1 = document.getElementById('sk-fill-1');
+    const f2 = document.getElementById('sk-fill-2');
+
+    if (c1) c1.setAttribute('opacity', '0');
+    if (c2) c2.setAttribute('opacity', '0');
+
+    const tid1 = setTimeout(() => {
+      if (c1) {
+        c1.style.transition = 'opacity 0.6s';
+        c1.setAttribute('opacity', '1');
+      }
+    }, 400);
+    typewriterTimeouts.push(tid1);
+
+    const tid2 = setTimeout(() => {
+      if (c2) {
+        c2.style.transition = 'opacity 0.6s';
+        c2.setAttribute('opacity', '1');
+      }
+    }, 700);
+    typewriterTimeouts.push(tid2);
+
+    // Animate fill - use CSS animation on the circles
+    if (f1) {
+      f1.style.transition = 'none';
+      f1.setAttribute('opacity', '0');
+      const tid3 = setTimeout(() => {
+        f1.style.transition = 'opacity 1.2s ease-out';
+        f1.setAttribute('opacity', '0.12');
+      }, 600);
+      typewriterTimeouts.push(tid3);
+    }
+    if (f2) {
+      f2.style.transition = 'none';
+      f2.setAttribute('opacity', '0');
+      const tid4 = setTimeout(() => {
+        f2.style.transition = 'opacity 1.2s ease-out';
+        f2.setAttribute('opacity', '0.12');
+      }, 900);
+      typewriterTimeouts.push(tid4);
+    }
+  }
+
+  // ══════════════════════════════════════════════
+  //  NAVIGATION
+  // ══════════════════════════════════════════════
+  function goTo(n) {
+    if (n < 1 || n > TOTAL || n === current || isTransitioning) return;
+    isTransitioning = true;
+
+    // Clear existing animations
+    clearTypewriters();
+
+    // Deactivate old slide
+    const oldSlide = document.querySelector(`.slide[data-slide="${current}"]`);
+    if (oldSlide) {
+      oldSlide.classList.remove('active');
+      resetReveals(oldSlide);
+      // Reset typewriter elements
+      oldSlide.querySelectorAll('[data-typewriter]').forEach(el => {
+        el.innerHTML = '';
+      });
+    }
+
+    current = n;
+
+    // Update furniture
+    const num = String(current).padStart(2, '0');
+    counter.textContent = `${num} / ${TOTAL}`;
+    progress.style.width = `${(current / TOTAL) * 100}%`;
+
+    // Activate new slide
+    const newSlide = document.querySelector(`.slide[data-slide="${current}"]`);
+    if (newSlide) {
+      // Small delay for transition
+      setTimeout(() => {
+        newSlide.classList.add('active');
+
+        // Typewriter headlines
+        newSlide.querySelectorAll('[data-typewriter]').forEach(el => typewrite(el));
+
+        // Staggered reveals
+        revealElements(newSlide);
+
+        // Trigger SVG animations based on slide
+        switch (current) {
+          case 5: animateTimeline(); break;
+          case 8: animateCycle(); break;
+          case 9: animateLadder(); break;
+          case 12: animateTower(); break;
+          case 13: animateFlow(); break;
+          case 23: animatePipeline(); break;
+          case 31: animateCircles(); break;
+        }
+
+        isTransitioning = false;
+      }, 80);
+    } else {
+      isTransitioning = false;
+    }
+
+    // Hide hint after first navigation
+    if (hint) {
+      hint.style.opacity = '0';
+      setTimeout(() => { if (hint) hint.style.display = 'none'; }, 2000);
+    }
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); next();
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault(); prev();
+    }
+    if (e.key === 'Home') { e.preventDefault(); goTo(1); }
+    if (e.key === 'End') { e.preventDefault(); goTo(TOTAL); }
+  });
+
+  // Click navigation
+  document.addEventListener('click', e => {
+    const x = e.clientX / window.innerWidth;
+    if (x > 0.5) next(); else prev();
+  });
+
+  // Touch
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) next(); else prev();
+    }
+  });
+
+  // ── Initialize first slide ──
+  function init() {
+    const firstSlide = document.querySelector('.slide[data-slide="1"]');
+    if (firstSlide) {
+      firstSlide.classList.add('active');
+      firstSlide.querySelectorAll('[data-typewriter]').forEach(el => typewrite(el));
+      revealElements(firstSlide);
+    }
+    counter.textContent = `01 / ${TOTAL}`;
+    progress.style.width = `${(1 / TOTAL) * 100}%`;
+  }
+
+  init();
+
+})();
+</script>
+</body>
+</html>

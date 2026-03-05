@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & The New Management Playbook - Aurora Glass</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0c1222;
+  --glass: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.1);
+  --glass-hover: rgba(255,255,255,0.1);
+  --text: #f0f4f8;
+  --muted: #7c8ca5;
+  --cyan: #06b6d4;
+  --violet: #8b5cf6;
+  --pink: #f472b6;
+  --warm: #f59e0b;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Aurora Canvas */
+#aurora-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+
+/* Deck container */
+#deck {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 1;
+}
+
+/* Slide viewport scaling */
+.slide-viewport {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1920px; height: 1080px;
+  transform-origin: top left;
+}
+
+/* Individual slide */
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1920px; height: 1080px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(45% round 20px);
+  transition: none;
+  padding: 60px 100px;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  clip-path: inset(0%);
+  transition: clip-path 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
+}
+
+.slide.exiting {
+  opacity: 0;
+  clip-path: inset(45% round 20px);
+  transition: clip-path 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease 0.2s;
+}
+
+/* Glass panel */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 48px;
+}
+
+.glass-sm {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+/* Float-in animation */
+.float-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.slide.active .float-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide.active .float-in.d1 { transition-delay: 0.15s; }
+.slide.active .float-in.d2 { transition-delay: 0.3s; }
+.slide.active .float-in.d3 { transition-delay: 0.45s; }
+.slide.active .float-in.d4 { transition-delay: 0.6s; }
+.slide.active .float-in.d5 { transition-delay: 0.75s; }
+.slide.active .float-in.d6 { transition-delay: 0.9s; }
+.slide.active .float-in.d7 { transition-delay: 1.05s; }
+.slide.active .float-in.d8 { transition-delay: 1.2s; }
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--cyan), var(--violet), var(--pink));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Float decoration */
+.float-decor {
+  position: absolute;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  animation: floatBob 6s ease-in-out infinite;
+}
+
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+}
+
+.float-decor.alt {
+  animation: floatBobAlt 7s ease-in-out infinite;
+}
+
+@keyframes floatBobAlt {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(10px) rotate(-3deg); }
+}
+
+/* Bar grow animation */
+.bar-fill {
+  width: 0%;
+  transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide.active .bar-fill { width: var(--bar-width); }
+.slide.active .bar-fill.d1 { transition-delay: 0.2s; }
+.slide.active .bar-fill.d2 { transition-delay: 0.4s; }
+.slide.active .bar-fill.d3 { transition-delay: 0.6s; }
+.slide.active .bar-fill.d4 { transition-delay: 0.8s; }
+
+/* Progress bar */
+#progress-bar {
+  position: fixed;
+  bottom: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--violet), var(--pink));
+  z-index: 100;
+  transition: width 0.4s ease;
+}
+
+/* Slide counter */
+#counter {
+  position: fixed;
+  bottom: 24px; right: 40px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+  z-index: 100;
+  letter-spacing: 0.5px;
+}
+
+/* Typography helpers */
+.headline { font-size: 64px; font-weight: 700; line-height: 1.1; letter-spacing: -1.5px; }
+.headline-lg { font-size: 72px; font-weight: 700; line-height: 1.05; letter-spacing: -2px; }
+.headline-sm { font-size: 48px; font-weight: 700; line-height: 1.15; letter-spacing: -1px; }
+.subhead { font-size: 28px; font-weight: 400; color: var(--muted); line-height: 1.4; }
+.body-lg { font-size: 24px; font-weight: 400; line-height: 1.6; }
+.body { font-size: 20px; font-weight: 400; line-height: 1.6; }
+.quote-text { font-size: 34px; font-weight: 600; font-style: italic; line-height: 1.5; }
+.label { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+.label-lg { font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--muted); }
+.section-num { font-size: 56px; font-weight: 700; }
+.section-title { font-size: 42px; font-weight: 300; color: var(--muted); margin-top: 12px; }
+
+/* Accent line */
+.accent-line {
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+
+.accent-line-cyan {
+  width: 4px; height: 100%;
+  background: var(--cyan);
+  border-radius: 2px;
+  position: absolute;
+  left: 0; top: 0;
+}
+
+/* Fullscreen button */
+#fs-btn {
+  position: fixed;
+  bottom: 24px; left: 40px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--muted);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color 0.3s, border-color 0.3s;
+}
+#fs-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+/* Layout helpers */
+.slide-inner { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.slide-inner-left { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+.text-center { text-align: center; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.gap-24 { gap: 24px; }
+.gap-32 { gap: 32px; }
+.gap-40 { gap: 40px; }
+.gap-48 { gap: 48px; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mt-40 { margin-top: 40px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.w-full { width: 100%; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.relative { position: relative; }
+
+/* Table styles */
+.glass-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.glass-table th {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  padding: 16px 24px;
+  text-align: left;
+  border-bottom: 1px solid var(--glass-border);
+}
+.glass-table td {
+  padding: 18px 24px;
+  font-size: 20px;
+  font-weight: 400;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+.glass-table tr.highlight td {
+  background: rgba(6, 182, 212, 0.12);
+  color: var(--cyan);
+  font-weight: 600;
+}
+.glass-table tr.highlight td:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.glass-table tr.highlight td:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+/* Grid for 2x2 */
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Chain / flow */
+.chain-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+.chain-node {
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.chain-arrow {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* Step flow horizontal */
+.step-flow {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+.step-card {
+  flex: 1;
+  text-align: center;
+}
+.step-num {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* Pill / tag */
+.pill {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.pill-cyan { background: rgba(6,182,212,0.15); color: var(--cyan); }
+.pill-violet { background: rgba(139,92,246,0.15); color: var(--violet); }
+.pill-pink { background: rgba(244,114,182,0.15); color: var(--pink); }
+.pill-warm { background: rgba(245,158,11,0.15); color: var(--warm); }
+.pill-muted { background: rgba(124,140,165,0.1); color: var(--muted); }
+
+/* Number stat */
+.stat-number {
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Quote block with side accent */
+.quote-block {
+  position: relative;
+  padding-left: 32px;
+}
+.quote-block::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 4px; height: 100%;
+  background: linear-gradient(180deg, var(--cyan), var(--violet));
+  border-radius: 2px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="aurora-canvas"></canvas>
+
+<div id="deck">
+  <div class="slide-viewport" id="viewport">
+
+    <!-- SLIDE 1: Title -->
+    <div class="slide" data-slide="1">
+      <div class="slide-inner text-center" style="position:relative;">
+        <div class="float-decor" style="width:80px;height:80px;top:80px;left:200px;border-radius:20px;"></div>
+        <div class="float-decor alt" style="width:60px;height:60px;top:120px;right:240px;border-radius:16px;"></div>
+        <div class="float-decor" style="width:50px;height:50px;bottom:140px;left:300px;border-radius:14px;"></div>
+        <div class="float-decor alt" style="width:70px;height:70px;bottom:100px;right:320px;border-radius:18px;"></div>
+        <div class="glass float-in" style="max-width:1100px;padding:64px 80px;">
+          <div class="label-lg mb-24 float-in d1" style="color:var(--cyan);">IISc DoMS / March 6, 2026</div>
+          <h1 class="headline-lg float-in d2" style="font-size:68px;">AI & The New<br><span class="gradient-text">Management Playbook</span></h1>
+          <div class="mt-40 float-in d3" style="display:flex;align-items:center;justify-content:center;gap:16px;">
+            <span style="font-size:22px;font-weight:500;">Ashish Muralidharan</span>
+            <span style="width:4px;height:4px;border-radius:50%;background:var(--muted);display:inline-block;"></span>
+            <span style="font-size:18px;color:var(--muted);">Product Manager, Microsoft</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Opening Poll -->
+    <div class="slide" data-slide="2">
+      <div class="slide-inner text-center">
+        <div class="glass float-in" style="max-width:1000px;padding:64px 80px;">
+          <div class="label mb-24 float-in d1">A question for the room</div>
+          <div class="accent-line float-in d1" style="margin:0 auto 32px;"></div>
+          <p class="quote-text float-in d2" style="font-style:normal;font-weight:400;font-size:38px;line-height:1.5;">
+            "How many of you feel <span style="color:var(--cyan);font-weight:600;">anxious</span> about your future, your career, your relevance, because of AI?"
+          </p>
+          <div class="mt-40 float-in d3">
+            <span class="pill pill-muted" style="font-size:16px;padding:10px 24px;">Raise your hands</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Section Divider - ACT I -->
+    <div class="slide" data-slide="3">
+      <div class="slide-inner text-center">
+        <div class="float-in">
+          <div class="label-lg float-in d1" style="margin-bottom:20px;">Act I</div>
+          <div class="section-num gradient-text float-in d2">THE TENSION</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: VUCA Framework -->
+    <div class="slide" data-slide="4">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">The world we operate in</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:40px;">VUCA Framework</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div class="glass-sm float-in d2" style="border-left:3px solid var(--cyan);">
+              <div style="font-size:28px;font-weight:700;color:var(--cyan);margin-bottom:8px;">Volatility</div>
+              <div class="body" style="color:var(--muted);">Rapid, unpredictable change</div>
+            </div>
+            <div class="glass-sm float-in d3" style="border-left:3px solid var(--violet);">
+              <div style="font-size:28px;font-weight:700;color:var(--violet);margin-bottom:8px;">Uncertainty</div>
+              <div class="body" style="color:var(--muted);">Unknown outcomes and paths</div>
+            </div>
+            <div class="glass-sm float-in d4" style="border-left:3px solid var(--pink);">
+              <div style="font-size:28px;font-weight:700;color:var(--pink);margin-bottom:8px;">Complexity</div>
+              <div class="body" style="color:var(--muted);">Interconnected, layered systems</div>
+            </div>
+            <div class="glass-sm float-in d5" style="border-left:3px solid var(--warm);">
+              <div style="font-size:28px;font-weight:700;color:var(--warm);margin-bottom:8px;">Ambiguity</div>
+              <div class="body" style="color:var(--muted);">Multiple interpretations of reality</div>
+            </div>
+          </div>
+          <div class="mt-32 float-in d6 quote-block">
+            <p class="body-lg" style="color:var(--muted);font-style:italic;">"It's a one-way street going upwards."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: The Pattern of Disruption -->
+    <div class="slide" data-slide="5">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">Historical pattern</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">The Pattern of Disruption</h2>
+          <div style="display:flex;align-items:center;gap:0;width:100%;">
+            <div class="glass-sm float-in d2 text-center" style="flex:1;">
+              <div style="font-size:36px;margin-bottom:12px;">&#9973;</div>
+              <div style="font-size:20px;font-weight:600;">Shipping</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:6px;">15th century</div>
+            </div>
+            <div class="float-in d2" style="font-size:28px;color:var(--muted);padding:0 8px;">&#8594;</div>
+            <div class="glass-sm float-in d3 text-center" style="flex:1;">
+              <div style="font-size:36px;margin-bottom:12px;">&#9881;</div>
+              <div style="font-size:20px;font-weight:600;">Industrial Revolution</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:6px;">18th century</div>
+            </div>
+            <div class="float-in d3" style="font-size:28px;color:var(--muted);padding:0 8px;">&#8594;</div>
+            <div class="glass-sm float-in d4 text-center" style="flex:1;">
+              <div style="font-size:36px;margin-bottom:12px;">&#128187;</div>
+              <div style="font-size:20px;font-weight:600;">Information Technology</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:6px;">20th century</div>
+            </div>
+            <div class="float-in d4" style="font-size:28px;color:var(--muted);padding:0 8px;">&#8594;</div>
+            <div class="glass-sm float-in d5 text-center" style="flex:1;border:1px solid rgba(6,182,212,0.3);">
+              <div style="font-size:36px;margin-bottom:12px;">&#129302;</div>
+              <div style="font-size:20px;font-weight:600;color:var(--cyan);">Artificial Intelligence</div>
+              <div style="font-size:14px;color:var(--cyan);margin-top:6px;">Now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: The Economic Equation -->
+    <div class="slide" data-slide="6">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">Factors of production</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">The Economic Equation</h2>
+          <div style="display:flex;gap:24px;width:100%;">
+            <div class="glass-sm float-in d2 text-center" style="flex:1;">
+              <div style="font-size:32px;font-weight:700;margin-bottom:8px;">Land</div>
+              <div class="body" style="color:var(--muted);">Finite resource</div>
+            </div>
+            <div class="glass-sm float-in d3 text-center" style="flex:1;position:relative;">
+              <div style="font-size:32px;font-weight:700;margin-bottom:8px;text-decoration:line-through;color:var(--pink);">Labor</div>
+              <div class="body" style="color:var(--muted);">Being replaced</div>
+            </div>
+            <div class="glass-sm float-in d4 text-center" style="flex:1;">
+              <div style="font-size:32px;font-weight:700;margin-bottom:8px;">Capital</div>
+              <div class="body" style="color:var(--muted);">Still essential</div>
+            </div>
+            <div class="glass-sm float-in d5 text-center" style="flex:1;border:1px solid rgba(6,182,212,0.3);">
+              <div style="font-size:32px;font-weight:700;margin-bottom:8px;color:var(--cyan);">Technology</div>
+              <div class="body" style="color:var(--cyan);">The new factor</div>
+            </div>
+          </div>
+          <div class="mt-40 float-in d6 quote-block">
+            <p class="body-lg" style="color:var(--muted);font-style:italic;">"Technology is fundamentally replacing labor."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Section Divider - ACT II -->
+    <div class="slide" data-slide="7">
+      <div class="slide-inner text-center">
+        <div class="float-in">
+          <div class="label-lg float-in d1" style="margin-bottom:20px;">Act II</div>
+          <div class="section-num gradient-text float-in d2">THE PATTERN</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Technology vs. Labor Cycle -->
+    <div class="slide" data-slide="8">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">The cycle repeats</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">Technology vs. Labor</h2>
+          <div class="step-flow">
+            <div class="glass-sm float-in d2 step-card">
+              <div class="step-num gradient-text">1</div>
+              <div style="font-size:20px;font-weight:600;margin-bottom:8px;">Technology Arrives</div>
+              <div class="body" style="color:var(--muted);">A new capability emerges</div>
+            </div>
+            <div class="glass-sm float-in d3 step-card">
+              <div class="step-num gradient-text">2</div>
+              <div style="font-size:20px;font-weight:600;margin-bottom:8px;">Physical Displaced</div>
+              <div class="body" style="color:var(--muted);">Manual labor automated</div>
+            </div>
+            <div class="glass-sm float-in d4 step-card">
+              <div class="step-num gradient-text">3</div>
+              <div style="font-size:20px;font-weight:600;margin-bottom:8px;">Operational Displaced</div>
+              <div class="body" style="color:var(--muted);">Process work eliminated</div>
+            </div>
+            <div class="glass-sm float-in d5 step-card">
+              <div class="step-num gradient-text">4</div>
+              <div style="font-size:20px;font-weight:600;margin-bottom:8px;color:var(--pink);">Intellectual Displaced</div>
+              <div class="body" style="color:var(--muted);">Cognitive work at risk</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: Running Out of Rungs (Bars) -->
+    <div class="slide" data-slide="9">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">Displacement by category</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">Running Out of Rungs</h2>
+          <div style="display:flex;flex-direction:column;gap:28px;width:100%;">
+            <div class="float-in d2">
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                <span style="font-size:20px;font-weight:500;">Physical Labor</span>
+                <span style="font-size:20px;font-weight:700;color:var(--cyan);">95%</span>
+              </div>
+              <div style="height:16px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;">
+                <div class="bar-fill d1" style="--bar-width:95%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:8px;"></div>
+              </div>
+            </div>
+            <div class="float-in d3">
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                <span style="font-size:20px;font-weight:500;">Operational Labor</span>
+                <span style="font-size:20px;font-weight:700;color:var(--violet);">72%</span>
+              </div>
+              <div style="height:16px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;">
+                <div class="bar-fill d2" style="--bar-width:72%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:8px;"></div>
+              </div>
+            </div>
+            <div class="float-in d4">
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                <span style="font-size:20px;font-weight:500;">Intellectual Labor</span>
+                <span style="font-size:20px;font-weight:700;color:var(--pink);">45%</span>
+              </div>
+              <div style="height:16px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;">
+                <div class="bar-fill d3" style="--bar-width:45%;height:100%;background:linear-gradient(90deg,var(--violet),var(--pink));border-radius:8px;"></div>
+              </div>
+            </div>
+            <div class="float-in d5">
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                <span style="font-size:20px;font-weight:500;">???</span>
+                <span style="font-size:20px;font-weight:700;color:var(--muted);">15%</span>
+              </div>
+              <div style="height:16px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;">
+                <div class="bar-fill d4" style="--bar-width:15%;height:100%;background:linear-gradient(90deg,var(--pink),rgba(244,114,182,0.4));border-radius:8px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: The Ceiling Quote -->
+    <div class="slide" data-slide="10">
+      <div class="slide-inner text-center">
+        <div class="glass float-in" style="max-width:1000px;padding:64px 80px;">
+          <div class="accent-line float-in d1" style="margin:0 auto 32px;"></div>
+          <p class="float-in d2" style="font-size:40px;font-weight:600;line-height:1.5;">
+            "If you don't need <span class="gradient-text">intellectual labor</span> anymore, <span style="color:var(--pink);">what's left?</span>"
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: Robots & The Physical Frontier -->
+    <div class="slide" data-slide="11">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">The final frontier</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:40px;">Robots & The Physical Frontier</h2>
+          <div style="display:flex;gap:24px;width:100%;">
+            <div class="glass-sm float-in d2" style="flex:1;text-align:center;">
+              <div style="font-size:48px;margin-bottom:16px;">&#129302;</div>
+              <div style="font-size:24px;font-weight:600;margin-bottom:8px;">Tesla Optimus</div>
+              <div class="body" style="color:var(--muted);">Humanoid general purpose</div>
+            </div>
+            <div class="glass-sm float-in d3" style="flex:1;text-align:center;">
+              <div style="font-size:48px;margin-bottom:16px;">&#128694;</div>
+              <div style="font-size:24px;font-weight:600;margin-bottom:8px;">Unitree</div>
+              <div class="body" style="color:var(--muted);">Agile bipedal robots</div>
+            </div>
+            <div class="glass-sm float-in d4" style="flex:1;text-align:center;">
+              <div style="font-size:48px;margin-bottom:16px;">&#9881;</div>
+              <div style="font-size:24px;font-weight:600;margin-bottom:8px;">Hyundai / Boston</div>
+              <div class="body" style="color:var(--muted);">Industrial robotics</div>
+            </div>
+          </div>
+          <div class="mt-32 float-in d5 quote-block">
+            <p class="body-lg" style="color:var(--muted);font-style:italic;">"Complete replacement across every dimension."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: 5 Levels of AGI (Table) -->
+    <div class="slide" data-slide="12">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:48px 56px;">
+          <div class="label mb-16 float-in d1">OpenAI classification</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:36px;">5 Levels of AGI</h2>
+          <table class="glass-table">
+            <thead>
+              <tr class="float-in d2">
+                <th style="width:100px;">Level</th>
+                <th>Capability</th>
+                <th>Description</th>
+                <th style="width:160px;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="float-in d3">
+                <td style="font-weight:700;">L1</td>
+                <td>Conversational AI</td>
+                <td style="color:var(--muted);">Natural language interaction</td>
+                <td><span class="pill pill-muted">Done</span></td>
+              </tr>
+              <tr class="float-in d4">
+                <td style="font-weight:700;">L2</td>
+                <td>Reasoning AI</td>
+                <td style="color:var(--muted);">Complex problem solving</td>
+                <td><span class="pill pill-muted">Done</span></td>
+              </tr>
+              <tr class="highlight float-in d5">
+                <td style="font-weight:700;">L3</td>
+                <td>Agents</td>
+                <td>Autonomous task execution</td>
+                <td><span class="pill pill-cyan">HERE</span></td>
+              </tr>
+              <tr class="float-in d6">
+                <td style="font-weight:700;">L4</td>
+                <td>AI Organizations</td>
+                <td style="color:var(--muted);">Multi-agent coordination</td>
+                <td><span class="pill pill-violet">Emerging</span></td>
+              </tr>
+              <tr class="float-in d7">
+                <td style="font-weight:700;">L5</td>
+                <td>AGI</td>
+                <td style="color:var(--muted);">General intelligence</td>
+                <td><span class="pill pill-pink">Unknown</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13: What Is An Agent? -->
+    <div class="slide" data-slide="13">
+      <div class="slide-inner text-center">
+        <div class="glass float-in" style="max-width:1050px;padding:64px 80px;">
+          <div class="label mb-24 float-in d1" style="color:var(--cyan);">Definition</div>
+          <h2 class="headline-sm float-in d2" style="margin-bottom:36px;">What Is An Agent?</h2>
+          <div class="accent-line float-in d2" style="margin:0 auto 36px;"></div>
+          <p class="float-in d3" style="font-size:30px;font-weight:400;line-height:1.6;color:var(--muted);">
+            "A system that can pursue a goal by <span style="color:var(--cyan);font-weight:600;">reasoning</span>, <span style="color:var(--violet);font-weight:600;">planning</span>, <span style="color:var(--pink);font-weight:600;">using tools</span>, and <span style="color:var(--warm);font-weight:600;">continuously learning</span>."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14: Section Divider - ACT III -->
+    <div class="slide" data-slide="14">
+      <div class="slide-inner text-center">
+        <div class="float-in">
+          <div class="label-lg float-in d1" style="margin-bottom:20px;">Act III</div>
+          <div class="section-num gradient-text float-in d2">GROUND ZERO</div>
+          <div class="section-title float-in d3">Software</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 15: Why Software First? -->
+    <div class="slide" data-slide="15">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">The first domino</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">Why Software First?</h2>
+          <div style="display:flex;gap:24px;width:100%;">
+            <div class="glass-sm float-in d2" style="flex:1;text-align:center;border-top:3px solid var(--cyan);">
+              <div class="stat-number gradient-text" style="font-size:56px;">100%</div>
+              <div style="font-size:22px;font-weight:600;margin-top:16px;">Digital</div>
+              <div class="body mt-8" style="color:var(--muted);">Entirely bits, no atoms</div>
+            </div>
+            <div class="glass-sm float-in d3" style="flex:1;text-align:center;border-top:3px solid var(--violet);">
+              <div style="font-size:48px;margin-bottom:8px;">&#8635;</div>
+              <div style="font-size:22px;font-weight:600;">End-to-End</div>
+              <div class="body mt-8" style="color:var(--muted);">Signal-to-closure fully automated</div>
+            </div>
+            <div class="glass-sm float-in d4" style="flex:1;text-align:center;border-top:3px solid var(--pink);">
+              <div style="font-size:48px;margin-bottom:8px;">&#128202;</div>
+              <div style="font-size:22px;font-weight:600;">Rich Data</div>
+              <div class="body mt-8" style="color:var(--muted);">Decades of training signal</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 16: The New Reality -->
+    <div class="slide" data-slide="16">
+      <div class="slide-inner text-center">
+        <div class="glass float-in" style="max-width:1000px;padding:64px 80px;">
+          <div class="label mb-24 float-in d1">The shift</div>
+          <div class="accent-line float-in d1" style="margin:0 auto 32px;"></div>
+          <p class="float-in d2" style="font-size:36px;font-weight:400;line-height:1.6;">
+            "Single engineers spin up <span class="gradient-text" style="font-weight:700;">20 agents</span> that build the entire product end-to-end."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 17: Voices from the Field -->
+    <div class="slide" data-slide="17">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">Industry voices</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">Voices from the Field</h2>
+          <div style="display:flex;flex-direction:column;gap:28px;">
+            <div class="glass-sm float-in d2 quote-block" style="padding-left:48px;">
+              <div style="font-size:14px;font-weight:600;color:var(--cyan);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Andrej Karpathy</div>
+              <p style="font-size:26px;font-weight:500;line-height:1.5;">"The hottest new programming language is <span style="color:var(--cyan);">English.</span>"</p>
+              <p class="body mt-8" style="color:var(--muted);">On "vibe coding" and the future of software</p>
+            </div>
+            <div class="glass-sm float-in d3 quote-block" style="padding-left:48px;">
+              <div style="font-size:14px;font-weight:600;color:var(--violet);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Naval Ravikant</div>
+              <p style="font-size:26px;font-weight:500;line-height:1.5;">"PM is vibe coding. Engineering is <span style="color:var(--violet);">prompt engineering.</span>"</p>
+              <p class="body mt-8" style="color:var(--muted);">On the convergence of roles</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 18: Cost to Build -->
+    <div class="slide" data-slide="18">
+      <div class="slide-inner text-center">
+        <div class="glass float-in" style="max-width:900px;padding:72px 80px;">
+          <div class="label mb-24 float-in d1">The economics of creation</div>
+          <div class="float-in d2">
+            <span style="font-size:120px;font-weight:800;line-height:1;" class="gradient-text">$0</span>
+          </div>
+          <p class="float-in d3 mt-24" style="font-size:30px;font-weight:400;color:var(--muted);line-height:1.5;">
+            "The cost to build software has come down to <span style="color:var(--text);font-weight:600;">zero</span>."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 19: The New Battle -->
+    <div class="slide" data-slide="19">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">If building is free...</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:40px;">The New Battle</h2>
+          <div style="display:flex;gap:32px;align-items:stretch;width:100%;">
+            <div class="glass-sm float-in d2" style="flex:1;text-align:center;opacity:0.5;">
+              <div style="font-size:28px;font-weight:600;text-decoration:line-through;margin-bottom:12px;">Building</div>
+              <div class="body" style="color:var(--muted);">Commoditized</div>
+            </div>
+            <div style="width:2px;background:linear-gradient(180deg,transparent,var(--glass-border),transparent);flex-shrink:0;" class="float-in d3"></div>
+            <div class="glass-sm float-in d4" style="flex:2;text-align:center;border:1px solid rgba(6,182,212,0.3);">
+              <div style="font-size:28px;font-weight:700;color:var(--cyan);margin-bottom:12px;">Distribution & Marketing</div>
+              <div class="body" style="color:var(--muted);">The new competitive moat</div>
+            </div>
+          </div>
+          <div class="mt-32 float-in d5 quote-block">
+            <p class="body-lg" style="color:var(--muted);font-style:italic;">"The new job for everyone has become marketing."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 20: Real Consequences -->
+    <div class="slide" data-slide="20">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">Already happening</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">Real Consequences</h2>
+          <div style="display:flex;gap:24px;width:100%;">
+            <div class="glass-sm float-in d2" style="flex:1;text-align:center;border-top:3px solid var(--pink);">
+              <div style="font-size:56px;font-weight:800;color:var(--pink);line-height:1;">50%</div>
+              <div style="font-size:20px;font-weight:600;margin-top:16px;">Block Layoffs</div>
+              <div class="body mt-8" style="color:var(--muted);">Half the workforce cut</div>
+            </div>
+            <div class="glass-sm float-in d3" style="flex:1;text-align:center;border-top:3px solid var(--warm);">
+              <div style="font-size:56px;font-weight:800;color:var(--warm);line-height:1;">-30%</div>
+              <div style="font-size:20px;font-weight:600;margin-top:16px;">IT Stocks</div>
+              <div class="body mt-8" style="color:var(--muted);">Indian IT down 25-30%</div>
+            </div>
+            <div class="glass-sm float-in d4" style="flex:1;text-align:center;border-top:3px solid var(--violet);">
+              <div style="font-size:48px;margin-bottom:8px;">&#9888;</div>
+              <div style="font-size:20px;font-weight:600;margin-top:8px;">Innovator's Dilemma</div>
+              <div class="body mt-8" style="color:var(--muted);">Playing out in real-time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 21: Section Divider - ACT IV -->
+    <div class="slide" data-slide="21">
+      <div class="slide-inner text-center">
+        <div class="float-in">
+          <div class="label-lg float-in d1" style="margin-bottom:20px;">Act IV</div>
+          <div class="section-num gradient-text float-in d2">THE ECONOMICS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 22: The Abundance Thesis -->
+    <div class="slide" data-slide="22">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">The optimistic case</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">The Abundance Thesis</h2>
+          <div style="display:flex;align-items:center;gap:0;width:100%;">
+            <div class="glass-sm float-in d2 text-center" style="flex:1;">
+              <div style="font-size:32px;margin-bottom:8px;">&#129302;</div>
+              <div style="font-size:18px;font-weight:600;">Remove Humans</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:4px;">From production</div>
+            </div>
+            <div class="float-in d2 gradient-text" style="font-size:28px;padding:0 12px;">&#8594;</div>
+            <div class="glass-sm float-in d3 text-center" style="flex:1;">
+              <div style="font-size:32px;margin-bottom:8px;">&#128200;</div>
+              <div style="font-size:18px;font-weight:600;">Deflation</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:4px;">Costs collapse</div>
+            </div>
+            <div class="float-in d3 gradient-text" style="font-size:28px;padding:0 12px;">&#8594;</div>
+            <div class="glass-sm float-in d4 text-center" style="flex:1;">
+              <div style="font-size:32px;margin-bottom:8px;">&#128181;</div>
+              <div style="font-size:18px;font-weight:600;">Goods Cheaper</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:4px;">For everyone</div>
+            </div>
+            <div class="float-in d4 gradient-text" style="font-size:28px;padding:0 12px;">&#8594;</div>
+            <div class="glass-sm float-in d5 text-center" style="flex:1;border:1px solid rgba(6,182,212,0.3);">
+              <div style="font-size:32px;margin-bottom:8px;">&#127758;</div>
+              <div style="font-size:18px;font-weight:600;color:var(--cyan);">Era of Abundance</div>
+              <div style="font-size:14px;color:var(--cyan);margin-top:4px;">Post-scarcity</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 23: The AI Value Chain -->
+    <div class="slide" data-slide="23">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:48px 56px;">
+          <div class="label mb-16 float-in d1">Follow the money</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:36px;">The AI Value Chain</h2>
+          <div class="chain-flow float-in d2" style="justify-content:center;">
+            <div class="chain-node" style="border-bottom:2px solid var(--warm);">
+              <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">&#9889;</div>
+              Energy
+            </div>
+            <div class="chain-arrow gradient-text">&#8594;</div>
+            <div class="chain-node" style="border-bottom:2px solid var(--warm);">
+              <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">&#128200;</div>
+              Chips
+            </div>
+            <div class="chain-arrow gradient-text">&#8594;</div>
+            <div class="chain-node" style="border-bottom:2px solid var(--violet);">
+              <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">&#9881;</div>
+              Fabricators
+            </div>
+            <div class="chain-arrow gradient-text">&#8594;</div>
+            <div class="chain-node" style="border-bottom:2px solid var(--violet);">
+              <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">&#129504;</div>
+              Frontier Labs
+            </div>
+            <div class="chain-arrow gradient-text">&#8594;</div>
+            <div class="chain-node" style="border-bottom:2px solid var(--cyan);">
+              <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">&#9729;</div>
+              Hyperscalers
+            </div>
+            <div class="chain-arrow gradient-text">&#8594;</div>
+            <div class="chain-node" style="border-bottom:2px solid var(--cyan);">
+              <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">&#128241;</div>
+              App Layer
+            </div>
+            <div class="chain-arrow gradient-text">&#8594;</div>
+            <div class="chain-node" style="border-bottom:2px solid var(--pink);border:1px solid rgba(244,114,182,0.3);">
+              <div style="font-size:13px;color:var(--pink);margin-bottom:4px;">&#127919;</div>
+              <span style="color:var(--pink);font-weight:600;">Distribution</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 24: Where Value Lives -->
+    <div class="slide" data-slide="24">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">Not where you think</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">Where Value Lives</h2>
+          <div style="display:flex;gap:24px;width:100%;">
+            <div class="glass-sm float-in d2" style="flex:1;text-align:center;opacity:0.4;">
+              <div style="font-size:24px;font-weight:600;text-decoration:line-through;margin-bottom:12px;">The Model</div>
+              <div class="body" style="color:var(--muted);">Commoditizing fast</div>
+            </div>
+            <div class="glass-sm float-in d3" style="flex:1;text-align:center;border-top:3px solid var(--cyan);">
+              <div style="font-size:24px;font-weight:700;color:var(--cyan);margin-bottom:12px;">Compute</div>
+              <div class="body" style="color:var(--muted);">Infrastructure advantage</div>
+            </div>
+            <div class="glass-sm float-in d4" style="flex:1;text-align:center;border-top:3px solid var(--violet);">
+              <div style="font-size:24px;font-weight:700;color:var(--violet);margin-bottom:12px;">Context</div>
+              <div class="body" style="color:var(--muted);">Data and domain knowledge</div>
+            </div>
+            <div class="glass-sm float-in d5" style="flex:1;text-align:center;border-top:3px solid var(--pink);">
+              <div style="font-size:24px;font-weight:700;color:var(--pink);margin-bottom:12px;">Distribution</div>
+              <div class="body" style="color:var(--muted);">Reaching users at scale</div>
+            </div>
+          </div>
+          <div class="mt-32 float-in d6 quote-block">
+            <p class="body-lg" style="color:var(--muted);font-style:italic;">"Agents don't need UI."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 25: Section Divider - ACT V -->
+    <div class="slide" data-slide="25">
+      <div class="slide-inner text-center">
+        <div class="float-in">
+          <div class="label-lg float-in d1" style="margin-bottom:20px;">Act V</div>
+          <div class="section-num gradient-text float-in d2">FROM THE INSIDE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 26: Microsoft's AI Journey -->
+    <div class="slide" data-slide="26">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">What I've seen</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">Microsoft's AI Journey</h2>
+          <div style="display:flex;gap:32px;width:100%;">
+            <div class="glass-sm float-in d2" style="flex:1;">
+              <div style="font-size:14px;font-weight:600;color:var(--pink);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">What Failed</div>
+              <div style="font-size:24px;font-weight:600;margin-bottom:12px;">Top-Down Mandates</div>
+              <div class="body" style="color:var(--muted);">Executive directives alone didn't move the needle</div>
+            </div>
+            <div class="glass-sm float-in d3" style="flex:1;border:1px solid rgba(6,182,212,0.3);">
+              <div style="font-size:14px;font-weight:600;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">What Worked</div>
+              <div style="font-size:24px;font-weight:600;margin-bottom:12px;">Bottom-Up Adoption</div>
+              <div class="body" style="color:var(--muted);">Empowering individual contributors</div>
+            </div>
+          </div>
+          <div class="mt-32 float-in d4" style="display:flex;gap:24px;">
+            <div class="glass-sm" style="flex:1;text-align:center;">
+              <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">Key enabler</div>
+              <div style="font-size:20px;font-weight:600;color:var(--cyan);">Unlimited Compute</div>
+            </div>
+            <div class="glass-sm" style="flex:1;text-align:center;">
+              <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">Key enabler</div>
+              <div style="font-size:20px;font-weight:600;color:var(--violet);">Incentive Alignment</div>
+            </div>
+            <div class="glass-sm" style="flex:1;text-align:center;">
+              <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">Result</div>
+              <div style="font-size:20px;font-weight:700;color:var(--pink);">20x Productivity</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 27: Project Nebula -->
+    <div class="slide" data-slide="27">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">Inside the machine</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">Project Nebula</h2>
+          <div style="display:flex;gap:24px;width:100%;margin-bottom:36px;">
+            <div class="glass-sm float-in d2" style="flex:1;text-align:center;">
+              <div class="stat-number gradient-text" style="font-size:52px;">100</div>
+              <div style="font-size:18px;font-weight:500;color:var(--muted);margin-top:8px;">Product Managers</div>
+            </div>
+            <div class="glass-sm float-in d3" style="flex:1;text-align:center;">
+              <div class="stat-number gradient-text" style="font-size:52px;">600</div>
+              <div style="font-size:18px;font-weight:500;color:var(--muted);margin-top:8px;">Engineers</div>
+            </div>
+            <div class="glass-sm float-in d4" style="flex:1;text-align:center;">
+              <div class="stat-number gradient-text" style="font-size:52px;">50</div>
+              <div style="font-size:18px;font-weight:500;color:var(--muted);margin-top:8px;">Designers</div>
+            </div>
+          </div>
+          <div class="glass-sm float-in d5" style="display:flex;align-items:center;gap:24px;">
+            <div style="font-size:14px;font-weight:600;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;">Weekly AI Upskilling</div>
+            <div style="width:1px;height:32px;background:var(--glass-border);flex-shrink:0;"></div>
+            <div class="body" style="color:var(--muted);">"Tribal knowledge." The best practices are discovered, shared, and iterated on weekly.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 28: The Learning -->
+    <div class="slide" data-slide="28">
+      <div class="slide-inner text-center">
+        <div class="glass float-in" style="max-width:1050px;padding:64px 80px;">
+          <div class="label mb-24 float-in d1" style="color:var(--violet);">The key insight</div>
+          <div class="accent-line float-in d1" style="margin:0 auto 32px;background:linear-gradient(90deg,var(--violet),var(--pink));"></div>
+          <p class="float-in d2" style="font-size:34px;font-weight:500;line-height:1.6;">
+            "The most valuable managers will be the ones who figure out how to <span class="gradient-text" style="font-weight:700;">diffuse AI throughout the company</span>."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 29: Section Divider - ACT VI -->
+    <div class="slide" data-slide="29">
+      <div class="slide-inner text-center">
+        <div class="float-in">
+          <div class="label-lg float-in d1" style="margin-bottom:20px;">Act VI</div>
+          <div class="section-num gradient-text float-in d2">THE NEW PLAYBOOK</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 30: AI Organizations -->
+    <div class="slide" data-slide="30">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">Organizational design</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:40px;">AI Organizations</h2>
+          <div class="float-in d2" style="margin-bottom:32px;">
+            <p class="body-lg" style="color:var(--muted);">Design workflows for agents like managers designed them for humans.</p>
+          </div>
+          <div style="display:flex;gap:20px;width:100%;">
+            <div class="glass-sm float-in d3" style="flex:1;border-left:3px solid var(--cyan);">
+              <div style="font-size:14px;color:var(--cyan);font-weight:600;margin-bottom:8px;">BEFORE</div>
+              <div style="font-size:18px;font-weight:500;">PM writes spec</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:4px;">Manual doc, 2-3 days</div>
+            </div>
+            <div style="display:flex;align-items:center;" class="float-in d3">
+              <span class="gradient-text" style="font-size:24px;">&#8594;</span>
+            </div>
+            <div class="glass-sm float-in d4" style="flex:1;border-left:3px solid var(--violet);">
+              <div style="font-size:14px;color:var(--violet);font-weight:600;margin-bottom:8px;">NOW</div>
+              <div style="font-size:18px;font-weight:500;">PM prompts agent</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:4px;">Agent drafts spec, 30 min</div>
+            </div>
+            <div style="display:flex;align-items:center;" class="float-in d4">
+              <span class="gradient-text" style="font-size:24px;">&#8594;</span>
+            </div>
+            <div class="glass-sm float-in d5" style="flex:1;border-left:3px solid var(--pink);">
+              <div style="font-size:14px;color:var(--pink);font-weight:600;margin-bottom:8px;">NEXT</div>
+              <div style="font-size:18px;font-weight:500;">Agent orchestrates agents</div>
+              <div style="font-size:14px;color:var(--muted);margin-top:4px;">PM reviews output, 10 min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 31: Two Skills -->
+    <div class="slide" data-slide="31">
+      <div class="slide-inner-left">
+        <div class="glass float-in w-full" style="padding:56px 64px;">
+          <div class="label mb-16 float-in d1">What matters now</div>
+          <h2 class="headline-sm float-in d1" style="margin-bottom:48px;">Two Skills That Matter</h2>
+          <div style="display:flex;gap:32px;width:100%;">
+            <div class="glass-sm float-in d2" style="flex:1;padding:40px;border-top:3px solid var(--cyan);">
+              <div style="font-size:72px;font-weight:800;color:var(--cyan);line-height:1;margin-bottom:20px;">01</div>
+              <div style="font-size:28px;font-weight:700;margin-bottom:16px;">Prompting</div>
+              <div class="body" style="color:var(--muted);">Instruct precisely. Decompose problems. Provide context. Iterate on output.</div>
+            </div>
+            <div class="glass-sm float-in d3" style="flex:1;padding:40px;border-top:3px solid var(--violet);">
+              <div style="font-size:72px;font-weight:800;color:var(--violet);line-height:1;margin-bottom:20px;">02</div>
+              <div style="font-size:28px;font-weight:700;margin-bottom:16px;">Evaluations</div>
+              <div class="body" style="color:var(--muted);">Measure AI quality. Build rubrics. Assess hallucinations. Know when to trust.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 32: The Age of the Polymath -->
+    <div class="slide" data-slide="32">
+      <div class="slide-inner text-center">
+        <div class="glass float-in" style="max-width:1050px;padding:64px 80px;">
+          <div class="label mb-24 float-in d1" style="color:var(--pink);">The new archetype</div>
+          <h2 class="headline float-in d2" style="margin-bottom:24px;">The Age of the <span class="gradient-text">Polymath</span></h2>
+          <div class="accent-line float-in d2" style="margin:0 auto 32px;"></div>
+          <p class="float-in d3" style="font-size:28px;font-weight:400;line-height:1.6;color:var(--muted);">
+            "Everyone is becoming a <span style="color:var(--text);font-weight:600;">generalist</span>."
+          </p>
+          <p class="float-in d4 mt-24" style="font-size:24px;color:var(--muted);">
+            The one-person <span class="gradient-text" style="font-weight:700;">billion-dollar</span> startup is no longer a thought experiment.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 33: What You Should Do (4-action grid) -->
+    <div class="slide" data-slide="33">
+      <div class="slide-inner-left">
+        <div class="w-full">
+          <div class="label mb-16 float-in" style="padding-left:4px;">Your action plan</div>
+          <h2 class="headline-sm float-in" style="margin-bottom:32px;padding-left:4px;">What You Should Do</h2>
+          <div class="grid-2x2">
+            <div class="glass-sm float-in d2" style="padding:36px;border-top:3px solid var(--cyan);">
+              <div style="font-size:48px;font-weight:800;color:var(--cyan);line-height:1;margin-bottom:16px;">01</div>
+              <div style="font-size:24px;font-weight:700;margin-bottom:12px;">AI Budget</div>
+              <div class="body" style="color:var(--muted);">Dedicate time and money to AI tools. Treat it as essential infrastructure, not a nice-to-have.</div>
+            </div>
+            <div class="glass-sm float-in d3" style="padding:36px;border-top:3px solid var(--violet);">
+              <div style="font-size:48px;font-weight:800;color:var(--violet);line-height:1;margin-bottom:16px;">02</div>
+              <div style="font-size:24px;font-weight:700;margin-bottom:12px;">Build AI Fluency</div>
+              <div class="body" style="color:var(--muted);">Use AI daily. Prompt, iterate, evaluate. Build muscle memory for working with agents.</div>
+            </div>
+            <div class="glass-sm float-in d4" style="padding:36px;border-top:3px solid var(--pink);">
+              <div style="font-size:48px;font-weight:800;color:var(--pink);line-height:1;margin-bottom:16px;">03</div>
+              <div style="font-size:24px;font-weight:700;margin-bottom:12px;">Think in Workflows</div>
+              <div class="body" style="color:var(--muted);">Map your processes. Find where AI agents can slot in. Design for delegation.</div>
+            </div>
+            <div class="glass-sm float-in d5" style="padding:36px;border-top:3px solid var(--warm);">
+              <div style="font-size:48px;font-weight:800;color:var(--warm);line-height:1;margin-bottom:16px;">04</div>
+              <div style="font-size:24px;font-weight:700;margin-bottom:12px;">Become a Generalist</div>
+              <div class="body" style="color:var(--muted);">Learn everything. The polymath wins. AI handles depth; you provide breadth and judgment.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 34: Closing -->
+    <div class="slide" data-slide="34">
+      <div class="slide-inner text-center" style="position:relative;">
+        <div class="float-decor" style="width:90px;height:90px;top:60px;left:180px;border-radius:22px;"></div>
+        <div class="float-decor alt" style="width:70px;height:70px;top:100px;right:200px;border-radius:18px;"></div>
+        <div class="float-decor" style="width:55px;height:55px;bottom:120px;left:260px;border-radius:14px;"></div>
+        <div class="float-decor alt" style="width:65px;height:65px;bottom:80px;right:280px;border-radius:16px;"></div>
+        <div class="float-decor" style="width:45px;height:45px;top:200px;left:400px;border-radius:12px;"></div>
+        <div class="float-decor alt" style="width:50px;height:50px;bottom:200px;right:400px;border-radius:12px;"></div>
+        <div class="glass float-in" style="max-width:1000px;padding:72px 80px;">
+          <div class="float-in d1" style="margin-bottom:32px;">
+            <p style="font-size:24px;color:var(--muted);font-weight:400;">Remember that anxiety you felt?</p>
+          </div>
+          <div class="float-in d2" style="margin-bottom:16px;">
+            <p style="font-size:56px;font-weight:700;line-height:1.2;">
+              Go build <span class="gradient-text">something.</span>
+            </p>
+          </div>
+          <div class="accent-line float-in d3" style="margin:32px auto;"></div>
+          <div class="float-in d4">
+            <p style="font-size:20px;font-weight:500;">Ashish Muralidharan</p>
+            <p style="font-size:16px;color:var(--muted);margin-top:8px;">Product Manager, Microsoft</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /viewport -->
+</div><!-- /deck -->
+
+<!-- Progress bar -->
+<div id="progress-bar"></div>
+
+<!-- Counter -->
+<div id="counter">1 / 34</div>
+
+<!-- Fullscreen button -->
+<button id="fs-btn" onclick="toggleFS()">F &mdash; Fullscreen</button>
+
+<script>
+// ── Aurora Canvas ──
+(function() {
+  const canvas = document.getElementById('aurora-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h;
+  let blobs = [];
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+
+  class Blob {
+    constructor(color, x, y, r, vx, vy) {
+      this.color = color;
+      this.x = x; this.y = y; this.r = r;
+      this.vx = vx; this.vy = vy;
+      this.ox = x; this.oy = y;
+      this.angle = Math.random() * Math.PI * 2;
+      this.speed = 0.0003 + Math.random() * 0.0003;
+      this.drift = 80 + Math.random() * 120;
+    }
+    update(t) {
+      this.angle += this.speed;
+      this.x = this.ox + Math.sin(this.angle * 1.3) * this.drift + Math.cos(this.angle * 0.7) * this.drift * 0.5;
+      this.y = this.oy + Math.cos(this.angle * 0.9) * this.drift * 0.6 + Math.sin(this.angle * 1.1) * this.drift * 0.3;
+    }
+    draw() {
+      const g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+      g.addColorStop(0, this.color);
+      g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g;
+      ctx.fillRect(this.x - this.r, this.y - this.r, this.r * 2, this.r * 2);
+    }
+  }
+
+  function init() {
+    resize();
+    blobs = [
+      new Blob('rgba(6, 182, 212, 0.12)', w * 0.25, h * 0.3, w * 0.35, 0, 0),
+      new Blob('rgba(139, 92, 246, 0.10)', w * 0.7, h * 0.2, w * 0.3, 0, 0),
+      new Blob('rgba(244, 114, 182, 0.08)', w * 0.5, h * 0.75, w * 0.32, 0, 0),
+      new Blob('rgba(245, 158, 11, 0.06)', w * 0.8, h * 0.7, w * 0.28, 0, 0)
+    ];
+  }
+
+  let t = 0;
+  function animate() {
+    t++;
+    ctx.clearRect(0, 0, w, h);
+    ctx.globalCompositeOperation = 'screen';
+    for (const b of blobs) {
+      b.update(t);
+      b.draw();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    resize();
+    blobs[0].ox = w * 0.25; blobs[0].oy = h * 0.3; blobs[0].r = w * 0.35;
+    blobs[1].ox = w * 0.7; blobs[1].oy = h * 0.2; blobs[1].r = w * 0.3;
+    blobs[2].ox = w * 0.5; blobs[2].oy = h * 0.75; blobs[2].r = w * 0.32;
+    blobs[3].ox = w * 0.8; blobs[3].oy = h * 0.7; blobs[3].r = w * 0.28;
+  });
+
+  init();
+  animate();
+})();
+
+// ── Slide Engine ──
+(function() {
+  const TOTAL = 34;
+  let current = 1;
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('counter');
+  const progress = document.getElementById('progress-bar');
+  const viewport = document.getElementById('viewport');
+  let transitioning = false;
+
+  function scaleViewport() {
+    const sw = window.innerWidth / 1920;
+    const sh = window.innerHeight / 1080;
+    const scale = Math.min(sw, sh);
+    viewport.style.transform = `scale(${scale})`;
+    viewport.style.width = '1920px';
+    viewport.style.height = '1080px';
+    // Center viewport
+    const ox = (window.innerWidth - 1920 * scale) / 2;
+    const oy = (window.innerHeight - 1080 * scale) / 2;
+    viewport.style.left = ox + 'px';
+    viewport.style.top = oy + 'px';
+  }
+
+  function resetFloatIns(slide) {
+    const els = slide.querySelectorAll('.float-in');
+    els.forEach(el => {
+      el.style.transition = 'none';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      // Reset bars
+    });
+    const bars = slide.querySelectorAll('.bar-fill');
+    bars.forEach(bar => {
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
+    });
+    // Force reflow
+    void slide.offsetHeight;
+    els.forEach(el => { el.style.transition = ''; });
+    bars.forEach(bar => { bar.style.transition = ''; });
+  }
+
+  function goTo(n) {
+    if (n < 1 || n > TOTAL || n === current || transitioning) return;
+    transitioning = true;
+
+    const oldSlide = slides[current - 1];
+    const newSlide = slides[n - 1];
+
+    // Exit old
+    oldSlide.classList.remove('active');
+    oldSlide.classList.add('exiting');
+
+    // Reset new slide float-ins
+    resetFloatIns(newSlide);
+
+    setTimeout(() => {
+      oldSlide.classList.remove('exiting');
+      // Activate new
+      newSlide.classList.add('active');
+      current = n;
+      counter.textContent = current + ' / ' + TOTAL;
+      progress.style.width = ((current / TOTAL) * 100) + '%';
+      transitioning = false;
+    }, 400);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Initialize
+  scaleViewport();
+  window.addEventListener('resize', scaleViewport);
+
+  // Reset first slide float-ins, then activate
+  resetFloatIns(slides[0]);
+  setTimeout(() => {
+    slides[0].classList.add('active');
+    progress.style.width = ((1 / TOTAL) * 100) + '%';
+  }, 100);
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'f' || e.key === 'F') { toggleFS(); }
+    else if (e.key === 'Escape') {
+      if (document.fullscreenElement) document.exitFullscreen();
+    }
+  });
+
+  // Touch
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) next(); else prev();
+    }
+  });
+
+  // Click navigation (left/right halves)
+  document.addEventListener('click', e => {
+    if (e.target.tagName === 'BUTTON') return;
+    const x = e.clientX / window.innerWidth;
+    if (x > 0.5) next(); else prev();
+  });
+
+  // Expose toggleFS
+  window.toggleFS = function() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen();
+    }
+  };
+})();
+</script>
+</body>
+</html>

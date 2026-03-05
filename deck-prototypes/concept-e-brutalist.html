@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & THE NEW MANAGEMENT PLAYBOOK // BRUTALIST</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --white: #ffffff;
+  --black: #000000;
+  --red: #ef4444;
+  --muted: #999999;
+  --font: 'Space Grotesk', sans-serif;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--black);
+  font-family: var(--font);
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+
+/* SLIDE ENGINE */
+.deck {
+  width: 1920px; height: 1080px;
+  position: relative;
+  transform-origin: top left;
+}
+
+.slide {
+  display: none;
+  width: 1920px; height: 1080px;
+  position: absolute; top: 0; left: 0;
+  padding: 100px;
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+.slide.white-slide { background: var(--white); color: var(--black); }
+.slide.black-slide { background: var(--black); color: var(--white); }
+
+/* GRID OVERLAY */
+.grid-overlay {
+  position: absolute; top: 0; left: 0;
+  width: 1920px; height: 1080px;
+  pointer-events: none; z-index: 1;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+.white-slide .grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* PROGRESS BAR */
+#progress-bar {
+  position: fixed; top: 0; left: 0;
+  height: 3px; background: var(--red);
+  z-index: 9999;
+  transition: none;
+}
+
+/* SLIDE COUNTER */
+#slide-counter {
+  position: fixed; bottom: 40px; right: 60px;
+  font-family: var(--font); font-weight: 700;
+  font-size: 18px; letter-spacing: 2px;
+  color: var(--muted); z-index: 9998;
+  text-transform: uppercase;
+}
+
+/* CUSTOM CURSOR */
+#cursor {
+  position: fixed; width: 16px; height: 16px;
+  background: var(--red);
+  pointer-events: none; z-index: 99999;
+  transform: translate(-50%, -50%);
+}
+
+/* RED SQUARE MARKER */
+.red-sq {
+  display: inline-block;
+  width: 16px; height: 16px;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+/* TYPOGRAPHY */
+.hero-text { font-size: 80px; font-weight: 700; line-height: 1.05; letter-spacing: -2px; }
+.hero-xl { font-size: 96px; font-weight: 700; line-height: 1.0; letter-spacing: -3px; }
+.hero-xxl { font-size: 120px; font-weight: 700; line-height: 0.95; letter-spacing: -4px; }
+.body-text { font-size: 18px; font-weight: 400; line-height: 1.6; letter-spacing: 1px; }
+.label-text { font-size: 14px; font-weight: 400; letter-spacing: 3px; color: var(--muted); }
+.quote-text { font-size: 42px; font-weight: 700; line-height: 1.2; letter-spacing: -1px; }
+.sub-text { font-size: 20px; font-weight: 400; line-height: 1.5; letter-spacing: 1px; }
+
+/* LAYOUT HELPERS */
+.flex-col { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+.flex-row { display: flex; flex-direction: row; align-items: center; }
+.gap-24 { gap: 24px; }
+.gap-40 { gap: 40px; }
+.gap-60 { gap: 60px; }
+.gap-80 { gap: 80px; }
+.mt-auto { margin-top: auto; }
+.mb-20 { margin-bottom: 20px; }
+.mb-40 { margin-bottom: 40px; }
+.mb-60 { margin-bottom: 60px; }
+.mt-20 { margin-top: 20px; }
+.mt-40 { margin-top: 40px; }
+.mt-60 { margin-top: 60px; }
+.w-full { width: 100%; }
+.relative { position: relative; }
+.z2 { position: relative; z-index: 2; }
+
+.text-muted { color: var(--muted); }
+.text-red { color: var(--red); }
+
+/* BAR FILLS */
+.bar-track {
+  width: 100%; height: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.white-slide .bar-track { background: rgba(0,0,0,0.08); }
+.black-slide .bar-track { background: rgba(255,255,255,0.08); }
+.bar-fill {
+  position: absolute; top: 0; left: 0;
+  height: 100%; width: 0%;
+}
+.white-slide .bar-fill { background: var(--black); }
+.black-slide .bar-fill { background: var(--white); }
+.bar-fill.active { transition: width 1500ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* TABLE */
+.brutal-table { width: 100%; border-collapse: collapse; }
+.brutal-table th, .brutal-table td {
+  padding: 16px 20px;
+  text-align: left;
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+.brutal-table th {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  border-bottom: 2px solid var(--black);
+}
+.brutal-table tr.highlight { background: var(--red); color: var(--white); }
+.brutal-table tr.highlight td { border-bottom-color: var(--red); }
+
+/* 2x2 GRID */
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 40px;
+  width: 100%; flex: 1;
+}
+.grid-cell {
+  padding: 40px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.white-slide .grid-cell { border: 1px solid rgba(0,0,0,0.08); }
+.black-slide .grid-cell { border: 1px solid rgba(255,255,255,0.08); }
+
+/* CHAIN */
+.chain {
+  display: flex; align-items: center; gap: 32px;
+  flex-wrap: wrap;
+}
+.chain-item { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+.chain-arrow { font-size: 36px; font-weight: 700; color: var(--red); }
+
+/* SPLIT CLOSING */
+.split-slide {
+  padding: 0 !important;
+}
+.split-slide.active {
+  display: flex;
+}
+.split-left {
+  width: 50%; height: 100%;
+  background: var(--black); color: var(--white);
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 100px;
+}
+.split-right {
+  width: 50%; height: 100%;
+  background: var(--white); color: var(--black);
+  display: flex; align-items: center; justify-content: flex-start;
+  padding: 100px;
+}
+.split-center-dot {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px; height: 16px;
+  background: var(--red); z-index: 5;
+}
+
+/* TWO BLOCKS */
+.two-blocks {
+  display: flex; gap: 80px; width: 100%; flex: 1;
+}
+.block-item {
+  flex: 1; display: flex; flex-direction: column; gap: 20px;
+}
+
+/* BULLET ROW */
+.bullet-row {
+  display: flex; align-items: flex-start; gap: 20px;
+}
+.bullet-row .red-sq { margin-top: 5px; }
+
+/* FULLSCREEN */
+.fullscreen-btn {
+  position: fixed; top: 16px; right: 16px;
+  background: transparent; border: 2px solid var(--muted);
+  color: var(--muted); font-family: var(--font);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 8px 16px; cursor: none; z-index: 9999;
+}
+.fullscreen-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* DECORATIVE BIG NUM */
+.deco-num {
+  position: absolute;
+  font-size: 200px; font-weight: 700;
+  line-height: 0.85; letter-spacing: -8px;
+  opacity: 0.06;
+  pointer-events: none;
+}
+.white-slide .deco-num { color: var(--black); }
+.black-slide .deco-num { color: var(--white); }
+
+/* STEP items for slide 8 */
+.step-row {
+  display: flex; align-items: flex-start; gap: 24px;
+}
+.step-num {
+  font-size: 48px; font-weight: 700; line-height: 1;
+  color: var(--red);
+  flex-shrink: 0; width: 60px;
+}
+.step-content {
+  display: flex; flex-direction: column; gap: 4px;
+}
+
+/* Voices from the field */
+.voice-block {
+  display: flex; flex-direction: column; gap: 8px;
+  padding-left: 36px;
+  border-left: 3px solid var(--red);
+}
+
+/* Consequences row */
+.consequence-row {
+  display: flex; gap: 60px; width: 100%;
+}
+.consequence-item {
+  flex: 1; display: flex; flex-direction: column; gap: 12px;
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="progress-bar"></div>
+<div id="slide-counter">01/34</div>
+<button class="fullscreen-btn" onclick="toggleFullscreen()">F</button>
+
+<div class="deck" id="deck">
+
+<!-- ============================================================ -->
+<!-- SLIDE 1: TITLE (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide active" data-slide="1">
+  <div class="grid-overlay"></div>
+  <div class="deco-num" style="top: -40px; right: 80px;">01</div>
+  <div class="flex-col z2">
+    <div class="hero-text scramble" style="max-width: 1400px;">AI & THE NEW MANAGEMENT PLAYBOOK</div>
+    <div style="display:flex; align-items:center; gap:16px; margin-top:40px; margin-bottom:40px;">
+      <span class="red-sq"></span>
+      <span class="red-sq"></span>
+      <span class="red-sq"></span>
+    </div>
+    <div class="body-text" style="display:flex; flex-direction:column; gap:8px;">
+      <span>ASHISH MURALIDHARAN</span>
+      <span class="text-muted">PRODUCT MANAGER, MICROSOFT</span>
+      <span class="text-muted">IISC DOMS // MARCH 6, 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2: OPENING POLL (BLACK) - QUOTE -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="2">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2">
+    <div style="display:flex; align-items:flex-start; gap:24px;">
+      <span class="red-sq" style="margin-top:14px;"></span>
+      <div class="quote-text scramble" style="max-width: 1400px;">"HOW MANY OF YOU FEEL ANXIOUS ABOUT YOUR FUTURE, YOUR CAREER, YOUR RELEVANCE, BECAUSE OF AI?"</div>
+    </div>
+    <div class="label-text mt-60">RAISE YOUR HANDS</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3: SECTION DIVIDER - ACT I (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="3">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="align-items:flex-start;">
+    <div class="hero-xl scramble">ACT I</div>
+    <div style="display:flex; align-items:center; gap:16px; margin-top:24px;">
+      <span class="red-sq"></span>
+      <span class="sub-text" style="letter-spacing:4px;">THE TENSION</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4: VUCA FRAMEWORK (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="4">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:48px;">
+    <div class="hero-text scramble" style="font-size:64px;">VUCA</div>
+    <div style="display:flex; gap:80px; flex-wrap:wrap;">
+      <div class="bullet-row"><span class="red-sq"></span><div><div style="font-size:28px; font-weight:700;">VOLATILITY</div></div></div>
+      <div class="bullet-row"><span class="red-sq"></span><div><div style="font-size:28px; font-weight:700;">UNCERTAINTY</div></div></div>
+      <div class="bullet-row"><span class="red-sq"></span><div><div style="font-size:28px; font-weight:700;">COMPLEXITY</div></div></div>
+      <div class="bullet-row"><span class="red-sq"></span><div><div style="font-size:28px; font-weight:700;">AMBIGUITY</div></div></div>
+    </div>
+    <div class="body-text text-muted" style="margin-top:20px;">"IT'S A ONE-WAY STREET GOING UPWARDS."</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5: PATTERN OF DISRUPTION (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="5">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:56px;">THE PATTERN OF DISRUPTION</div>
+    <div class="chain" style="margin-top:20px;">
+      <span class="chain-item">SHIPPING</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item">INDUSTRIAL REVOLUTION</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item">INFORMATION TECHNOLOGY</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="color:var(--red);">ARTIFICIAL INTELLIGENCE</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6: ECONOMIC EQUATION (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="6">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:48px;">
+    <div class="hero-text scramble" style="font-size:56px;">THE ECONOMIC EQUATION</div>
+    <div style="display:flex; gap:60px; flex-wrap:wrap; margin-top:20px;">
+      <div style="font-size:36px; font-weight:700;">LAND</div>
+      <div style="font-size:36px; font-weight:700;">LABOR</div>
+      <div style="font-size:36px; font-weight:700;">CAPITAL</div>
+      <div style="font-size:36px; font-weight:700; color:var(--red);">TECHNOLOGY</div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:16px; margin-top:20px;">
+      <span class="red-sq" style="margin-top:4px;"></span>
+      <span class="body-text">"TECHNOLOGY IS FUNDAMENTALLY REPLACING LABOR."</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7: SECTION DIVIDER - ACT II (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="7">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="align-items:flex-start;">
+    <div class="hero-xl scramble">ACT II</div>
+    <div style="display:flex; align-items:center; gap:16px; margin-top:24px;">
+      <span class="red-sq"></span>
+      <span class="sub-text" style="letter-spacing:4px;">THE PATTERN</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8: TECH VS LABOR CYCLE (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="8">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">TECHNOLOGY VS. LABOR CYCLE</div>
+    <div style="display:flex; flex-direction:column; gap:32px; margin-top:20px;">
+      <div class="step-row">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div style="font-size:24px; font-weight:700;">TECH ARRIVES</div>
+          <div class="body-text text-muted">NEW CAPABILITY ENTERS THE MARKET</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div style="font-size:24px; font-weight:700;">PHYSICAL DISPLACED</div>
+          <div class="body-text text-muted">MANUAL LABOR IS AUTOMATED FIRST</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div style="font-size:24px; font-weight:700;">OPERATIONAL DISPLACED</div>
+          <div class="body-text text-muted">PROCESS-DRIVEN ROLES ARE AUTOMATED NEXT</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div style="font-size:24px; font-weight:700;">INTELLECTUAL DISPLACED</div>
+          <div class="body-text text-muted">KNOWLEDGE WORK IS NOW ON THE TABLE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9: RUNNING OUT OF RUNGS (BLACK) - BARS -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="9">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">RUNNING OUT OF RUNGS</div>
+    <div style="display:flex; flex-direction:column; gap:28px; margin-top:20px; width:100%;">
+      <div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span class="body-text">PHYSICAL</span>
+          <span class="body-text count-up" data-target="95" data-suffix="%">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" data-width="95"></div></div>
+      </div>
+      <div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span class="body-text">OPERATIONAL</span>
+          <span class="body-text count-up" data-target="72" data-suffix="%">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" data-width="72"></div></div>
+      </div>
+      <div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span class="body-text">INTELLECTUAL</span>
+          <span class="body-text count-up" data-target="45" data-suffix="%">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" data-width="45"></div></div>
+      </div>
+      <div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span class="body-text">???</span>
+          <span class="body-text count-up" data-target="15" data-suffix="%">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" data-width="15"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10: THE CEILING QUOTE (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="10">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2">
+    <div style="display:flex; align-items:flex-start; gap:24px;">
+      <span class="red-sq" style="margin-top:14px;"></span>
+      <div class="quote-text scramble" style="max-width:1400px;">"IF YOU DON'T NEED INTELLECTUAL LABOR ANYMORE, WHAT'S LEFT?"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11: ROBOTS & PHYSICAL FRONTIER (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="11">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">ROBOTS & THE PHYSICAL FRONTIER</div>
+    <div style="display:flex; gap:60px; margin-top:20px;">
+      <div class="bullet-row"><span class="red-sq"></span><div><div style="font-size:24px; font-weight:700;">TESLA OPTIMUS</div></div></div>
+      <div class="bullet-row"><span class="red-sq"></span><div><div style="font-size:24px; font-weight:700;">UNITREE</div></div></div>
+      <div class="bullet-row"><span class="red-sq"></span><div><div style="font-size:24px; font-weight:700;">HYUNDAI</div></div></div>
+    </div>
+    <div class="body-text text-muted mt-40">"COMPLETE REPLACEMENT ACROSS EVERY DIMENSION."</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12: 5 LEVELS OF AGI (WHITE) - TABLE -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="12">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">5 LEVELS OF AGI</div>
+    <table class="brutal-table" style="margin-top:20px;">
+      <thead>
+        <tr>
+          <th style="width:100px;">LEVEL</th>
+          <th>CAPABILITY</th>
+          <th style="width:200px;">STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="count-up" data-target="1" data-prefix="L">L0</span></td>
+          <td>CONVERSATIONAL</td>
+          <td class="text-muted">DONE</td>
+        </tr>
+        <tr>
+          <td><span class="count-up" data-target="2" data-prefix="L">L0</span></td>
+          <td>REASONING</td>
+          <td class="text-muted">DONE</td>
+        </tr>
+        <tr class="highlight">
+          <td><span class="count-up" data-target="3" data-prefix="L" style="color:var(--white);">L0</span></td>
+          <td>AGENTS</td>
+          <td style="font-weight:700;">HERE</td>
+        </tr>
+        <tr>
+          <td><span class="count-up" data-target="4" data-prefix="L">L0</span></td>
+          <td>AI ORGANIZATIONS</td>
+          <td class="text-muted">EMERGING</td>
+        </tr>
+        <tr>
+          <td><span class="count-up" data-target="5" data-prefix="L">L0</span></td>
+          <td>AGI</td>
+          <td class="text-muted">UNKNOWN</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13: WHAT IS AN AGENT (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="13">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:56px;">WHAT IS AN AGENT?</div>
+    <div style="display:flex; align-items:flex-start; gap:24px; margin-top:20px;">
+      <span class="red-sq" style="margin-top:6px;"></span>
+      <div class="sub-text" style="max-width:1400px; line-height:1.6;">"A SYSTEM THAT CAN PURSUE A GOAL BY REASONING, PLANNING, USING TOOLS, AND CONTINUOUSLY LEARNING."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14: SECTION DIVIDER - ACT III (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="14">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="align-items:flex-start;">
+    <div class="hero-xl scramble">ACT III</div>
+    <div style="display:flex; align-items:center; gap:16px; margin-top:24px;">
+      <span class="red-sq"></span>
+      <span class="sub-text" style="letter-spacing:4px;">GROUND ZERO</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 15: WHY SOFTWARE FIRST (WHITE) - 2x2 GRID -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="15">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:32px;">
+    <div class="hero-text scramble" style="font-size:48px;">WHY SOFTWARE FIRST?</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:20px;">
+      <div class="grid-cell">
+        <div style="display:flex; align-items:center; gap:12px;"><span class="red-sq"></span><span style="font-size:24px; font-weight:700;">100% DIGITAL</span></div>
+        <div class="body-text text-muted">NO PHYSICAL CONSTRAINTS. PURE INFORMATION WORK.</div>
+      </div>
+      <div class="grid-cell">
+        <div style="display:flex; align-items:center; gap:12px;"><span class="red-sq"></span><span style="font-size:24px; font-weight:700;">SIGNAL TO CLOSURE</span></div>
+        <div class="body-text text-muted">FULLY AUTOMATED END-TO-END PIPELINE.</div>
+      </div>
+      <div class="grid-cell">
+        <div style="display:flex; align-items:center; gap:12px;"><span class="red-sq"></span><span style="font-size:24px; font-weight:700;">RICH TRAINING DATA</span></div>
+        <div class="body-text text-muted">DECADES OF CODE, DOCS, AND PATTERNS TO LEARN FROM.</div>
+      </div>
+      <div class="grid-cell">
+        <div style="display:flex; align-items:center; gap:12px;"><span class="red-sq"></span><span style="font-size:24px; font-weight:700;">FIRST DOMINO</span></div>
+        <div class="body-text text-muted">SOFTWARE IS THE CANARY IN THE COAL MINE.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 16: THE NEW REALITY (BLACK) - QUOTE -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="16">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2">
+    <div style="display:flex; align-items:flex-start; gap:24px;">
+      <span class="red-sq" style="margin-top:14px;"></span>
+      <div class="quote-text scramble" style="max-width:1400px;">"SINGLE ENGINEERS SPIN UP 20 AGENTS THAT BUILD THE ENTIRE PRODUCT END-TO-END."</div>
+    </div>
+    <div class="label-text mt-60">THE NEW REALITY</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 17: VOICES FROM THE FIELD (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="17">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:48px;">
+    <div class="hero-text scramble" style="font-size:48px;">VOICES FROM THE FIELD</div>
+    <div style="display:flex; flex-direction:column; gap:40px; margin-top:20px;">
+      <div class="voice-block">
+        <div style="font-size:24px; font-weight:700;">"VIBE CODING"</div>
+        <div class="label-text">ANDREJ KARPATHY</div>
+      </div>
+      <div class="voice-block">
+        <div style="font-size:24px; font-weight:700;">"PM IS VIBE CODING. ENGINEERING IS PROMPT ENGINEERING."</div>
+        <div class="label-text">NAVAL RAVIKANT</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 18: COST TO BUILD (BLACK) - QUOTE -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="18">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2">
+    <div style="display:flex; align-items:flex-start; gap:24px;">
+      <span class="red-sq" style="margin-top:14px;"></span>
+      <div class="quote-text scramble" style="max-width:1400px;">"THE COST TO BUILD SOFTWARE HAS COME DOWN TO ZERO."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 19: THE NEW BATTLE (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="19">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:56px;">THE NEW BATTLE</div>
+    <div style="display:flex; gap:40px; align-items:center; margin-top:20px;">
+      <div style="font-size:36px; font-weight:700; color:var(--red);">DISTRIBUTION & MARKETING</div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:16px; margin-top:20px;">
+      <span class="red-sq" style="margin-top:4px;"></span>
+      <span class="body-text">"THE NEW JOB FOR EVERYONE HAS BECOME MARKETING."</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 20: REAL CONSEQUENCES (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="20">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:48px;">
+    <div class="hero-text scramble" style="font-size:48px;">REAL CONSEQUENCES</div>
+    <div class="consequence-row" style="margin-top:20px;">
+      <div class="consequence-item">
+        <div class="red-sq"></div>
+        <div style="font-size:36px; font-weight:700;">BLOCK</div>
+        <div class="body-text text-muted">50% LAYOFFS</div>
+      </div>
+      <div class="consequence-item">
+        <div class="red-sq"></div>
+        <div style="font-size:36px; font-weight:700;">IT STOCKS</div>
+        <div class="body-text text-muted">DOWN 25-30%</div>
+      </div>
+      <div class="consequence-item">
+        <div class="red-sq"></div>
+        <div style="font-size:36px; font-weight:700;">INNOVATOR'S DILEMMA</div>
+        <div class="body-text text-muted">PLAYING OUT IN REAL-TIME</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 21: SECTION DIVIDER - ACT IV (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="21">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="align-items:flex-start;">
+    <div class="hero-xl scramble">ACT IV</div>
+    <div style="display:flex; align-items:center; gap:16px; margin-top:24px;">
+      <span class="red-sq"></span>
+      <span class="sub-text" style="letter-spacing:4px;">THE ECONOMICS</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 22: THE ABUNDANCE THESIS (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="22">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">THE ABUNDANCE THESIS</div>
+    <div class="chain" style="margin-top:32px;">
+      <span class="chain-item" style="font-size:22px;">REMOVE HUMANS FROM PROCESS</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="font-size:22px;">DEFLATION</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="font-size:22px;">GOODS CHEAPER</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="font-size:22px; color:var(--red);">ERA OF ABUNDANCE</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 23: AI VALUE CHAIN (BLACK) - CHAIN -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="23">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">THE AI VALUE CHAIN</div>
+    <div class="chain" style="margin-top:32px;">
+      <span class="chain-item" style="font-size:22px;">ENERGY</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="font-size:22px;">CHIPS</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="font-size:22px;">FABRICATORS</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="font-size:22px;">FRONTIER LABS</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="font-size:22px;">HYPERSCALERS</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="font-size:22px;">APP LAYER</span>
+      <span class="chain-arrow">&gt;</span>
+      <span class="chain-item" style="font-size:22px; color:var(--red);">DISTRIBUTION</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 24: WHERE VALUE LIVES (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="24">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">WHERE VALUE LIVES</div>
+    <div style="display:flex; flex-direction:column; gap:24px; margin-top:20px;">
+      <div class="body-text text-muted">NOT THE MODEL.</div>
+      <div style="display:flex; gap:60px;">
+        <div class="bullet-row"><span class="red-sq"></span><div style="font-size:28px; font-weight:700;">COMPUTE</div></div>
+        <div class="bullet-row"><span class="red-sq"></span><div style="font-size:28px; font-weight:700;">CONTEXT</div></div>
+        <div class="bullet-row"><span class="red-sq"></span><div style="font-size:28px; font-weight:700;">DISTRIBUTION</div></div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:16px; margin-top:20px;">
+      <span class="red-sq" style="margin-top:4px;"></span>
+      <span class="body-text">"AGENTS DON'T NEED UI."</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 25: SECTION DIVIDER - ACT V (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="25">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="align-items:flex-start;">
+    <div class="hero-xl scramble">ACT V</div>
+    <div style="display:flex; align-items:center; gap:16px; margin-top:24px;">
+      <span class="red-sq"></span>
+      <span class="sub-text" style="letter-spacing:4px;">FROM THE INSIDE</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 26: MICROSOFT'S AI JOURNEY (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="26">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">MICROSOFT'S AI JOURNEY</div>
+    <div style="display:flex; flex-direction:column; gap:28px; margin-top:20px;">
+      <div class="bullet-row">
+        <span class="red-sq"></span>
+        <div>
+          <div style="font-size:22px; font-weight:700;">TOP-DOWN FAILED</div>
+          <div class="body-text text-muted">MANDATES WITHOUT CONTEXT DON'T STICK</div>
+        </div>
+      </div>
+      <div class="bullet-row">
+        <span class="red-sq"></span>
+        <div>
+          <div style="font-size:22px; font-weight:700;">BOTTOM-UP WORKED</div>
+          <div class="body-text text-muted">TEAMS THAT FOUND THEIR OWN USE CASES WON</div>
+        </div>
+      </div>
+      <div class="bullet-row">
+        <span class="red-sq"></span>
+        <div>
+          <div style="font-size:22px; font-weight:700;">UNLIMITED COMPUTE + INCENTIVE ALIGNMENT</div>
+          <div class="body-text text-muted">= 20X PRODUCTIVITY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 27: PROJECT NEBULA (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="27">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:56px;">PROJECT NEBULA</div>
+    <div style="display:flex; gap:80px; margin-top:20px;">
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="font-size:48px; font-weight:700; color:var(--red);" class="count-up" data-target="100" data-suffix="">0</div>
+        <div class="label-text">PMS</div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="font-size:48px; font-weight:700; color:var(--red);" class="count-up" data-target="600" data-suffix="">0</div>
+        <div class="label-text">ENGINEERS</div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="font-size:48px; font-weight:700; color:var(--red);" class="count-up" data-target="50" data-suffix="">0</div>
+        <div class="label-text">DESIGNERS</div>
+      </div>
+    </div>
+    <div class="body-text mt-40">WEEKLY AI UPSKILLING. "TRIBAL KNOWLEDGE."</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 28: THE LEARNING (BLACK) - QUOTE -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="28">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2">
+    <div style="display:flex; align-items:flex-start; gap:24px;">
+      <span class="red-sq" style="margin-top:14px;"></span>
+      <div class="quote-text scramble" style="max-width:1400px;">"THE MOST VALUABLE MANAGERS WILL BE THE ONES WHO FIGURE OUT HOW TO DIFFUSE AI THROUGHOUT THE COMPANY."</div>
+    </div>
+    <div class="label-text mt-60">THE LEARNING</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 29: SECTION DIVIDER - ACT VI (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="29">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="align-items:flex-start;">
+    <div class="hero-xl scramble">ACT VI</div>
+    <div style="display:flex; align-items:center; gap:16px; margin-top:24px;">
+      <span class="red-sq"></span>
+      <span class="sub-text" style="letter-spacing:4px;">THE NEW PLAYBOOK</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 30: AI ORGANIZATIONS (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="30">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">AI ORGANIZATIONS</div>
+    <div style="display:flex; flex-direction:column; gap:24px; margin-top:20px;">
+      <div class="body-text" style="font-size:22px; max-width:1400px;">DESIGN WORKFLOWS FOR AGENTS LIKE MANAGERS DESIGNED THEM FOR HUMANS.</div>
+      <div style="display:flex; flex-direction:column; gap:16px; margin-top:20px;">
+        <div class="bullet-row">
+          <span class="red-sq"></span>
+          <div class="body-text">DEFINE THE GOAL AND CONSTRAINTS</div>
+        </div>
+        <div class="bullet-row">
+          <span class="red-sq"></span>
+          <div class="body-text">BREAK INTO TASKS AND ASSIGN AGENTS</div>
+        </div>
+        <div class="bullet-row">
+          <span class="red-sq"></span>
+          <div class="body-text">SET EVALUATION CRITERIA</div>
+        </div>
+        <div class="bullet-row">
+          <span class="red-sq"></span>
+          <div class="body-text">ITERATE BASED ON OUTPUT QUALITY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 31: TWO SKILLS (WHITE) -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="31">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">THE TWO SKILLS THAT MATTER</div>
+    <div class="two-blocks" style="margin-top:20px;">
+      <div class="block-item" style="border-right:1px solid rgba(0,0,0,0.08); padding-right:80px;">
+        <div style="font-size:72px; font-weight:700; color:var(--red); line-height:1;">01</div>
+        <div style="font-size:36px; font-weight:700; margin-top:8px;">PROMPTING</div>
+        <div class="body-text text-muted mt-20">INSTRUCT PRECISELY. GIVE CONTEXT. BE EXPLICIT ABOUT WHAT GOOD LOOKS LIKE.</div>
+      </div>
+      <div class="block-item">
+        <div style="font-size:72px; font-weight:700; color:var(--red); line-height:1;">02</div>
+        <div style="font-size:36px; font-weight:700; margin-top:8px;">EVALUATIONS</div>
+        <div class="body-text text-muted mt-20">MEASURE AI QUALITY. BUILD RUBRICS. KNOW WHEN OUTPUT IS GOOD ENOUGH.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 32: AGE OF THE POLYMATH (BLACK) -->
+<!-- ============================================================ -->
+<div class="slide black-slide" data-slide="32">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:40px;">
+    <div class="hero-text scramble" style="font-size:48px;">THE AGE OF THE POLYMATH</div>
+    <div style="display:flex; align-items:flex-start; gap:24px; margin-top:20px;">
+      <span class="red-sq" style="margin-top:6px;"></span>
+      <div class="sub-text" style="max-width:1400px;">"EVERYONE IS BECOMING A GENERALIST."</div>
+    </div>
+    <div class="body-text text-muted mt-40">THE ONE-PERSON BILLION-DOLLAR STARTUP.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 33: WHAT YOU SHOULD DO (WHITE) - 2x2 GRID -->
+<!-- ============================================================ -->
+<div class="slide white-slide" data-slide="33">
+  <div class="grid-overlay"></div>
+  <div class="flex-col z2" style="gap:32px;">
+    <div class="hero-text scramble" style="font-size:48px;">WHAT YOU SHOULD DO</div>
+    <div class="grid-2x2" style="margin-top:20px;">
+      <div class="grid-cell">
+        <div style="display:flex; align-items:center; gap:12px;"><span class="red-sq"></span><span style="font-size:24px; font-weight:700;">AI BUDGET</span></div>
+        <div class="body-text text-muted">ALLOCATE TIME AND MONEY TO AI TOOLS. TREAT IT AS INFRASTRUCTURE.</div>
+      </div>
+      <div class="grid-cell">
+        <div style="display:flex; align-items:center; gap:12px;"><span class="red-sq"></span><span style="font-size:24px; font-weight:700;">BUILD AI FLUENCY</span></div>
+        <div class="body-text text-muted">USE AI DAILY. BREAK THINGS. LEARN THE EDGES.</div>
+      </div>
+      <div class="grid-cell">
+        <div style="display:flex; align-items:center; gap:12px;"><span class="red-sq"></span><span style="font-size:24px; font-weight:700;">THINK IN WORKFLOWS</span></div>
+        <div class="body-text text-muted">MAP YOUR PROCESSES. FIND WHERE AGENTS SLOT IN.</div>
+      </div>
+      <div class="grid-cell">
+        <div style="display:flex; align-items:center; gap:12px;"><span class="red-sq"></span><span style="font-size:24px; font-weight:700;">BECOME A GENERALIST</span></div>
+        <div class="body-text text-muted">BREADTH BEATS DEPTH. LEARN EVERYTHING.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 34: CLOSING - SPLIT -->
+<!-- ============================================================ -->
+<div class="slide split-slide" data-slide="34" style="padding:0;">
+  <div class="grid-overlay"></div>
+  <div class="split-left">
+    <div class="hero-text scramble" style="font-size:80px; text-align:right;">GO BUILD</div>
+  </div>
+  <div class="split-right">
+    <div class="hero-text scramble" style="font-size:80px; text-align:left;">SOMETHING.</div>
+  </div>
+  <div class="split-center-dot"></div>
+  <div style="position:absolute; bottom:100px; left:50%; transform:translateX(-50%); text-align:center; z-index:5;">
+    <div class="label-text">RETURN TO THE ANXIETY. THEN CHANNEL IT.</div>
+  </div>
+</div>
+
+</div><!-- END DECK -->
+
+<script>
+// ============================================================
+// SLIDE ENGINE
+// ============================================================
+const TOTAL = 34;
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const progressBar = document.getElementById('progress-bar');
+const counterEl = document.getElementById('slide-counter');
+const deck = document.getElementById('deck');
+
+function updateScale() {
+  const sx = window.innerWidth / 1920;
+  const sy = window.innerHeight / 1080;
+  const s = Math.min(sx, sy);
+  deck.style.transform = 'scale(' + s + ')';
+  deck.style.width = '1920px';
+  deck.style.height = '1080px';
+}
+window.addEventListener('resize', updateScale);
+updateScale();
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function goTo(idx) {
+  if (idx < 0 || idx >= TOTAL) return;
+  // Hide ALL slides
+  for (var i = 0; i < slides.length; i++) {
+    slides[i].classList.remove('active');
+    slides[i].style.display = 'none';
+  }
+  current = idx;
+  var sl = slides[current];
+  sl.classList.add('active');
+  sl.style.display = 'flex';
+  // Progress bar
+  progressBar.style.width = ((current + 1) / TOTAL * 100) + '%';
+  // Counter
+  counterEl.textContent = pad(current + 1) + '/' + TOTAL;
+  // Trigger animations (replay every time)
+  triggerAnimations(sl);
+}
+
+function next() { goTo(current + 1); }
+function prev() { goTo(current - 1); }
+
+// ============================================================
+// KEYBOARD / TOUCH
+// ============================================================
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'PageDown') {
+    e.preventDefault(); next();
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault(); prev();
+  } else if (e.key === 'f' || e.key === 'F') {
+    e.preventDefault(); toggleFullscreen();
+  } else if (e.key === 'Escape') {
+    if (document.fullscreenElement) document.exitFullscreen();
+  }
+});
+
+var touchStartX = 0;
+document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', function(e) {
+  var dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+});
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// ============================================================
+// CUSTOM CURSOR
+// ============================================================
+var cursorEl = document.getElementById('cursor');
+document.addEventListener('mousemove', function(e) {
+  cursorEl.style.left = e.clientX + 'px';
+  cursorEl.style.top = e.clientY + 'px';
+});
+
+// ============================================================
+// TEXT SCRAMBLE ANIMATION
+// ============================================================
+var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&!?';
+
+function scrambleText(el) {
+  var original = el.getAttribute('data-original');
+  if (!original) {
+    original = el.textContent;
+    el.setAttribute('data-original', original);
+  }
+  var len = original.length;
+  var duration = 1200;
+  var start = performance.now();
+
+  function frame(now) {
+    var progress = Math.min((now - start) / duration, 1);
+    var resolved = Math.floor(progress * len);
+    var output = '';
+    for (var i = 0; i < len; i++) {
+      if (original[i] === ' ') {
+        output += ' ';
+      } else if (original[i] === '"') {
+        output += '"';
+      } else if (i < resolved) {
+        output += original[i];
+      } else {
+        output += CHARS[Math.floor(Math.random() * CHARS.length)];
+      }
+    }
+    el.textContent = output;
+    if (progress < 1) {
+      requestAnimationFrame(frame);
+    } else {
+      el.textContent = original;
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+// ============================================================
+// COUNT-UP ANIMATION
+// ============================================================
+function countUp(el) {
+  var target = parseInt(el.getAttribute('data-target'));
+  var prefix = el.getAttribute('data-prefix') || '';
+  var suffix = el.getAttribute('data-suffix') || '';
+  var duration = 1500;
+  var start = performance.now();
+
+  function frame(now) {
+    var progress = Math.min((now - start) / duration, 1);
+    // Ease-out cubic
+    var eased = 1 - Math.pow(1 - progress, 3);
+    var val = Math.round(eased * target);
+    el.textContent = prefix + val + suffix;
+    if (progress < 1) requestAnimationFrame(frame);
+    else el.textContent = prefix + target + suffix;
+  }
+  requestAnimationFrame(frame);
+}
+
+// ============================================================
+// BAR FILL ANIMATION
+// ============================================================
+function animateBars(slide) {
+  var fills = slide.querySelectorAll('.bar-fill');
+  fills.forEach(function(fill) {
+    var w = fill.getAttribute('data-width');
+    fill.style.width = '0%';
+    fill.classList.remove('active');
+    // Force reflow
+    void fill.offsetWidth;
+    fill.classList.add('active');
+    requestAnimationFrame(function() {
+      fill.style.width = w + '%';
+    });
+  });
+}
+
+// ============================================================
+// TRIGGER ALL ANIMATIONS ON SLIDE (replays every visit)
+// ============================================================
+function triggerAnimations(slide) {
+  // Scramble text
+  slide.querySelectorAll('.scramble').forEach(function(el) {
+    scrambleText(el);
+  });
+  // Count-up numbers
+  slide.querySelectorAll('.count-up').forEach(function(el) {
+    countUp(el);
+  });
+  // Bar fills
+  animateBars(slide);
+}
+
+// ============================================================
+// INIT: store original text for scramble elements
+// ============================================================
+document.querySelectorAll('.scramble').forEach(function(el) {
+  el.setAttribute('data-original', el.textContent);
+});
+
+// Initial slide
+goTo(0);
+</script>
+</body>
+</html>

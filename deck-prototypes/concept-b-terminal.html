@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & The New Management Playbook | Concept B: Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #050505;
+  --surface: #0E0E0E;
+  --border: #1A1A1A;
+  --text: #E0E0E0;
+  --dim: #666;
+  --muted: #444;
+  --accent: #00D4AA;
+  --accent-dim: rgba(0,212,170,0.1);
+  --accent-glow: rgba(0,212,170,0.3);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  cursor: default;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Canvas (particle network) ── */
+#particleCanvas {
+  position: fixed; inset: 0;
+  z-index: 0;
+  width: 100%; height: 100%;
+}
+
+/* ── Scanline overlay ── */
+.scanlines {
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 2px,
+    rgba(255,255,255,0.008) 2px,
+    rgba(255,255,255,0.008) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Viewport scaler ── */
+#viewport {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1;
+}
+
+#scaler {
+  width: 1920px; height: 1080px;
+  position: relative;
+  transform-origin: center center;
+}
+
+/* ── Slides ── */
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 120px 160px;
+  opacity: 0;
+  transform: translateX(60px);
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  z-index: 5;
+}
+
+.slide.exit-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  pointer-events: none;
+}
+
+/* ── Progress bar ── */
+#progress {
+  position: fixed; bottom: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow), 0 0 4px var(--accent);
+  z-index: 100;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Counter ── */
+#counter {
+  position: fixed; bottom: 28px; right: 48px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px; font-weight: 400;
+  color: var(--muted);
+  z-index: 100;
+  letter-spacing: 0.05em;
+}
+
+/* ── Typography ── */
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+.prompt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--accent);
+  opacity: 0.7;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.headline {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.headline .cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.85em;
+  background: var(--accent);
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.accent-line {
+  width: 48px; height: 2px;
+  background: var(--accent);
+  margin-top: 32px;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.5s;
+}
+.slide.active .accent-line { opacity: 1; }
+
+/* ── Staggered line-reveal ── */
+.line-reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: calc(var(--delay) * 1ms);
+}
+.slide.active .line-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Section slides (centered) ── */
+.slide-section {
+  align-items: flex-start;
+}
+
+.section-headline {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ── Blockquote style ── */
+.blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 24px 0 24px 40px;
+  margin: 16px 0;
+  max-width: 900px;
+}
+.blockquote p {
+  font-family: 'Inter', sans-serif;
+  font-size: 34px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.45;
+  color: #fff;
+}
+.comment {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 32px;
+}
+
+/* ── Content items with > prefix ── */
+.content-item {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  color: var(--dim);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.content-item .prefix {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  opacity: 0.7;
+  font-size: 16px;
+  margin-right: 12px;
+}
+.content-item .label {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── Body text ── */
+.body-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  color: var(--dim);
+  line-height: 1.7;
+  max-width: 900px;
+  margin-top: 24px;
+}
+
+/* ── Insight / callout box ── */
+.insight-box {
+  margin-top: 40px;
+  border: 1px solid var(--accent);
+  background: var(--accent-dim);
+  padding: 20px 28px;
+  max-width: 900px;
+  border-radius: 2px;
+}
+.insight-box p {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ── Bar chart ── */
+.bar-chart { max-width: 800px; }
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition-delay: calc(var(--delay) * 1ms);
+}
+.slide.active .bar-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--dim);
+  width: 140px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.bar-track {
+  flex: 1;
+  height: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  border-radius: 1px;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--delay) * 1ms);
+}
+.bar-fill.dashed {
+  background: transparent;
+  border: 1px dashed var(--accent);
+  opacity: 0.4;
+}
+
+.slide.active .bar-fill { width: var(--target); }
+
+.bar-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  width: 60px;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 16px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  transition-delay: calc((var(--delay) + 800) * 1ms);
+}
+.slide.active .bar-value { opacity: 1; }
+
+/* ── Terminal table ── */
+.terminal-table {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  width: 100%;
+  max-width: 820px;
+}
+
+.terminal-table .t-header {
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.terminal-table .t-sep {
+  color: var(--muted);
+  user-select: none;
+}
+
+.terminal-table .t-row {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition-delay: calc(var(--delay) * 1ms);
+  line-height: 2.2;
+}
+.slide.active .terminal-table .t-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.t-row.highlighted {
+  background: var(--accent-dim);
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+  margin-left: -15px;
+  border-radius: 0 2px 2px 0;
+}
+
+.t-row .status-active { color: var(--accent); font-weight: 500; }
+.t-row .status-complete { color: var(--dim); }
+.t-row .status-emerging { color: var(--dim); font-style: italic; }
+.t-row .status-unknown { color: var(--muted); }
+
+/* ── Card grid ── */
+.card-grid {
+  display: grid;
+  gap: 24px;
+  max-width: 1000px;
+}
+.card-grid-2 { grid-template-columns: 1fr 1fr; }
+.card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.card-grid-2x2 { grid-template-columns: 1fr 1fr; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 36px;
+  border-radius: 2px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: calc(var(--delay) * 1ms);
+}
+.slide.active .card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card .card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.card .card-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.card .card-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.card .card-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--dim);
+  line-height: 1.6;
+}
+
+/* ── Numbered items ── */
+.numbered-item {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+.numbered-item .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent);
+  width: 40px;
+  flex-shrink: 0;
+}
+.numbered-item .text {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.numbered-item .sub {
+  font-size: 16px;
+  color: var(--dim);
+  margin-top: 4px;
+}
+
+/* ── Flow / chain ── */
+.flow-chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 32px;
+  max-width: 1100px;
+}
+.flow-node {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 10px 20px;
+  border-radius: 2px;
+}
+.flow-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  color: var(--accent);
+}
+
+/* ── Big number ── */
+.big-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 120px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+/* ── Quote blocks side by side ── */
+.quote-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1100px;
+}
+.quote-block {
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  padding: 32px;
+  background: var(--accent-dim);
+}
+.quote-block .qb-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-style: italic;
+  color: #fff;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.quote-block .qb-attr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+/* ── Slide 1 specific ── */
+.s1-headline { font-size: 58px; }
+.s1-meta { margin-top: 40px; }
+.s1-meta .line-reveal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--dim);
+  line-height: 2;
+}
+.s1-meta .line-reveal .label { color: var(--text); font-weight: 400; }
+
+/* ── Slide 18 (cost) ── */
+.slide-dramatic {
+  align-items: flex-start;
+}
+.slide-dramatic .headline {
+  font-size: 56px;
+}
+
+/* ── Slide 34 (closing centered) ── */
+.slide-closing {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+.closing-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(0,212,170,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.closing-pre {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--dim);
+  margin-bottom: 40px;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.3s;
+}
+.slide.active .closing-pre { opacity: 1; }
+.closing-headline {
+  font-size: 72px;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+}
+.closing-accent {
+  width: 48px; height: 2px;
+  background: var(--accent);
+  margin: 32px auto 0;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.6s;
+}
+.slide.active .closing-accent { opacity: 1; }
+.closing-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--dim);
+  margin-top: 24px;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.9s;
+}
+.slide.active .closing-subtitle { opacity: 1; }
+
+/* ── Step flow (vertical) ── */
+.step-flow {
+  max-width: 900px;
+}
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+.step-item .step-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  width: 36px;
+  flex-shrink: 0;
+  padding-top: 3px;
+}
+.step-item .step-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.step-item .step-sub {
+  font-size: 16px;
+  color: var(--dim);
+  margin-top: 4px;
+  display: block;
+}
+
+/* ── Agent flow (horizontal) ── */
+.agent-flow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+  max-width: 900px;
+}
+.agent-node {
+  text-align: center;
+  flex: 1;
+}
+.agent-node .an-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.agent-node .an-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--dim);
+}
+.agent-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ── Large stat ── */
+.stat-row {
+  display: flex;
+  gap: 60px;
+  margin-top: 32px;
+  margin-bottom: 24px;
+}
+.stat-item .stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.stat-item .stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--dim);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Teal value chain horizontal ── */
+.value-chain {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  max-width: 1200px;
+}
+.vc-node {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 12px 18px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.vc-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  padding: 0 4px;
+}
+
+/* ── 20x big display ── */
+.big-teal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin: 24px 0;
+  text-shadow: 0 0 40px rgba(0,212,170,0.2);
+}
+</style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+<div class="scanlines"></div>
+
+<div id="viewport">
+  <div id="scaler">
+
+    <!-- ═══════════ SLIDE 1: Title ═══════════ -->
+    <div class="slide" data-slide="1">
+      <div class="prompt" data-scramble data-text="iisc_doms_guest_lecture" style="margin-bottom: 40px;"></div>
+      <h1 class="headline s1-headline" data-typewrite data-text="AI & The New Management Playbook"><span class="cursor"></span></h1>
+      <div class="accent-line"></div>
+      <div class="s1-meta">
+        <div class="line-reveal" style="--delay:400"><span class="label">> Ashish Muralidharan</span></div>
+        <div class="line-reveal" style="--delay:550">> Product Manager, Microsoft</div>
+        <div class="line-reveal" style="--delay:700">> IISc DoMS, March 6, 2026</div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 2: Opening Quote ═══════════ -->
+    <div class="slide" data-slide="2">
+      <div class="prompt" data-scramble data-text="THE_OPENING"></div>
+      <div class="blockquote line-reveal" style="--delay:200">
+        <p>"How many of you feel anxious about your future, your career, your relevance, because of AI?"</p>
+      </div>
+      <div class="comment line-reveal" style="--delay:500">// show_of_hands</div>
+    </div>
+
+    <!-- ═══════════ SLIDE 3: Section - ACT I ═══════════ -->
+    <div class="slide slide-section" data-slide="3">
+      <div class="prompt" data-scramble data-text="ACT_I"></div>
+      <h1 class="headline section-headline" data-typewrite data-text="THE TENSION"><span class="cursor"></span></h1>
+      <div class="accent-line"></div>
+    </div>
+
+    <!-- ═══════════ SLIDE 4: VUCA World ═══════════ -->
+    <div class="slide" data-slide="4">
+      <div class="prompt" data-scramble data-text="VUCA_WORLD"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="A one-way street upwards"><span class="cursor"></span></h2>
+      <div style="margin-top:40px;">
+        <div class="content-item line-reveal" style="--delay:400"><span class="prefix">></span> <span class="label">Volatility</span> -- change is faster than ever</div>
+        <div class="content-item line-reveal" style="--delay:550"><span class="prefix">></span> <span class="label">Uncertainty</span> -- outcomes are unpredictable</div>
+        <div class="content-item line-reveal" style="--delay:700"><span class="prefix">></span> <span class="label">Complexity</span> -- interconnected systems everywhere</div>
+        <div class="content-item line-reveal" style="--delay:850"><span class="prefix">></span> <span class="label">Ambiguity</span> -- the rules keep changing</div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 5: Pattern of Disruption ═══════════ -->
+    <div class="slide" data-slide="5">
+      <div class="prompt" data-scramble data-text="PATTERN_OF_DISRUPTION"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Technology resets the cycle"><span class="cursor"></span></h2>
+      <div style="margin-top:40px;">
+        <div class="numbered-item line-reveal" style="--delay:400">
+          <div class="num">01</div>
+          <div><div class="text">Shipping containers</div><div class="sub">Globalized trade, displaced dockworkers</div></div>
+        </div>
+        <div class="numbered-item line-reveal" style="--delay:600">
+          <div class="num">02</div>
+          <div><div class="text">Industrial Revolution</div><div class="sub">Mechanized production, displaced craftsmen</div></div>
+        </div>
+        <div class="numbered-item line-reveal" style="--delay:800">
+          <div class="num">03</div>
+          <div><div class="text">Information Technology</div><div class="sub">Automated operations, displaced middle management</div></div>
+        </div>
+        <div class="numbered-item line-reveal" style="--delay:1000">
+          <div class="num">04</div>
+          <div><div class="text">Artificial Intelligence</div><div class="sub">Cognitive automation, displacing... everyone?</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 6: Economic Equation ═══════════ -->
+    <div class="slide" data-slide="6">
+      <div class="prompt" data-scramble data-text="ECONOMIC_EQUATION"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Land, Labor, Capital, Technology"><span class="cursor"></span></h2>
+      <div class="body-text line-reveal" style="--delay:300">
+        The four factors of production. For centuries, technology augmented labor. It made workers more productive, more valuable. Every previous wave created more jobs than it destroyed.
+      </div>
+      <div class="insight-box line-reveal" style="--delay:600">
+        <p>Technology is fundamentally replacing labor. Not augmenting it. Replacing it.</p>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 7: Section - ACT II ═══════════ -->
+    <div class="slide slide-section" data-slide="7">
+      <div class="prompt" data-scramble data-text="ACT_II"></div>
+      <h1 class="headline section-headline" data-typewrite data-text="THE PATTERN"><span class="cursor"></span></h1>
+      <div class="accent-line"></div>
+    </div>
+
+    <!-- ═══════════ SLIDE 8: Tech vs Labor ═══════════ -->
+    <div class="slide" data-slide="8">
+      <div class="prompt" data-scramble data-text="TECH_VS_LABOR"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="The same script, every cycle"><span class="cursor"></span></h2>
+      <div class="step-flow" style="margin-top:40px;">
+        <div class="step-item line-reveal" style="--delay:400">
+          <div class="step-num">01</div>
+          <div class="step-text">New technology arrives<span class="step-sub">Cheaper, faster, tireless</span></div>
+        </div>
+        <div class="step-item line-reveal" style="--delay:600">
+          <div class="step-num">02</div>
+          <div class="step-text">Physical labor gets displaced first<span class="step-sub">Machines replace hands</span></div>
+        </div>
+        <div class="step-item line-reveal" style="--delay:800">
+          <div class="step-num">03</div>
+          <div class="step-text">Operational labor follows<span class="step-sub">Software replaces process</span></div>
+        </div>
+        <div class="step-item line-reveal" style="--delay:1000">
+          <div class="step-num">04</div>
+          <div class="step-text">Intellectual labor is next<span class="step-sub">AI replaces thinking</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 9: Automation Ladder (Bars) ═══════════ -->
+    <div class="slide" data-slide="9">
+      <div class="prompt" data-scramble data-text="AUTOMATION_LADDER"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Running out of rungs"><span class="cursor"></span></h2>
+      <div class="bar-chart" style="margin-top:48px;">
+        <div class="bar-item" style="--delay:400">
+          <div class="bar-label">Physical</div>
+          <div class="bar-track"><div class="bar-fill" style="--target:95%; --delay:600;"></div></div>
+          <div class="bar-value" style="--delay:600">95%</div>
+        </div>
+        <div class="bar-item" style="--delay:600">
+          <div class="bar-label">Operational</div>
+          <div class="bar-track"><div class="bar-fill" style="--target:72%; --delay:800; opacity:0.8;"></div></div>
+          <div class="bar-value" style="--delay:800">72%</div>
+        </div>
+        <div class="bar-item" style="--delay:800">
+          <div class="bar-label">Intellectual</div>
+          <div class="bar-track"><div class="bar-fill" style="--target:45%; --delay:1000; opacity:0.6;"></div></div>
+          <div class="bar-value" style="--delay:1000">45%</div>
+        </div>
+        <div class="bar-item" style="--delay:1000">
+          <div class="bar-label">???</div>
+          <div class="bar-track"><div class="bar-fill dashed" style="--target:15%; --delay:1200;"></div></div>
+          <div class="bar-value" style="--delay:1200">15%</div>
+        </div>
+      </div>
+      <div class="insight-box line-reveal" style="--delay:1400">
+        <p>We automated muscle. Then process. Now cognition. The ladder is running out of rungs.</p>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 10: The Ceiling Quote ═══════════ -->
+    <div class="slide" data-slide="10">
+      <div class="prompt" data-scramble data-text="THE_CEILING"></div>
+      <div class="blockquote line-reveal" style="--delay:200">
+        <p>"If you don't need intellectual labor anymore, what's left?"</p>
+      </div>
+      <div class="comment line-reveal" style="--delay:500">// the_uncomfortable_truth</div>
+    </div>
+
+    <!-- ═══════════ SLIDE 11: Physical Frontier ═══════════ -->
+    <div class="slide" data-slide="11">
+      <div class="prompt" data-scramble data-text="PHYSICAL_FRONTIER"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="AI gets a body"><span class="cursor"></span></h2>
+      <div style="margin-top:40px;">
+        <div class="content-item line-reveal" style="--delay:400"><span class="prefix">></span> <span class="label">Tesla Optimus</span> -- humanoid robots in factories by 2026</div>
+        <div class="content-item line-reveal" style="--delay:600"><span class="prefix">></span> <span class="label">Unitree</span> -- $16,000 general-purpose humanoid</div>
+        <div class="content-item line-reveal" style="--delay:800"><span class="prefix">></span> <span class="label">Hyundai / Boston Dynamics</span> -- Atlas doing warehouse logistics</div>
+      </div>
+      <div class="body-text line-reveal" style="--delay:1000; color: var(--muted); font-size:18px; margin-top:32px;">
+        The last safe harbor was "at least robots can't do physical work well." That's no longer true. Complete replacement across every dimension of labor is on the table.
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 12: Five Levels of AGI (Table) ═══════════ -->
+    <div class="slide" data-slide="12">
+      <div class="prompt" data-scramble data-text="WHERE_WE_ARE"></div>
+      <h2 class="headline" style="font-size:36px; margin-bottom:48px;" data-typewrite data-text="The Five Levels of AGI"><span class="cursor"></span></h2>
+      <div class="terminal-table">
+        <div class="t-header t-row" style="--delay:400">LVL &nbsp;|&nbsp; CAPABILITY &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp; STATUS</div>
+        <div class="t-sep t-row" style="--delay:450">----+----------------------------+----------</div>
+        <div class="t-row" style="--delay:600"> 01 &nbsp;|&nbsp; Conversational AI &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp; <span class="status-complete">COMPLETE</span></div>
+        <div class="t-row" style="--delay:800"> 02 &nbsp;|&nbsp; Reasoning &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp; <span class="status-complete">COMPLETE</span></div>
+        <div class="t-row highlighted" style="--delay:1000"> 03 &nbsp;|&nbsp; Agents &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp; <span class="status-active">ACTIVE</span></div>
+        <div class="t-row" style="--delay:1200"> 04 &nbsp;|&nbsp; AI Organizations &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp; <span class="status-emerging">EMERGING</span></div>
+        <div class="t-row" style="--delay:1400"> 05 &nbsp;|&nbsp; AGI &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp; <span class="status-unknown">UNKNOWN</span></div>
+      </div>
+      <div style="margin-top:40px;">
+        <div class="line-reveal" style="--delay:1600; font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--accent);">> we_are_at_level_3</div>
+        <div class="line-reveal" style="--delay:1750; color:var(--dim); margin-top:8px; font-size:18px;">And that's already changed everything.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 13: What is an Agent? ═══════════ -->
+    <div class="slide" data-slide="13">
+      <div class="prompt" data-scramble data-text="AGENTS"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="What is an agent?"><span class="cursor"></span></h2>
+      <div class="body-text line-reveal" style="--delay:300">
+        A system that can pursue a goal by reasoning, planning, using tools, and continuously learning. Not a chatbot. Not autocomplete. A digital worker.
+      </div>
+      <div class="agent-flow line-reveal" style="--delay:600">
+        <div class="agent-node">
+          <div class="an-label">Signal</div>
+          <div class="an-desc">Perceives input</div>
+        </div>
+        <div class="agent-arrow">></div>
+        <div class="agent-node">
+          <div class="an-label">Cognition</div>
+          <div class="an-desc">Reasons & plans</div>
+        </div>
+        <div class="agent-arrow">></div>
+        <div class="agent-node">
+          <div class="an-label">Action</div>
+          <div class="an-desc">Executes with tools</div>
+        </div>
+        <div class="agent-arrow">></div>
+        <div class="agent-node">
+          <div class="an-label">Closure</div>
+          <div class="an-desc">Completes the goal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 14: Section - ACT III ═══════════ -->
+    <div class="slide slide-section" data-slide="14">
+      <div class="prompt" data-scramble data-text="ACT_III"></div>
+      <h1 class="headline section-headline" data-typewrite data-text="GROUND ZERO: SOFTWARE"><span class="cursor"></span></h1>
+      <div class="accent-line"></div>
+    </div>
+
+    <!-- ═══════════ SLIDE 15: Why Software First ═══════════ -->
+    <div class="slide" data-slide="15">
+      <div class="prompt" data-scramble data-text="WHY_SOFTWARE_FIRST"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="The perfect storm"><span class="cursor"></span></h2>
+      <div class="card-grid card-grid-3" style="margin-top:40px;">
+        <div class="card" style="--delay:400">
+          <div class="card-label">> 100% Digital</div>
+          <div class="card-desc">No atoms. No shipping. No factories. The entire medium is bits, which AI manipulates natively.</div>
+        </div>
+        <div class="card" style="--delay:600">
+          <div class="card-label">> Signal to Closure</div>
+          <div class="card-desc">Every step from idea to deployed product can be automated. Spec, code, test, ship. End to end.</div>
+        </div>
+        <div class="card" style="--delay:800">
+          <div class="card-label">> Rich Training Data</div>
+          <div class="card-desc">Decades of open-source code. Stack Overflow. GitHub. The models learned from the best engineers alive.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 16: The New Reality ═══════════ -->
+    <div class="slide" data-slide="16">
+      <div class="prompt" data-scramble data-text="THE_NEW_REALITY"></div>
+      <div class="blockquote line-reveal" style="--delay:200">
+        <p>"Single engineers spin up 20 agents that build the entire product end-to-end. Design, code, test, deploy. One person, twenty machines."</p>
+      </div>
+      <div class="comment line-reveal" style="--delay:500">// happening_right_now</div>
+    </div>
+
+    <!-- ═══════════ SLIDE 17: Voices from the Field ═══════════ -->
+    <div class="slide" data-slide="17">
+      <div class="prompt" data-scramble data-text="VOICES_FROM_FIELD"></div>
+      <h2 class="headline" style="font-size:36px; margin-bottom:40px;" data-typewrite data-text="What the builders are saying"><span class="cursor"></span></h2>
+      <div class="quote-pair">
+        <div class="quote-block line-reveal" style="--delay:400">
+          <div class="qb-text">"The hottest new programming language is English. This is what I call vibe coding."</div>
+          <div class="qb-attr">-- Andrej Karpathy, ex-Tesla AI</div>
+        </div>
+        <div class="quote-block line-reveal" style="--delay:600">
+          <div class="qb-text">"Product management is vibe coding. Engineering is prompt engineering. The entire stack is collapsing."</div>
+          <div class="qb-attr">-- Naval Ravikant</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 18: Cost to Build ═══════════ -->
+    <div class="slide slide-dramatic" data-slide="18">
+      <div class="prompt" data-scramble data-text="THE_COST"></div>
+      <h2 class="headline" style="font-size:56px;" data-typewrite data-text="Cost to build: $0"><span class="cursor"></span></h2>
+      <div class="body-text line-reveal" style="--delay:600; margin-top:48px; color:var(--muted); font-size:22px; max-width:700px;">
+        The marginal cost of building software is converging to zero. What used to take a team of twenty and six months can now be done by one person in a weekend.
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 19: Distribution is Everything ═══════════ -->
+    <div class="slide" data-slide="19">
+      <div class="prompt" data-scramble data-text="NEW_BATTLE"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Distribution is everything"><span class="cursor"></span></h2>
+      <div class="body-text line-reveal" style="--delay:300">
+        When anyone can build anything, the bottleneck shifts. Building is table stakes. The new competitive advantage is getting your product in front of people.
+      </div>
+      <div class="body-text line-reveal" style="--delay:500; color:var(--muted); font-size:18px;">
+        Marketing. Sales. Community. Brand. Trust. The soft skills that engineers always dismissed are now the entire game. The new job for everyone has become marketing.
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 20: Real Consequences ═══════════ -->
+    <div class="slide" data-slide="20">
+      <div class="prompt" data-scramble data-text="REAL_CONSEQUENCES"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Already playing out"><span class="cursor"></span></h2>
+      <div style="margin-top:40px;">
+        <div class="content-item line-reveal" style="--delay:400"><span class="prefix">></span> <span class="label">Block (Square)</span> -- cut workforce by 50%, replaced with AI agents</div>
+        <div class="content-item line-reveal" style="--delay:600"><span class="prefix">></span> <span class="label">Indian IT stocks</span> -- down 25-30% as outsourcing model collapses</div>
+        <div class="content-item line-reveal" style="--delay:800"><span class="prefix">></span> <span class="label">Innovator's dilemma</span> -- incumbents can't cannibalize fast enough</div>
+      </div>
+      <div class="body-text line-reveal" style="--delay:1000; color:var(--muted); font-size:18px; margin-top:32px;">
+        This is not a future scenario. This is playing out in real-time, in public markets, right now.
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 21: Section - ACT IV ═══════════ -->
+    <div class="slide slide-section" data-slide="21">
+      <div class="prompt" data-scramble data-text="ACT_IV"></div>
+      <h1 class="headline section-headline" data-typewrite data-text="THE ECONOMICS"><span class="cursor"></span></h1>
+      <div class="accent-line"></div>
+    </div>
+
+    <!-- ═══════════ SLIDE 22: Abundance Thesis ═══════════ -->
+    <div class="slide" data-slide="22">
+      <div class="prompt" data-scramble data-text="ABUNDANCE_THESIS"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="What if things just get cheaper?"><span class="cursor"></span></h2>
+      <div class="flow-chain line-reveal" style="--delay:400">
+        <div class="flow-node">Remove humans from process</div>
+        <div class="flow-arrow">></div>
+        <div class="flow-node">Costs collapse</div>
+        <div class="flow-arrow">></div>
+        <div class="flow-node">Deflation</div>
+        <div class="flow-arrow">></div>
+        <div class="flow-node">Goods get cheaper</div>
+        <div class="flow-arrow">></div>
+        <div class="flow-node" style="border-color:var(--accent); color:var(--accent);">Era of abundance</div>
+      </div>
+      <div class="body-text line-reveal" style="--delay:700; margin-top:40px; color:var(--dim);">
+        The optimistic case: AI drives costs so low that basic goods and services become nearly free. Healthcare, education, legal advice, software, creative work. All deflate.
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 23: Value Chain ═══════════ -->
+    <div class="slide" data-slide="23">
+      <div class="prompt" data-scramble data-text="VALUE_CHAIN"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Where does value accrue?"><span class="cursor"></span></h2>
+      <div class="value-chain line-reveal" style="--delay:400">
+        <div class="vc-node">Energy</div>
+        <div class="vc-arrow">></div>
+        <div class="vc-node">Chips</div>
+        <div class="vc-arrow">></div>
+        <div class="vc-node">Fabricators</div>
+        <div class="vc-arrow">></div>
+        <div class="vc-node">Frontier Labs</div>
+        <div class="vc-arrow">></div>
+        <div class="vc-node">Hyperscalers</div>
+        <div class="vc-arrow">></div>
+        <div class="vc-node">App Layer</div>
+        <div class="vc-arrow">></div>
+        <div class="vc-node" style="border-color:var(--accent);">Distribution</div>
+      </div>
+      <div class="body-text line-reveal" style="--delay:700; margin-top:32px; color:var(--dim);">
+        Follow the money. Value concentrates at the infrastructure layer (compute) and the distribution layer (reach). The middle is getting squeezed.
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 24: Where Value Lives ═══════════ -->
+    <div class="slide" data-slide="24">
+      <div class="prompt" data-scramble data-text="WHERE_VALUE_LIVES"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Not in the model"><span class="cursor"></span></h2>
+      <div class="card-grid card-grid-3" style="margin-top:40px;">
+        <div class="card" style="--delay:400; border-top: 2px solid var(--accent);">
+          <div class="card-label">> Compute</div>
+          <div class="card-desc">Whoever owns the GPUs owns the bottleneck. NVIDIA, hyperscalers, sovereign compute. The new oil.</div>
+        </div>
+        <div class="card" style="--delay:600; border-top: 2px solid var(--accent);">
+          <div class="card-label">> Context</div>
+          <div class="card-desc">Proprietary data, domain expertise, unique workflows. What the model can't learn from the internet.</div>
+        </div>
+        <div class="card" style="--delay:800; border-top: 2px solid var(--accent);">
+          <div class="card-label">> Distribution</div>
+          <div class="card-desc">Agents don't need UI. They need APIs. The winners have existing channels and trust at scale.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 25: Section - ACT V ═══════════ -->
+    <div class="slide slide-section" data-slide="25">
+      <div class="prompt" data-scramble data-text="ACT_V"></div>
+      <h1 class="headline section-headline" data-typewrite data-text="FROM THE INSIDE"><span class="cursor"></span></h1>
+      <div class="accent-line"></div>
+    </div>
+
+    <!-- ═══════════ SLIDE 26: Microsoft AI ═══════════ -->
+    <div class="slide" data-slide="26">
+      <div class="prompt" data-scramble data-text="MICROSOFT_AI"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Top-down failed. Bottom-up worked."><span class="cursor"></span></h2>
+      <div class="body-text line-reveal" style="--delay:300;">
+        Mandating AI adoption from leadership didn't work. What worked: giving engineers unlimited compute, aligning incentives, and letting teams discover their own use cases.
+      </div>
+      <div class="big-teal line-reveal" style="--delay:600">20x</div>
+      <div class="body-text line-reveal" style="--delay:800; color:var(--muted); font-size:18px; margin-top:0;">
+        Productivity multiplier observed in teams that adopted AI-native workflows. Not incremental. Transformational.
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 27: Project Nebula ═══════════ -->
+    <div class="slide" data-slide="27">
+      <div class="prompt" data-scramble data-text="PROJECT_NEBULA"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Building the muscle"><span class="cursor"></span></h2>
+      <div class="stat-row line-reveal" style="--delay:400">
+        <div class="stat-item">
+          <div class="stat-val">100</div>
+          <div class="stat-label">PMs</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">600</div>
+          <div class="stat-label">Engineers</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">50</div>
+          <div class="stat-label">Designers</div>
+        </div>
+      </div>
+      <div class="body-text line-reveal" style="--delay:700">
+        Weekly AI upskilling. Shared prompt libraries. Tribal knowledge sessions where teams show what's working. Not a training program. A culture shift.
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 28: The Learning Quote ═══════════ -->
+    <div class="slide" data-slide="28">
+      <div class="prompt" data-scramble data-text="THE_LEARNING"></div>
+      <div class="blockquote line-reveal" style="--delay:200">
+        <p>"The most valuable managers will be the ones who figure out how to diffuse AI throughout the company. Not use it themselves, but make it unavoidable for everyone."</p>
+      </div>
+      <div class="comment line-reveal" style="--delay:500">// the_hiring_signal</div>
+    </div>
+
+    <!-- ═══════════ SLIDE 29: Section - ACT VI ═══════════ -->
+    <div class="slide slide-section" data-slide="29">
+      <div class="prompt" data-scramble data-text="ACT_VI"></div>
+      <h1 class="headline section-headline" data-typewrite data-text="THE NEW PLAYBOOK"><span class="cursor"></span></h1>
+      <div class="accent-line"></div>
+    </div>
+
+    <!-- ═══════════ SLIDE 30: AI Organizations ═══════════ -->
+    <div class="slide" data-slide="30">
+      <div class="prompt" data-scramble data-text="AI_ORGANIZATIONS"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Designing for agents"><span class="cursor"></span></h2>
+      <div class="body-text line-reveal" style="--delay:300">
+        For decades, managers designed workflows for humans: meetings, approvals, handoffs, status updates. Now design the same workflows for agents. Same intent, different executor.
+      </div>
+      <div class="body-text line-reveal" style="--delay:500; color:var(--muted); font-size:18px;">
+        Example: A PM workflow today involves writing a spec, getting reviews, filing tickets, tracking progress, writing release notes. Every single step can be an agent. Your job becomes orchestration.
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 31: Two Skills ═══════════ -->
+    <div class="slide" data-slide="31">
+      <div class="prompt" data-scramble data-text="TWO_SKILLS"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="What every manager needs"><span class="cursor"></span></h2>
+      <div class="card-grid card-grid-2" style="margin-top:40px; max-width:1100px;">
+        <div class="card" style="--delay:400; border-top: 2px solid var(--accent);">
+          <div class="card-num">01</div>
+          <div class="card-title">Prompting</div>
+          <div class="card-desc">The ability to instruct precisely. To decompose a goal into steps an AI can execute. To write specs so clear that a machine can't misunderstand them. This is the new management skill.</div>
+        </div>
+        <div class="card" style="--delay:650; border-top: 2px solid var(--accent);">
+          <div class="card-num">02</div>
+          <div class="card-title">Evaluations</div>
+          <div class="card-desc">The ability to measure AI quality. To know when output is good enough, when it's subtly wrong, when it's confidently hallucinating. Judgment is the irreplaceable human skill.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 32: Age of the Polymath ═══════════ -->
+    <div class="slide" data-slide="32">
+      <div class="prompt" data-scramble data-text="AGE_OF_POLYMATH"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Everyone becomes a generalist"><span class="cursor"></span></h2>
+      <div class="body-text line-reveal" style="--delay:300">
+        When AI handles the specialist work, the premium shifts to people who can connect dots across domains. Design + engineering + business + data. The polymath era is here.
+      </div>
+      <div class="blockquote line-reveal" style="--delay:600; margin-top:32px;">
+        <p style="font-size:24px;">"The one-person billion-dollar startup is not a meme. It's a business model."</p>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 33: What To Do (2x2 Grid) ═══════════ -->
+    <div class="slide" data-slide="33">
+      <div class="prompt" data-scramble data-text="WHAT_TO_DO"></div>
+      <h2 class="headline" style="font-size:36px;" data-typewrite data-text="Four actions, tonight"><span class="cursor"></span></h2>
+      <div class="card-grid card-grid-2x2" style="margin-top:40px; max-width:1100px;">
+        <div class="card" style="--delay:400">
+          <div class="card-label">> AI Budget</div>
+          <div class="card-desc">Spend $20/month on Claude or ChatGPT Pro. Use it for everything. Writing, analysis, coding, brainstorming. Make it your default tool.</div>
+        </div>
+        <div class="card" style="--delay:550">
+          <div class="card-label">> Build AI Fluency</div>
+          <div class="card-desc">Ship something this week. A bot, a workflow, an automated report. Learning by doing is the only way. Reading about AI is not enough.</div>
+        </div>
+        <div class="card" style="--delay:700">
+          <div class="card-label">> Think in Workflows</div>
+          <div class="card-desc">Map your daily work as a series of steps. Identify which steps an agent could handle. Start with the boring, repetitive ones.</div>
+        </div>
+        <div class="card" style="--delay:850">
+          <div class="card-label">> Become a Generalist</div>
+          <div class="card-desc">Learn adjacent skills. If you're in finance, learn product. If you're in engineering, learn design. AI amplifies breadth over depth.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SLIDE 34: Closing ═══════════ -->
+    <div class="slide slide-closing" data-slide="34" style="padding: 160px;">
+      <div class="closing-glow"></div>
+      <div class="prompt" data-scramble data-text="return_to_start" style="position:relative; z-index:2;"></div>
+      <div class="closing-pre">So let me ask again...</div>
+      <h1 class="headline closing-headline" data-typewrite data-text="Go build something." data-typewrite-speed="50"><span class="cursor"></span></h1>
+      <div class="closing-accent"></div>
+      <div class="closing-subtitle line-reveal" style="--delay:900">The tools are here. The playbook is open. Your move.</div>
+    </div>
+
+  </div>
+</div>
+
+<div id="progress"></div>
+<div id="counter" class="mono">01 / 34</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ═══════════════════════════════════════
+  //  PARTICLE NETWORK
+  // ═══════════════════════════════════════
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  const PARTICLE_COUNT = 40;
+  const CONNECTION_DIST = 120;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        r: 1 + Math.random()
+      });
+    }
+  }
+  initParticles();
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.15)';
+      ctx.fill();
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECTION_DIST) {
+          const alpha = 0.06 * (1 - dist / CONNECTION_DIST);
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(0,212,170,${alpha})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // ═══════════════════════════════════════
+  //  VIEWPORT SCALING
+  // ═══════════════════════════════════════
+  const scaler = document.getElementById('scaler');
+
+  function scaleViewport() {
+    const sw = window.innerWidth / 1920;
+    const sh = window.innerHeight / 1080;
+    const s = Math.min(sw, sh);
+    scaler.style.transform = `scale(${s})`;
+  }
+  scaleViewport();
+  window.addEventListener('resize', scaleViewport);
+
+  // ═══════════════════════════════════════
+  //  SLIDE ENGINE
+  // ═══════════════════════════════════════
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  let current = 0;
+  let transitioning = false;
+
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+
+  function padNum(n) { return String(n).padStart(2, '0'); }
+
+  function updateUI() {
+    progress.style.width = ((current + 1) / totalSlides * 100) + '%';
+    counter.textContent = padNum(current + 1) + ' / ' + padNum(totalSlides);
+  }
+
+  // ── Active typewriter timeouts tracking ──
+  let activeTimeouts = [];
+
+  // ── Typewriter ──
+  function typewrite(el, speed) {
+    speed = speed || 35;
+    // Check for custom speed
+    if (el.hasAttribute('data-typewrite-speed')) {
+      speed = parseInt(el.getAttribute('data-typewrite-speed'), 10) || speed;
+    }
+    const text = el.getAttribute('data-text');
+    el.textContent = '';
+    const cursorSpan = document.createElement('span');
+    cursorSpan.className = 'cursor';
+    el.appendChild(cursorSpan);
+
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        el.insertBefore(document.createTextNode(text.charAt(i)), cursorSpan);
+        i++;
+        const tid = setTimeout(type, speed);
+        activeTimeouts.push(tid);
+      }
+    }
+    type();
+  }
+
+  // ── Scramble ──
+  function scrambleText(el, duration) {
+    duration = duration || 800;
+    const target = el.getAttribute('data-text');
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789';
+    const start = performance.now();
+
+    function update(now) {
+      const prog = Math.min((now - start) / duration, 1);
+      let result = '> ';
+      for (let i = 0; i < target.length; i++) {
+        if (target[i] === ' ') {
+          result += ' ';
+        } else if (prog > (i / target.length) * 0.8 + 0.2) {
+          result += target[i];
+        } else {
+          result += chars[Math.floor(Math.random() * chars.length)];
+        }
+      }
+      el.textContent = result;
+      if (prog < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  // ── Reset slide animations ──
+  function resetSlide(slide) {
+    // Clear pending timeouts
+    activeTimeouts.forEach(tid => clearTimeout(tid));
+    activeTimeouts = [];
+
+    // Reset typewriter elements
+    slide.querySelectorAll('[data-typewrite]').forEach(el => {
+      el.textContent = '';
+      const cursorSpan = document.createElement('span');
+      cursorSpan.className = 'cursor';
+      el.appendChild(cursorSpan);
+    });
+
+    // Reset scramble elements
+    slide.querySelectorAll('[data-scramble]').forEach(el => {
+      el.textContent = '';
+    });
+
+    // Reset bar fills
+    slide.querySelectorAll('.bar-fill').forEach(el => {
+      el.style.transition = 'none';
+      el.style.width = '0';
+      // force reflow
+      el.offsetHeight;
+      el.style.transition = '';
+    });
+
+    // Reset bar values
+    slide.querySelectorAll('.bar-value').forEach(el => {
+      el.style.opacity = '0';
+    });
+  }
+
+  // ── Activate slide animations ──
+  function activateSlide(slide) {
+    // Scramble prompts
+    slide.querySelectorAll('[data-scramble]').forEach(el => {
+      scrambleText(el, 800);
+    });
+
+    // Typewrite headlines
+    slide.querySelectorAll('[data-typewrite]').forEach(el => {
+      const tid = setTimeout(() => typewrite(el), 200);
+      activeTimeouts.push(tid);
+    });
+  }
+
+  // ── Go to slide ──
+  function goToSlide(index) {
+    if (index < 0 || index >= totalSlides || index === current || transitioning) return;
+    transitioning = true;
+
+    const direction = index > current ? 1 : -1;
+    const oldSlide = slides[current];
+    const newSlide = slides[index];
+
+    // Exit old slide
+    oldSlide.classList.remove('active');
+    if (direction > 0) {
+      oldSlide.classList.add('exit-left');
+    }
+
+    // Reset old slide after transition
+    setTimeout(() => {
+      oldSlide.classList.remove('exit-left');
+      oldSlide.style.transform = '';
+      resetSlide(oldSlide);
+    }, 550);
+
+    // Prepare new slide entry direction
+    if (direction < 0) {
+      newSlide.style.transition = 'none';
+      newSlide.style.transform = 'translateX(-60px)';
+      newSlide.style.opacity = '0';
+      newSlide.offsetHeight;
+      newSlide.style.transition = '';
+    } else {
+      newSlide.style.transition = 'none';
+      newSlide.style.transform = 'translateX(60px)';
+      newSlide.style.opacity = '0';
+      newSlide.offsetHeight;
+      newSlide.style.transition = '';
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        newSlide.classList.add('active');
+        newSlide.style.transform = '';
+        newSlide.style.opacity = '';
+        activateSlide(newSlide);
+        current = index;
+        updateUI();
+        setTimeout(() => { transitioning = false; }, 500);
+      });
+    });
+  }
+
+  function nextSlide() { goToSlide(current + 1); }
+  function prevSlide() { goToSlide(current - 1); }
+
+  // ── Initialize first slide ──
+  function init() {
+    slides[0].classList.add('active');
+    activateSlide(slides[0]);
+    updateUI();
+  }
+
+  // ── Keyboard ──
+  document.addEventListener('keydown', (e) => {
+    switch(e.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+      case ' ':
+        e.preventDefault();
+        nextSlide();
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        e.preventDefault();
+        prevSlide();
+        break;
+      case 'Escape':
+        e.preventDefault();
+        goToSlide(0);
+        break;
+      case 'f':
+      case 'F':
+        e.preventDefault();
+        toggleFullscreen();
+        break;
+    }
+  });
+
+  // ── Touch/Swipe ──
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    const dy = e.changedTouches[0].screenY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      if (dx < 0) nextSlide();
+      else prevSlide();
+    }
+  }, { passive: true });
+
+  // ── Fullscreen ──
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  }
+
+  // ── Start ──
+  init();
+
+})();
+</script>
+</body>
+</html>

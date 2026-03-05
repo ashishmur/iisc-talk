@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI &amp; The New Management Playbook | Ashish Muralidharan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   RESET & BASE
+   ================================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Inter', sans-serif; }
+
+/* ================================================================
+   PALETTE
+   ================================================================ */
+:root {
+  --bg-warm:   #FAF8F5;
+  --navy:      #1B2A4A;
+  --gold:      #B8960C;
+  --gold-08:   rgba(184, 150, 12, 0.08);
+  --gold-04:   rgba(184, 150, 12, 0.04);
+  --stone:     #E8E3D8;
+  --body:      #4A5568;
+  --muted:     #8896A6;
+  --white:     #FFFFFF;
+}
+
+/* ================================================================
+   SLIDE CONTAINER
+   ================================================================ */
+#deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+  clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+}
+
+.slide.active {
+  visibility: visible;
+  pointer-events: auto;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  z-index: 2;
+}
+
+.slide.entering {
+  visibility: visible;
+  z-index: 3;
+  animation: diag-wipe-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slide.exiting {
+  visibility: visible;
+  z-index: 1;
+  animation: diag-wipe-out 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes diag-wipe-in {
+  from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+  to   { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+}
+
+@keyframes diag-wipe-out {
+  from { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+  to   { clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
+}
+
+/* ================================================================
+   BACKGROUNDS
+   ================================================================ */
+.slide--light { background: var(--bg-warm); }
+.slide--dark  { background: var(--navy); }
+
+/* ================================================================
+   CONSISTENT FURNITURE: Gold corner rule
+   ================================================================ */
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 48px;
+  width: 40px;
+  height: 2px;
+  background: var(--gold);
+  z-index: 10;
+}
+
+/* Top-right deck title on content slides (light) */
+.slide--light::after {
+  content: 'AI & THE NEW MANAGEMENT PLAYBOOK';
+  position: absolute;
+  top: 38px;
+  right: 60px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--muted);
+  z-index: 10;
+}
+
+/* Slide number in bottom-left */
+.slide-num {
+  position: absolute;
+  bottom: 36px;
+  left: 48px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  z-index: 10;
+}
+.slide--light .slide-num { color: var(--muted); }
+.slide--dark .slide-num { color: rgba(255,255,255,0.3); }
+
+/* ================================================================
+   TYPOGRAPHY
+   ================================================================ */
+.serif      { font-family: 'Playfair Display', serif; }
+.sans       { font-family: 'Inter', sans-serif; }
+.small-caps { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; }
+.sc-gold    { color: var(--gold); }
+.sc-muted   { color: var(--muted); }
+.sc-white   { color: rgba(255,255,255,0.5); }
+
+/* ================================================================
+   REVEAL ANIMATION SYSTEM
+   ================================================================ */
+.rv {
+  overflow: hidden;
+  display: block;
+}
+.rv > * {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* Reset when NOT active */
+.slide:not(.active):not(.entering) .rv > * {
+  transform: translateY(110%);
+  transition: none;
+}
+.slide.active .rv > *,
+.slide.entering .rv > * {
+  transform: translateY(0);
+}
+
+/* Stagger delay classes */
+.d0   > * { transition-delay: 0ms; }
+.d100 > * { transition-delay: 100ms; }
+.d150 > * { transition-delay: 150ms; }
+.d200 > * { transition-delay: 200ms; }
+.d250 > * { transition-delay: 250ms; }
+.d300 > * { transition-delay: 300ms; }
+.d350 > * { transition-delay: 350ms; }
+.d400 > * { transition-delay: 400ms; }
+.d450 > * { transition-delay: 450ms; }
+.d500 > * { transition-delay: 500ms; }
+.d550 > * { transition-delay: 550ms; }
+.d600 > * { transition-delay: 600ms; }
+.d650 > * { transition-delay: 650ms; }
+.d700 > * { transition-delay: 700ms; }
+.d750 > * { transition-delay: 750ms; }
+.d800 > * { transition-delay: 800ms; }
+.d850 > * { transition-delay: 850ms; }
+.d900 > * { transition-delay: 900ms; }
+.d950 > * { transition-delay: 950ms; }
+.d1000 > * { transition-delay: 1000ms; }
+.d1050 > * { transition-delay: 1050ms; }
+.d1100 > * { transition-delay: 1100ms; }
+.d1200 > * { transition-delay: 1200ms; }
+.d1300 > * { transition-delay: 1300ms; }
+
+/* ================================================================
+   SVG GOLD LINE DRAWING
+   ================================================================ */
+.gl-wrap {
+  display: block;
+  line-height: 0;
+}
+.gl {
+  stroke: var(--gold);
+  stroke-width: 2;
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide:not(.active):not(.entering) .gl {
+  stroke-dashoffset: 120;
+  transition: none;
+}
+.slide.active .gl,
+.slide.entering .gl {
+  stroke-dashoffset: 0;
+}
+.gld400 { transition-delay: 400ms; }
+.gld500 { transition-delay: 500ms; }
+.gld600 { transition-delay: 600ms; }
+.gld700 { transition-delay: 700ms; }
+.gld800 { transition-delay: 800ms; }
+
+/* ================================================================
+   PROGRESS BAR
+   ================================================================ */
+#progress {
+  position: fixed;
+  bottom: 0; left: 0;
+  height: 3px;
+  background: var(--gold);
+  z-index: 100;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================================================
+   FULLSCREEN HINT
+   ================================================================ */
+#fs-hint {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.5px;
+  z-index: 100;
+  opacity: 1;
+  transition: opacity 1s ease 3s;
+  pointer-events: none;
+}
+#fs-hint.hide { opacity: 0; }
+
+/* ================================================================
+   SHARED CONTENT LAYOUTS
+   ================================================================ */
+
+/* Standard content area (left-heavy, editorial margins) */
+.content-area {
+  position: absolute;
+  left: 140px;
+  top: 110px;
+  right: 120px;
+  bottom: 80px;
+}
+
+/* Content centered vertically */
+.content-vcenter {
+  position: absolute;
+  left: 140px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 120px;
+}
+
+/* Fully centered (for closing/divider slides) */
+.content-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Section divider style */
+.divider-act {
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.divider-rule { margin: 20px 0; }
+.divider-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Quote slide style */
+.quote-label { margin-bottom: 40px; }
+.quote-mark {
+  position: absolute;
+  left: -20px;
+  top: -70px;
+  font-family: 'Playfair Display', serif;
+  font-size: 300px;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0.12;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.quote-text {
+  font-size: 36px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--white);
+  line-height: 1.55;
+  max-width: 1000px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+.quote-text--lg { font-size: 42px; }
+.quote-rule { margin-bottom: 20px; }
+.quote-attr {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* Content slide shared components */
+.content-label { margin-bottom: 16px; }
+.content-title {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.18;
+  margin-bottom: 36px;
+  max-width: 1000px;
+}
+.content-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--body);
+  line-height: 1.7;
+  max-width: 900px;
+}
+.content-body--sm {
+  font-size: 16px;
+}
+
+/* Gold-bordered takeaway box */
+.takeaway {
+  border-left: 4px solid var(--gold);
+  padding: 20px 28px;
+  background: var(--gold-04);
+  max-width: 900px;
+  margin-top: 32px;
+  border-radius: 0 2px 2px 0;
+}
+.takeaway p {
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--navy);
+  line-height: 1.6;
+}
+
+/* Gold-bordered cards (3-up) */
+.card-row {
+  display: flex;
+  gap: 28px;
+  max-width: 1400px;
+}
+.card-item {
+  flex: 1;
+  border: 1px solid var(--stone);
+  border-left: 4px solid var(--gold);
+  padding: 32px 28px;
+  background: var(--white);
+  border-radius: 0 2px 2px 0;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.slide.active .card-item,
+.slide.entering .card-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+.slide:not(.active):not(.entering) .card-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: none;
+}
+.card-item:nth-child(1) { transition-delay: 400ms; }
+.card-item:nth-child(2) { transition-delay: 550ms; }
+.card-item:nth-child(3) { transition-delay: 700ms; }
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.card-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--body);
+  line-height: 1.65;
+}
+
+/* Numbered list items (vertical timeline) */
+.num-list { max-width: 1200px; }
+.num-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.slide.active .num-row,
+.slide.entering .num-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+.slide:not(.active):not(.entering) .num-row {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: none;
+}
+.num-row:nth-child(1) { transition-delay: 350ms; }
+.num-row:nth-child(2) { transition-delay: 500ms; }
+.num-row:nth-child(3) { transition-delay: 650ms; }
+.num-row:nth-child(4) { transition-delay: 800ms; }
+.num-marker {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold);
+  width: 44px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+.num-content-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.num-content-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--body);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* VUCA items */
+.vuca-list {
+  border-left: 4px solid var(--gold);
+  padding-left: 32px;
+  max-width: 900px;
+}
+.vuca-item {
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.slide.active .vuca-item,
+.slide.entering .vuca-item {
+  opacity: 1;
+  transform: translateX(0);
+}
+.slide:not(.active):not(.entering) .vuca-item {
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: none;
+}
+.vuca-item:nth-child(1) { transition-delay: 350ms; }
+.vuca-item:nth-child(2) { transition-delay: 500ms; }
+.vuca-item:nth-child(3) { transition-delay: 650ms; }
+.vuca-item:nth-child(4) { transition-delay: 800ms; }
+.vuca-term {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.vuca-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--body);
+  line-height: 1.5;
+}
+
+/* Bar chart */
+.bar-chart { max-width: 1200px; }
+.bar-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28px;
+}
+.bar-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--navy);
+  width: 160px;
+  flex-shrink: 0;
+}
+.bar-track {
+  flex: 1;
+  height: 40px;
+  background: rgba(27, 42, 74, 0.06);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide:not(.active):not(.entering) .bar-fill {
+  width: 0% !important;
+  transition: none;
+}
+.bar-fill--1 { background: var(--navy); transition-delay: 300ms; }
+.bar-fill--2 { background: rgba(27, 42, 74, 0.7); transition-delay: 450ms; }
+.bar-fill--3 { background: rgba(27, 42, 74, 0.45); transition-delay: 600ms; }
+.bar-fill--4 {
+  background: transparent;
+  border: 2px dashed var(--muted);
+  transition-delay: 750ms;
+}
+.bar-pct {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--navy);
+  width: 60px;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+/* Table */
+.ed-table {
+  width: 100%;
+  max-width: 1400px;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+}
+.ed-table thead th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  border-bottom: 2px solid var(--stone);
+}
+.ed-table tbody td {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--body);
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--stone);
+  vertical-align: top;
+}
+.ed-table tbody tr {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.slide.active .ed-table tbody tr,
+.slide.entering .ed-table tbody tr {
+  opacity: 1;
+  transform: translateY(0);
+}
+.slide:not(.active):not(.entering) .ed-table tbody tr {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: none;
+}
+.slide.active .ed-table tbody tr:nth-child(1) { transition-delay: 350ms; }
+.slide.active .ed-table tbody tr:nth-child(2) { transition-delay: 500ms; }
+.slide.active .ed-table tbody tr:nth-child(3) { transition-delay: 650ms; }
+.slide.active .ed-table tbody tr:nth-child(4) { transition-delay: 800ms; }
+.slide.active .ed-table tbody tr:nth-child(5) { transition-delay: 950ms; }
+.tbl-level {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--navy);
+  min-width: 60px;
+}
+.tbl-highlight {
+  border-left: 4px solid var(--gold) !important;
+  animation: gold-pulse 2.5s ease-in-out infinite;
+}
+@keyframes gold-pulse {
+  0%, 100% { background: rgba(184, 150, 12, 0.06); }
+  50%      { background: rgba(184, 150, 12, 0.14); }
+}
+.tbl-footnote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--navy);
+  margin-top: 36px;
+}
+
+/* Two-up pull quotes */
+.pullquote-row {
+  display: flex;
+  gap: 48px;
+  max-width: 1400px;
+}
+.pullquote-item {
+  flex: 1;
+  border-left: 3px solid var(--gold);
+  padding-left: 28px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.slide.active .pullquote-item,
+.slide.entering .pullquote-item { opacity: 1; transform: translateY(0); }
+.slide:not(.active):not(.entering) .pullquote-item { opacity: 0; transform: translateY(16px); transition: none; }
+.pullquote-item:nth-child(1) { transition-delay: 400ms; }
+.pullquote-item:nth-child(2) { transition-delay: 600ms; }
+.pullquote-source {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.pullquote-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--navy);
+  line-height: 1.5;
+}
+
+/* Flow diagram (horizontal) */
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: 1400px;
+  flex-wrap: wrap;
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.slide.active .flow-step,
+.slide.entering .flow-step { opacity: 1; transform: translateX(0); }
+.slide:not(.active):not(.entering) .flow-step { opacity: 0; transform: translateX(-12px); transition: none; }
+.flow-step:nth-child(1) { transition-delay: 400ms; }
+.flow-step:nth-child(2) { transition-delay: 500ms; }
+.flow-step:nth-child(3) { transition-delay: 600ms; }
+.flow-step:nth-child(4) { transition-delay: 700ms; }
+.flow-step:nth-child(5) { transition-delay: 800ms; }
+.flow-step:nth-child(6) { transition-delay: 900ms; }
+.flow-step:nth-child(7) { transition-delay: 1000ms; }
+.flow-step:nth-child(8) { transition-delay: 1100ms; }
+.flow-step:nth-child(9) { transition-delay: 1200ms; }
+.flow-step:nth-child(10) { transition-delay: 1300ms; }
+.flow-step:nth-child(11) { transition-delay: 1400ms; }
+.flow-step:nth-child(12) { transition-delay: 1500ms; }
+.flow-step:nth-child(13) { transition-delay: 1600ms; }
+.flow-box {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--navy);
+  padding: 14px 22px;
+  border: 1px solid var(--stone);
+  background: var(--white);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.flow-box--active {
+  border-color: var(--gold);
+  background: var(--gold-04);
+  font-weight: 600;
+}
+.flow-arrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  color: var(--gold);
+  margin: 0 8px;
+}
+
+/* 2x2 Grid */
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1300px;
+}
+.grid-card {
+  background: var(--white);
+  border: 1px solid var(--stone);
+  border-radius: 2px;
+  padding: 36px 32px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.slide.active .grid-card,
+.slide.entering .grid-card { opacity: 1; transform: translateY(0); }
+.slide:not(.active):not(.entering) .grid-card { opacity: 0; transform: translateY(20px); transition: none; }
+.grid-card:nth-child(1) { transition-delay: 300ms; }
+.grid-card:nth-child(2) { transition-delay: 450ms; }
+.grid-card:nth-child(3) { transition-delay: 600ms; }
+.grid-card:nth-child(4) { transition-delay: 750ms; }
+.grid-card-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.grid-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.grid-card-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--body);
+  line-height: 1.65;
+}
+
+/* Two-up large cards */
+.two-cards {
+  display: flex;
+  gap: 36px;
+  max-width: 1400px;
+}
+.two-card {
+  flex: 1;
+  border: 1px solid var(--stone);
+  border-top: 4px solid var(--gold);
+  padding: 48px 36px;
+  background: var(--white);
+  border-radius: 0 0 2px 2px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.slide.active .two-card,
+.slide.entering .two-card { opacity: 1; transform: translateY(0); }
+.slide:not(.active):not(.entering) .two-card { opacity: 0; transform: translateY(20px); transition: none; }
+.two-card:nth-child(1) { transition-delay: 400ms; }
+.two-card:nth-child(2) { transition-delay: 600ms; }
+.two-card-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--gold);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+.two-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 16px;
+  line-height: 1.25;
+}
+.two-card-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--body);
+  line-height: 1.65;
+}
+
+/* Gold highlight inline */
+.gold-hl {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex;
+  gap: 48px;
+  margin-bottom: 32px;
+}
+.stat-item {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.slide.active .stat-item,
+.slide.entering .stat-item { opacity: 1; transform: translateY(0); }
+.slide:not(.active):not(.entering) .stat-item { opacity: 0; transform: translateY(12px); transition: none; }
+.stat-item:nth-child(1) { transition-delay: 400ms; }
+.stat-item:nth-child(2) { transition-delay: 550ms; }
+.stat-item:nth-child(3) { transition-delay: 700ms; }
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* Item list with gold bullets */
+.item-list { max-width: 1000px; }
+.il-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.slide.active .il-item,
+.slide.entering .il-item { opacity: 1; transform: translateX(0); }
+.slide:not(.active):not(.entering) .il-item { opacity: 0; transform: translateX(-12px); transition: none; }
+.il-item:nth-child(1) { transition-delay: 350ms; }
+.il-item:nth-child(2) { transition-delay: 500ms; }
+.il-item:nth-child(3) { transition-delay: 650ms; }
+.il-item:nth-child(4) { transition-delay: 800ms; }
+.il-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 8px;
+  margin-right: 16px;
+}
+.il-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  color: var(--body);
+  line-height: 1.5;
+}
+.il-text strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     SLIDE DECK - 34 SLIDES
+     ================================================================ -->
+<div id="deck">
+
+  <!-- ============================================================
+       SLIDE 01: TITLE
+       ============================================================ -->
+  <div class="slide slide--light active" data-theme="light">
+    <span class="slide-num">.01</span>
+    <div class="content-vcenter">
+      <div class="rv d0" style="margin-bottom: 32px;">
+        <span class="small-caps sc-muted">IISc Department of Management Studies</span>
+      </div>
+      <div class="rv d150">
+        <h1 class="serif" style="font-size: 72px; font-weight: 700; color: var(--navy); line-height: 1.12; max-width: 900px; margin-bottom: 28px;">AI &amp; The New<br>Management Playbook</h1>
+      </div>
+      <div class="rv d400 gl-wrap" style="margin-bottom: 28px;">
+        <svg width="120" height="4" viewBox="0 0 120 4"><line x1="0" y1="2" x2="120" y2="2" class="gl gld400" /></svg>
+      </div>
+      <div class="rv d500">
+        <p style="font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px;">Ashish Muralidharan</p>
+      </div>
+      <div class="rv d600">
+        <p style="font-size: 17px; color: var(--body); margin-bottom: 6px;">Product Manager, Microsoft</p>
+      </div>
+      <div class="rv d700">
+        <p style="font-size: 15px; color: var(--muted);">March 6, 2026</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 02: OPENING QUOTE
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.02</span>
+    <div class="content-vcenter" style="max-width: 1200px;">
+      <div class="rv d0 quote-label">
+        <span class="small-caps sc-gold">The Opening</span>
+      </div>
+      <div style="position: relative;">
+        <div class="quote-mark">&ldquo;</div>
+        <div class="rv d200">
+          <p class="serif quote-text">How many of you feel anxious about your future, your career, your relevance, because of AI?</p>
+        </div>
+      </div>
+      <div class="rv d500 gl-wrap quote-rule">
+        <svg width="120" height="4" viewBox="0 0 120 4"><line x1="0" y1="2" x2="120" y2="2" class="gl gld500" /></svg>
+      </div>
+      <div class="rv d600">
+        <p class="quote-attr">Show of hands</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 03: ACT I DIVIDER
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.03</span>
+    <div class="content-center">
+      <div class="rv d0">
+        <p class="serif divider-act">Act I</p>
+      </div>
+      <div class="rv d200 gl-wrap divider-rule" style="display: flex; justify-content: center;">
+        <svg width="80" height="4" viewBox="0 0 80 4"><line x1="0" y1="2" x2="80" y2="2" class="gl gld400" style="stroke-dasharray:80; stroke-dashoffset:80;" /></svg>
+      </div>
+      <div class="rv d300">
+        <p class="divider-sub">The Tension</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 04: VUCA WORLD
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.04</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">The VUCA World</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">A one-way street going upwards</h2>
+      </div>
+      <div class="vuca-list">
+        <div class="vuca-item">
+          <p class="vuca-term">Volatility</p>
+          <p class="vuca-desc">The pace of change is accelerating. Markets, technologies, and business models shift overnight.</p>
+        </div>
+        <div class="vuca-item">
+          <p class="vuca-term">Uncertainty</p>
+          <p class="vuca-desc">The future is less predictable than ever. Historical data no longer guarantees reliable forecasts.</p>
+        </div>
+        <div class="vuca-item">
+          <p class="vuca-term">Complexity</p>
+          <p class="vuca-desc">Systems are deeply interconnected. A change in one domain cascades across the entire value chain.</p>
+        </div>
+        <div class="vuca-item">
+          <p class="vuca-term">Ambiguity</p>
+          <p class="vuca-desc">Cause and effect are unclear. Leaders must act with incomplete information and conflicting signals.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 05: PATTERN OF DISRUPTION
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.05</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">The Pattern of Disruption</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Technology resets the cycle</h2>
+      </div>
+      <div class="num-list">
+        <div class="num-row">
+          <span class="num-marker">01</span>
+          <div>
+            <p class="num-content-title">Shipping &amp; Navigation</p>
+            <p class="num-content-body">Created global trade routes and built the British Empire. Whoever controlled the seas controlled the economy.</p>
+          </div>
+        </div>
+        <div class="num-row">
+          <span class="num-marker">02</span>
+          <div>
+            <p class="num-content-title">Industrial Revolution</p>
+            <p class="num-content-body">Mechanized labor transformed agriculture and manufacturing. Entire populations migrated from farms to factories.</p>
+          </div>
+        </div>
+        <div class="num-row">
+          <span class="num-marker">03</span>
+          <div>
+            <p class="num-content-title">Information Technology</p>
+            <p class="num-content-body">Digitized the world. Created the internet age and made knowledge workers the new elite labor force.</p>
+          </div>
+        </div>
+        <div class="num-row">
+          <span class="num-marker">04</span>
+          <div>
+            <p class="num-content-title">Artificial Intelligence</p>
+            <p class="num-content-body">The next reset. For the first time, the technology can do the thinking, not just the lifting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 06: ECONOMIC EQUATION
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.06</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">The Economic Equation</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Land, Labor, Capital, Technology</h2>
+      </div>
+      <div class="rv d300">
+        <p class="content-body" style="margin-bottom: 28px;">The classical factors of production have always been land, labor, and capital. Technology was the accelerant that made each more productive. But something has shifted. Technology is no longer just amplifying labor. It is learning to replace it.</p>
+      </div>
+      <div class="rv d500">
+        <p class="content-body" style="margin-bottom: 36px;">Every previous wave automated the hands. AI automates the mind. When the tool can think, plan, and execute, the economics of labor change fundamentally.</p>
+      </div>
+      <div class="rv d700">
+        <div class="takeaway">
+          <p>We are at the outset of technology fundamentally replacing labor. Not augmenting it. Replacing it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 07: ACT II DIVIDER
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.07</span>
+    <div class="content-center">
+      <div class="rv d0">
+        <p class="serif divider-act">Act II</p>
+      </div>
+      <div class="rv d200 gl-wrap divider-rule" style="display: flex; justify-content: center;">
+        <svg width="80" height="4" viewBox="0 0 80 4"><line x1="0" y1="2" x2="80" y2="2" class="gl gld400" style="stroke-dasharray:80; stroke-dashoffset:80;" /></svg>
+      </div>
+      <div class="rv d300">
+        <p class="divider-sub">The Pattern</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 08: TECHNOLOGY VS LABOR
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.08</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Technology vs. Labor</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">The same script, every cycle</h2>
+      </div>
+      <div class="num-list">
+        <div class="num-row">
+          <span class="num-marker">01</span>
+          <div>
+            <p class="num-content-title">Technology arrives</p>
+            <p class="num-content-body">A new capability emerges that can perform tasks faster, cheaper, or at a scale humans cannot match.</p>
+          </div>
+        </div>
+        <div class="num-row">
+          <span class="num-marker">02</span>
+          <div>
+            <p class="num-content-title">Physical labor is displaced</p>
+            <p class="num-content-body">The first wave hits manual work. Machines replace hands. Factories replace workshops. Robots replace assembly lines.</p>
+          </div>
+        </div>
+        <div class="num-row">
+          <span class="num-marker">03</span>
+          <div>
+            <p class="num-content-title">Operational labor is displaced</p>
+            <p class="num-content-body">Process work goes next. Spreadsheets replace ledgers. Software replaces paperwork. ERP replaces middle management.</p>
+          </div>
+        </div>
+        <div class="num-row">
+          <span class="num-marker">04</span>
+          <div>
+            <p class="num-content-title">Intellectual labor is displaced</p>
+            <p class="num-content-body">For the first time, AI targets the thinking itself. Strategy, creativity, analysis, judgment. This is where we are now.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 09: LADDER OF AUTOMATION (BARS)
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light" data-bars="true">
+    <span class="slide-num">.09</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">The Ladder of Automation</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">We may be running out of rungs</h2>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <span class="bar-label">Physical</span>
+          <div class="bar-track"><div class="bar-fill bar-fill--1" data-width="95"></div></div>
+          <span class="bar-pct">95%</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Operational</span>
+          <div class="bar-track"><div class="bar-fill bar-fill--2" data-width="72"></div></div>
+          <span class="bar-pct">72%</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Intellectual</span>
+          <div class="bar-track"><div class="bar-fill bar-fill--3" data-width="45"></div></div>
+          <span class="bar-pct">45%</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">???</span>
+          <div class="bar-track"><div class="bar-fill bar-fill--4" data-width="15"></div></div>
+          <span class="bar-pct">15%</span>
+        </div>
+      </div>
+      <div class="rv d900">
+        <div class="takeaway">
+          <p>Every generation automated the rung below it and climbed higher. For the first time, AI is automating the rung we are standing on.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 10: THE CEILING QUOTE
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.10</span>
+    <div class="content-vcenter" style="max-width: 1200px;">
+      <div class="rv d0 quote-label">
+        <span class="small-caps sc-gold">The Ceiling</span>
+      </div>
+      <div style="position: relative;">
+        <div class="quote-mark">&ldquo;</div>
+        <div class="rv d200">
+          <p class="serif quote-text" style="font-size: 34px;">If you don't need intellectual labor anymore, what's left? You sell your time, or you sell your capital. And at that point, only capital owners have a role left in society.</p>
+        </div>
+      </div>
+      <div class="rv d600 gl-wrap quote-rule">
+        <svg width="120" height="4" viewBox="0 0 120 4"><line x1="0" y1="2" x2="120" y2="2" class="gl gld600" /></svg>
+      </div>
+      <div class="rv d700">
+        <p class="quote-attr">The uncomfortable truth</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 11: THE PHYSICAL FRONTIER
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.11</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">The Physical Frontier</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">AI gets a body</h2>
+      </div>
+      <div class="rv d300">
+        <p class="content-body" style="margin-bottom: 36px;">The final frontier was always the physical world. AI could think, but it could not move. That barrier is falling.</p>
+      </div>
+      <div class="item-list">
+        <div class="il-item">
+          <div class="il-dot"></div>
+          <p class="il-text"><strong>Tesla Optimus</strong> &mdash; Humanoid robots being trained to perform warehouse and factory tasks autonomously.</p>
+        </div>
+        <div class="il-item">
+          <div class="il-dot"></div>
+          <p class="il-text"><strong>Unitree</strong> &mdash; Agile quadruped and bipedal robots demonstrating parkour-level dexterity at consumer prices.</p>
+        </div>
+        <div class="il-item">
+          <div class="il-dot"></div>
+          <p class="il-text"><strong>Hyundai Robotics</strong> &mdash; Industrial-scale robotic systems for construction, logistics, and heavy manufacturing.</p>
+        </div>
+      </div>
+      <div class="rv d900">
+        <div class="takeaway">
+          <p>Complete replacement of human labor across every dimension: intellectual, operational, and now physical.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 12: FIVE LEVELS OF AGI (TABLE)
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.12</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Where We Are Today</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">The Five Levels of AGI</h2>
+      </div>
+      <table class="ed-table">
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tbl-level">L1</td>
+            <td>Chatbots</td>
+            <td>Conversational AI with no persistent memory across tasks</td>
+            <td>ChatGPT (early), Siri, Alexa</td>
+          </tr>
+          <tr>
+            <td class="tbl-level">L2</td>
+            <td>Reasoners</td>
+            <td>Human-level problem solving in specific domains</td>
+            <td>GPT-4, Claude, coding assistants</td>
+          </tr>
+          <tr class="tbl-highlight">
+            <td class="tbl-level" style="color: var(--gold);">L3</td>
+            <td style="font-weight: 600; color: var(--navy);">Agents</td>
+            <td style="color: var(--navy);">Systems that take actions on your behalf for hours or days</td>
+            <td style="color: var(--navy);">Devin, Copilot Agents, Claude Code</td>
+          </tr>
+          <tr>
+            <td class="tbl-level">L4</td>
+            <td>Innovators</td>
+            <td>AI that generates novel ideas and scientific discoveries</td>
+            <td>AlphaFold, AI-driven drug design</td>
+          </tr>
+          <tr>
+            <td class="tbl-level">L5</td>
+            <td>Organizations</td>
+            <td>AI that can do the work of an entire organization</td>
+            <td>Hypothetical</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="rv d1100">
+        <p class="tbl-footnote">We are at Level 3. Agents. And that has already changed everything.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 13: WHAT IS AN AGENT
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.13</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Agents</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">What is an agent?</h2>
+      </div>
+      <div class="rv d300">
+        <p class="content-body" style="margin-bottom: 48px;">A system that can pursue a goal by reasoning through a problem, planning a sequence of steps, using tools to interact with the real world, and continuously learning from feedback. It doesn't just respond. It acts.</p>
+      </div>
+      <div class="flow-row" style="margin-bottom: 48px;">
+        <div class="flow-step">
+          <div class="flow-box">Signal</div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-arrow">&rarr;</span>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">Cognition</div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-arrow">&rarr;</span>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">Action</div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-arrow">&rarr;</span>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box flow-box--active">Closure</div>
+        </div>
+      </div>
+      <div class="rv d800">
+        <div class="takeaway">
+          <p>The complete loop: perceive, think, act, and close. No human in the middle. That is the paradigm shift.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 14: ACT III DIVIDER
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.14</span>
+    <div class="content-center">
+      <div class="rv d0">
+        <p class="serif divider-act">Act III</p>
+      </div>
+      <div class="rv d200 gl-wrap divider-rule" style="display: flex; justify-content: center;">
+        <svg width="80" height="4" viewBox="0 0 80 4"><line x1="0" y1="2" x2="80" y2="2" class="gl gld400" style="stroke-dasharray:80; stroke-dashoffset:80;" /></svg>
+      </div>
+      <div class="rv d300">
+        <p class="divider-sub">Ground Zero: Software</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 15: WHY SOFTWARE FIRST
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.15</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Why Software First?</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">The perfect storm</h2>
+      </div>
+      <div class="card-row">
+        <div class="card-item">
+          <p class="card-title">100% Digital</p>
+          <p class="card-body">Software lives entirely in the digital realm. No atoms to move, no physics to fight. AI can read, write, test, and deploy code without ever touching the physical world.</p>
+        </div>
+        <div class="card-item">
+          <p class="card-title">Loop Fully Automated</p>
+          <p class="card-body">The signal-to-closure pipeline is entirely automatable. From reading a spec to shipping a feature, every step can be executed by an agent.</p>
+        </div>
+        <div class="card-item">
+          <p class="card-title">Rich Training Data</p>
+          <p class="card-body">Billions of lines of open-source code, millions of Stack Overflow answers, decades of documentation. The training corpus for software is unmatched.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 16: THE NEW REALITY QUOTE
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.16</span>
+    <div class="content-vcenter" style="max-width: 1200px;">
+      <div class="rv d0 quote-label">
+        <span class="small-caps sc-gold">The New Reality</span>
+      </div>
+      <div style="position: relative;">
+        <div class="quote-mark">&ldquo;</div>
+        <div class="rv d200">
+          <p class="serif quote-text" style="font-size: 34px;">Single engineers now spin up 20 agents that read a spec document and build the entire product end-to-end. No team. No sprint. No standup.</p>
+        </div>
+      </div>
+      <div class="rv d600 gl-wrap quote-rule">
+        <svg width="120" height="4" viewBox="0 0 120 4"><line x1="0" y1="2" x2="120" y2="2" class="gl gld600" /></svg>
+      </div>
+      <div class="rv d700">
+        <p class="quote-attr">What's happening right now</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 17: VOICES FROM THE FIELD
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.17</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Voices from the Field</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title" style="margin-bottom: 48px;">What the builders are saying</h2>
+      </div>
+      <div class="pullquote-row">
+        <div class="pullquote-item">
+          <p class="pullquote-source">Andrej Karpathy</p>
+          <p class="pullquote-text">&ldquo;There is a new kind of coding I call vibe coding, where you fully give in to the vibes, embrace exponentials, and forget that the code even exists.&rdquo;</p>
+        </div>
+        <div class="pullquote-item">
+          <p class="pullquote-source">Naval Ravikant</p>
+          <p class="pullquote-text">&ldquo;Product management is vibe coding. Engineering is prompt engineering. The lines between roles are dissolving.&rdquo;</p>
+        </div>
+      </div>
+      <div class="rv d800">
+        <div class="takeaway" style="margin-top: 48px;">
+          <p>The vocabulary is changing because the work itself is changing. Titles matter less than capability.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 18: THE COST QUOTE
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.18</span>
+    <div class="content-center">
+      <div class="rv d0 quote-label">
+        <span class="small-caps sc-gold">The Cost</span>
+      </div>
+      <div style="position: relative; display: inline-block;">
+        <div class="quote-mark" style="left: -40px; top: -80px;">&ldquo;</div>
+        <div class="rv d300">
+          <p class="serif" style="font-size: 48px; font-weight: 400; font-style: italic; color: var(--white); line-height: 1.45; position: relative; z-index: 1;">The cost to build software<br>has come down to zero.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 19: THE NEW BATTLE
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.19</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">The New Battle</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Distribution is everything</h2>
+      </div>
+      <div class="rv d300">
+        <p class="content-body" style="margin-bottom: 28px;">When the cost of production drops to zero, the bottleneck shifts. Building is no longer the hard part. Reaching customers is. Every startup, every corporation, every solo builder now faces the same question: who will find your product?</p>
+      </div>
+      <div class="rv d500">
+        <p class="content-body" style="margin-bottom: 36px;">This is classic Porter's Five Forces playing out in real-time. Barriers to entry collapse. Competition explodes. The only moat left is distribution, brand, and trust. Welcome to the Red Ocean.</p>
+      </div>
+      <div class="rv d700">
+        <div class="takeaway">
+          <p>The new job for everyone has become marketing. Production is commoditized. Distribution is the new scarcity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 20: REAL CONSEQUENCES
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.20</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Real Consequences</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Already playing out</h2>
+      </div>
+      <div class="item-list">
+        <div class="il-item">
+          <div class="il-dot"></div>
+          <p class="il-text"><strong>Block (Square): 50% layoffs</strong> &mdash; Jack Dorsey's fintech company cut half its workforce, citing AI-driven productivity gains as the reason fewer humans are needed.</p>
+        </div>
+        <div class="il-item">
+          <div class="il-dot"></div>
+          <p class="il-text"><strong>IT services stocks down 25-30%</strong> &mdash; Indian IT bellwethers have shed a quarter of their market cap as investors price in a world where code is written by machines, not teams.</p>
+        </div>
+        <div class="il-item">
+          <div class="il-dot"></div>
+          <p class="il-text"><strong>The Innovator's Dilemma in real-time</strong> &mdash; Incumbents are watching new entrants build in weeks what took them years. The playbook Christensen wrote about is happening at 10x speed.</p>
+        </div>
+      </div>
+      <div class="rv d900">
+        <div class="takeaway">
+          <p>This is not a future scenario. It is a present reality. The market is already repricing human labor.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 21: ACT IV DIVIDER
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.21</span>
+    <div class="content-center">
+      <div class="rv d0">
+        <p class="serif divider-act">Act IV</p>
+      </div>
+      <div class="rv d200 gl-wrap divider-rule" style="display: flex; justify-content: center;">
+        <svg width="80" height="4" viewBox="0 0 80 4"><line x1="0" y1="2" x2="80" y2="2" class="gl gld400" style="stroke-dasharray:80; stroke-dashoffset:80;" /></svg>
+      </div>
+      <div class="rv d300">
+        <p class="divider-sub">The Economics</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 22: THE ABUNDANCE THESIS
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.22</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">The Abundance Thesis</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">What if things just get cheaper?</h2>
+      </div>
+      <div class="flow-row" style="margin-bottom: 48px;">
+        <div class="flow-step">
+          <div class="flow-box">Remove Humans</div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-arrow">&rarr;</span>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">Deflation</div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-arrow">&rarr;</span>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">Goods Cheaper</div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-arrow">&rarr;</span>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box flow-box--active">Era of Abundance</div>
+        </div>
+      </div>
+      <div class="rv d600">
+        <p class="content-body" style="margin-bottom: 36px;">If AI removes the human cost from production, the price of everything drops. Healthcare, education, legal services, software, content, logistics. The deflationary pressure could be unprecedented.</p>
+      </div>
+      <div class="rv d800">
+        <div class="takeaway">
+          <p>The optimistic case: abundance for everyone. The challenge: what happens to the people whose labor was the cost being removed?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 23: THE VALUE CHAIN
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.23</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">The Value Chain</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Where does value accrue?</h2>
+      </div>
+      <div class="flow-row" style="margin-bottom: 48px; flex-wrap: wrap; gap: 4px;">
+        <div class="flow-step"><div class="flow-box">Energy</div></div>
+        <div class="flow-step"><span class="flow-arrow">&rarr;</span></div>
+        <div class="flow-step"><div class="flow-box">Chips</div></div>
+        <div class="flow-step"><span class="flow-arrow">&rarr;</span></div>
+        <div class="flow-step"><div class="flow-box">Fabricators</div></div>
+        <div class="flow-step"><span class="flow-arrow">&rarr;</span></div>
+        <div class="flow-step"><div class="flow-box">Frontier Labs</div></div>
+        <div class="flow-step"><span class="flow-arrow">&rarr;</span></div>
+        <div class="flow-step"><div class="flow-box">Hyperscalers</div></div>
+        <div class="flow-step"><span class="flow-arrow">&rarr;</span></div>
+        <div class="flow-step"><div class="flow-box">App Layer</div></div>
+        <div class="flow-step"><span class="flow-arrow">&rarr;</span></div>
+        <div class="flow-step"><div class="flow-box flow-box--active">Distribution</div></div>
+      </div>
+      <div class="rv d800">
+        <p class="content-body" style="margin-bottom: 36px;">The AI value chain mirrors the semiconductor value chain. Massive capital at the bottom (energy, chips), commoditizing layers in the middle, and disproportionate returns at the edges: whoever controls the infrastructure or the customer relationship wins.</p>
+      </div>
+      <div class="rv d1000">
+        <div class="takeaway">
+          <p>Value concentrates at the extremes. Infrastructure (compute) and customer access (distribution) will capture most of the returns.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 24: WHERE VALUE LIVES
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.24</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Where Value Lives</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Not in the model</h2>
+      </div>
+      <div class="card-row" style="margin-bottom: 36px;">
+        <div class="card-item">
+          <p class="card-title">Compute</p>
+          <p class="card-body">Whoever owns the GPUs, the data centers, the energy contracts. This is the new oil, and it is fiercely concentrated among a handful of hyperscalers.</p>
+        </div>
+        <div class="card-item">
+          <p class="card-title">Context</p>
+          <p class="card-body">Proprietary data, domain expertise, institutional knowledge. The model is generic. Your context makes it specific and valuable. This is the true moat.</p>
+        </div>
+        <div class="card-item">
+          <p class="card-title">Distribution</p>
+          <p class="card-body">Access to users, trust, brand, existing workflows. When production is free, the ability to reach and retain customers becomes the only differentiator.</p>
+        </div>
+      </div>
+      <div class="rv d900">
+        <div class="takeaway">
+          <p>Agents don't need a UI. They need context, compute, and a channel to the customer. The model layer is commoditizing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 25: ACT V DIVIDER
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.25</span>
+    <div class="content-center">
+      <div class="rv d0">
+        <p class="serif divider-act">Act V</p>
+      </div>
+      <div class="rv d200 gl-wrap divider-rule" style="display: flex; justify-content: center;">
+        <svg width="80" height="4" viewBox="0 0 80 4"><line x1="0" y1="2" x2="80" y2="2" class="gl gld400" style="stroke-dasharray:80; stroke-dashoffset:80;" /></svg>
+      </div>
+      <div class="rv d300">
+        <p class="divider-sub">From the Inside</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 26: MICROSOFT'S AI JOURNEY
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.26</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Microsoft's AI Journey</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Top-down failed. Bottom-up worked.</h2>
+      </div>
+      <div class="rv d300">
+        <p class="content-body" style="margin-bottom: 28px;">The first attempt was mandates from leadership. Use AI. Integrate Copilot. Hit adoption metrics. It did not work. People used the tools to check a box, not to change how they worked.</p>
+      </div>
+      <div class="rv d500">
+        <p class="content-body" style="margin-bottom: 28px;">What worked was giving every team unlimited compute and letting them discover the value themselves. No quotas. No compliance dashboards. Just access, training, and room to experiment.</p>
+      </div>
+      <div class="rv d700">
+        <p class="content-body" style="margin-bottom: 36px;">The teams that figured it out saw <span class="gold-hl">20x productivity gains</span>. Not 20%. Twenty times. The ones that didn't were still filing the same reports the same way.</p>
+      </div>
+      <div class="rv d900">
+        <div class="takeaway">
+          <p>AI adoption is a culture problem, not a technology problem. Incentive alignment and autonomy beat mandates every time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 27: PROJECT NEBULA
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.27</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Project Nebula</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Building the muscle</h2>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <p class="stat-value">100</p>
+          <p class="stat-label">Product Managers</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-value">600</p>
+          <p class="stat-label">Engineers</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-value">40-50</p>
+          <p class="stat-label">Designers</p>
+        </div>
+      </div>
+      <div class="rv d600">
+        <p class="content-body" style="margin-bottom: 28px;">Weekly AI upskilling sessions where teams share what they have built, what worked, what failed. Not workshops with slides. Live demos of actual workflows being transformed.</p>
+      </div>
+      <div class="rv d800">
+        <p class="content-body" style="margin-bottom: 36px;">The knowledge compounds. Each team's discovery becomes institutional knowledge. Each breakthrough gets shared, adapted, and improved across the organization.</p>
+      </div>
+      <div class="rv d1000">
+        <div class="takeaway">
+          <p>Tribal knowledge compounds. The team that starts learning today builds an insurmountable lead over the one that waits for a mandate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 28: THE LEARNING QUOTE
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.28</span>
+    <div class="content-vcenter" style="max-width: 1200px;">
+      <div class="rv d0 quote-label">
+        <span class="small-caps sc-gold">The Learning</span>
+      </div>
+      <div style="position: relative;">
+        <div class="quote-mark">&ldquo;</div>
+        <div class="rv d200">
+          <p class="serif quote-text" style="font-size: 34px;">The most valuable managers will be the ones who figure out how to diffuse AI throughout the company. Not the ones who use it personally, but the ones who make everyone around them better with it.</p>
+        </div>
+      </div>
+      <div class="rv d600 gl-wrap quote-rule">
+        <svg width="120" height="4" viewBox="0 0 120 4"><line x1="0" y1="2" x2="120" y2="2" class="gl gld600" /></svg>
+      </div>
+      <div class="rv d700">
+        <p class="quote-attr">The new management imperative</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 29: ACT VI DIVIDER
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.29</span>
+    <div class="content-center">
+      <div class="rv d0">
+        <p class="serif divider-act">Act VI</p>
+      </div>
+      <div class="rv d200 gl-wrap divider-rule" style="display: flex; justify-content: center;">
+        <svg width="80" height="4" viewBox="0 0 80 4"><line x1="0" y1="2" x2="80" y2="2" class="gl gld400" style="stroke-dasharray:80; stroke-dashoffset:80;" /></svg>
+      </div>
+      <div class="rv d300">
+        <p class="divider-sub">The New Playbook</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 30: AI ORGANIZATIONS
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.30</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">AI Organizations</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Designing for agents</h2>
+      </div>
+      <div class="rv d300">
+        <p class="content-body" style="margin-bottom: 28px;">For decades, managers designed workflows for humans. Define a process, assign roles, set checkpoints, measure output. The new discipline is doing the same thing, but for agents.</p>
+      </div>
+      <div class="rv d500">
+        <p class="content-body" style="margin-bottom: 28px;">Consider a product manager's workflow: gather customer feedback, synthesize insights, write a spec, prioritize features, coordinate with engineering. Every single one of those steps can now be performed by an agent with the right instructions and context.</p>
+      </div>
+      <div class="rv d700">
+        <p class="content-body" style="margin-bottom: 36px;">The manager's role shifts from doing the work to architecting the system that does the work. You become the orchestrator, not the operator.</p>
+      </div>
+      <div class="rv d900">
+        <div class="takeaway">
+          <p>Replace labor with compute. Design workflows for agents the way you would design them for a team of brilliant, tireless interns.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 31: TWO SKILLS
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.31</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">Two Skills</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">What every manager needs</h2>
+      </div>
+      <div class="two-cards">
+        <div class="two-card">
+          <p class="two-card-num">01</p>
+          <p class="two-card-title">Prompting</p>
+          <p class="two-card-body">The ability to instruct AI precisely. Not vaguely, not hopefully, but with the specificity and structure of a well-written brief. Clear context, clear constraints, clear success criteria. This is the new literacy.</p>
+        </div>
+        <div class="two-card">
+          <p class="two-card-num">02</p>
+          <p class="two-card-title">Evaluations</p>
+          <p class="two-card-body">The ability to measure whether AI is performing. Build rubrics. Design test cases. Create feedback loops. If you cannot evaluate the output, you cannot improve it. This is the new quality assurance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 32: AGE OF THE POLYMATH
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.32</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">The Age of the Polymath</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Everyone is becoming a generalist</h2>
+      </div>
+      <div class="rv d300">
+        <p class="content-body" style="margin-bottom: 28px;">The old career advice was specialize. Find your niche. Become the world's expert in one narrow domain. AI inverts that logic. When any specialist skill can be accessed through a prompt, the premium shifts to the person who can combine skills across domains.</p>
+      </div>
+      <div class="rv d500">
+        <p class="content-body" style="margin-bottom: 28px;">A designer who can code. A strategist who can build. A marketer who can analyze data, write copy, design the landing page, and deploy it. The boundaries between roles are dissolving, and the people who thrive will be the ones who refuse to stay in a single lane.</p>
+      </div>
+      <div class="rv d700">
+        <p class="content-body" style="margin-bottom: 36px;">Sam Altman has predicted <span class="gold-hl">the one-person billion-dollar startup</span>. It sounds hyperbolic until you realize the tools already exist to make it possible. The only missing ingredient is the person who knows how to use all of them.</p>
+      </div>
+      <div class="rv d900">
+        <div class="takeaway">
+          <p>Breadth is the new depth. The polymath, not the specialist, is the archetype of the AI era.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 33: WHAT YOU SHOULD DO
+       ============================================================ -->
+  <div class="slide slide--light" data-theme="light">
+    <span class="slide-num">.33</span>
+    <div class="content-area">
+      <div class="rv d0 content-label">
+        <span class="small-caps sc-muted">What You Should Do</span>
+      </div>
+      <div class="rv d150">
+        <h2 class="serif content-title">Four actions, starting tonight</h2>
+      </div>
+      <div class="grid-2x2">
+        <div class="grid-card">
+          <p class="grid-card-num">01</p>
+          <p class="grid-card-title">Build an AI Budget</p>
+          <p class="grid-card-body">Allocate Rs 2,000-5,000/month to AI tools. ChatGPT Pro, Claude, Cursor, Replit. This is not a luxury. It is an investment in remaining employable.</p>
+        </div>
+        <div class="grid-card">
+          <p class="grid-card-num">02</p>
+          <p class="grid-card-title">Build AI Fluency</p>
+          <p class="grid-card-body">Spend 30 minutes every day using AI for real tasks. Not tutorials. Not courses. Actual work. Write a report. Analyze data. Build a prototype. Learning happens by doing.</p>
+        </div>
+        <div class="grid-card">
+          <p class="grid-card-num">03</p>
+          <p class="grid-card-title">Think in Workflows</p>
+          <p class="grid-card-body">Pick any process you do repeatedly. Map each step. Ask: can an agent do this? Build the automation. Start with one workflow this week.</p>
+        </div>
+        <div class="grid-card">
+          <p class="grid-card-num">04</p>
+          <p class="grid-card-title">Become a Generalist</p>
+          <p class="grid-card-body">Learn to code (even a little). Learn to design (even roughly). Learn to market. The more skills you can orchestrate through AI, the more valuable you become.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SLIDE 34: CLOSING
+       ============================================================ -->
+  <div class="slide slide--dark" data-theme="dark">
+    <span class="slide-num">.34</span>
+    <div class="content-center">
+      <div class="rv d0">
+        <p class="serif" style="font-size: 32px; font-weight: 400; font-style: italic; color: rgba(255,255,255,0.6); line-height: 1.55; max-width: 800px; margin: 0 auto 64px;">So let me ask again.<br>How many of you feel anxious?</p>
+      </div>
+      <div class="rv d400">
+        <h2 class="serif" style="font-size: 72px; font-weight: 700; color: var(--white); margin-bottom: 28px;">Go build something.</h2>
+      </div>
+      <div class="rv d700 gl-wrap" style="display: flex; justify-content: center; margin-bottom: 28px;">
+        <svg width="120" height="4" viewBox="0 0 120 4"><line x1="0" y1="2" x2="120" y2="2" class="gl gld700" /></svg>
+      </div>
+      <div class="rv d900">
+        <p class="serif" style="font-size: 24px; font-weight: 400; font-style: italic; color: rgba(255,255,255,0.5); max-width: 700px; margin: 0 auto; line-height: 1.5;">The best way to understand the future is to create it.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress"></div>
+
+<!-- FULLSCREEN HINT -->
+<div id="fs-hint">Press F for fullscreen &middot; Arrow keys or spacebar to navigate</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ================================================================
+  // CONFIGURATION
+  // ================================================================
+  const TOTAL = 34;
+  const TRANSITION_MS = 700;
+
+  // ================================================================
+  // STATE
+  // ================================================================
+  let cur = 0;
+  let transitioning = false;
+  const slides = document.querySelectorAll('.slide');
+  const progress = document.getElementById('progress');
+  const fsHint = document.getElementById('fs-hint');
+
+  // ================================================================
+  // SCALING: 1920x1080 logical to viewport
+  // ================================================================
+  function rescale() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const sx = vw / 1920;
+    const sy = vh / 1080;
+    const s = Math.min(sx, sy);
+    const ox = (vw - 1920 * s) / 2;
+    const oy = (vh - 1080 * s) / 2;
+    slides.forEach(el => {
+      el.style.transform = 'scale(' + s + ')';
+      el.style.left = ox + 'px';
+      el.style.top = oy + 'px';
+    });
+  }
+  window.addEventListener('resize', rescale);
+  rescale();
+
+  // ================================================================
+  // SLIDE NUMBER FORMATTING
+  // ================================================================
+  function pad(n) {
+    return '.' + String(n).padStart(2, '0');
+  }
+
+  // ================================================================
+  // UI UPDATES
+  // ================================================================
+  function updateUI() {
+    const pct = ((cur + 1) / TOTAL) * 100;
+    progress.style.width = pct + '%';
+  }
+
+  // ================================================================
+  // BAR CHART ANIMATION
+  // ================================================================
+  function animateBars(idx) {
+    const slide = slides[idx];
+    if (!slide || !slide.dataset.bars) return;
+    const fills = slide.querySelectorAll('.bar-fill');
+    fills.forEach(f => { f.style.width = f.dataset.width + '%'; });
+  }
+  function resetBars(idx) {
+    const slide = slides[idx];
+    if (!slide || !slide.dataset.bars) return;
+    const fills = slide.querySelectorAll('.bar-fill');
+    fills.forEach(f => { f.style.width = '0%'; });
+  }
+
+  // ================================================================
+  // NAVIGATION
+  // ================================================================
+  function goTo(next, dir) {
+    if (transitioning) return;
+    if (next < 0 || next >= TOTAL) return;
+    if (next === cur) return;
+
+    transitioning = true;
+
+    const oldSlide = slides[cur];
+    const newSlide = slides[next];
+
+    // Reset bars when leaving
+    resetBars(cur);
+
+    // Clear lingering classes
+    slides.forEach(s => s.classList.remove('entering', 'exiting'));
+
+    oldSlide.classList.remove('active');
+    oldSlide.classList.add('exiting');
+    newSlide.classList.add('entering');
+
+    cur = next;
+    updateUI();
+
+    // Trigger bar animation after short delay
+    setTimeout(() => animateBars(cur), 100);
+
+    setTimeout(() => {
+      oldSlide.classList.remove('exiting');
+      newSlide.classList.remove('entering');
+      newSlide.classList.add('active');
+      transitioning = false;
+    }, TRANSITION_MS);
+  }
+
+  function nextSlide() { goTo(cur + 1, 'fwd'); }
+  function prevSlide() { goTo(cur - 1, 'bwd'); }
+
+  // ================================================================
+  // KEYBOARD
+  // ================================================================
+  document.addEventListener('keydown', function(e) {
+    if (fsHint && !fsHint.classList.contains('hide')) fsHint.classList.add('hide');
+
+    switch(e.key) {
+      case 'ArrowRight': case 'ArrowDown': case ' ':
+        e.preventDefault(); nextSlide(); break;
+      case 'ArrowLeft': case 'ArrowUp':
+        e.preventDefault(); prevSlide(); break;
+      case 'Escape':
+        if (document.fullscreenElement) document.exitFullscreen();
+        break;
+      case 'f': case 'F':
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(function(){});
+        else document.exitFullscreen();
+        break;
+      case 'Home':
+        e.preventDefault(); goTo(0, 'bwd'); break;
+      case 'End':
+        e.preventDefault(); goTo(TOTAL - 1, 'fwd'); break;
+    }
+  });
+
+  // ================================================================
+  // TOUCH / SWIPE
+  // ================================================================
+  let tx = 0, ty = 0;
+  document.addEventListener('touchstart', function(e) {
+    tx = e.changedTouches[0].clientX;
+    ty = e.changedTouches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    const dx = e.changedTouches[0].clientX - tx;
+    const dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      dx < 0 ? nextSlide() : prevSlide();
+    }
+  }, { passive: true });
+
+  // ================================================================
+  // CLICK TO ADVANCE (right 70% = next, left 30% = prev)
+  // ================================================================
+  document.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
+    e.clientX > window.innerWidth * 0.3 ? nextSlide() : prevSlide();
+  });
+
+  // ================================================================
+  // INITIAL STATE
+  // ================================================================
+  updateUI();
+  animateBars(cur);
+  setTimeout(function() { if (fsHint) fsHint.classList.add('hide'); }, 5000);
+
+})();
+</script>
+</body>
+</html>
