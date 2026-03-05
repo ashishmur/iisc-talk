@@ -1,5 +1,5 @@
 # IISc Talk: AI & The New Management Playbook
-## Project State (last updated: March 5, 2026 ~4:30 AM)
+## Project State (last updated: March 5, 2026 ~7:30 PM)
 
 ## Event Details
 - **Date:** Friday March 6, 2026 (TOMORROW)
@@ -31,15 +31,10 @@
       presenter-slide.html   -- Standalone presenter poll page
       test-local.html        -- Local test harness
       SETUP.md               -- Setup guide
-    screenshots/             -- Tweet screenshots for embedding
-      karpathy-vibe-coding-tweet.png
-      naval-vibe-coding-short-tweet.png
-      naval-vibe-coding-pm-tweet-full.png
-      naval-vibe-coding-product-management-tweet.png
-      aakash-gupta-naval-vibe-coding-pm-tweet.png
-      ashish-profile-page.png
-      ashish-ai-jobs-capitalism-tweet.png
-      ashish-ai-capitalism-tweet-full.png
+    screenshots/             -- Tweet screenshots + headshot photos
+      sam-altman-headshot.png, daron-acemoglu-headshot.png, david-autor-headshot.png, daniel-susskind-headshot.png
+      andrej-karpathy-headshot.png, boris-cherny-headshot.png, dario-amodei-headshot.png, satya-nadella-headshot.png
+      karpathy-vibe-coding-tweet.png, naval-*.png, aakash-*.png, ashish-*.png
     SLIDE-PLAN-34.md         -- Master 34-slide content plan
     DESIGN-REFERENCES.md     -- All Behance links + design principles
     RESEARCH-DATA.md         -- Economic cycle data, VUCA examples, Perez waves, GDP data
@@ -94,9 +89,15 @@
 28. **Slide 16 (Voices):** 4 compact tweet cards (Karpathy earthquake, Boris Cherny 259 PRs, Karpathy vibe coding, Dario Amodei 90% code) with source links, Google/Pragmatic Engineer footer stats
 29. **Click navigation:** Guards interactive elements (buttons, links) from triggering deck page changes
 30. Total: 36 -> 34 slides after removing 2 redundant ones
+31. **Slide 5 (Production Function):** Reordered: Satya Nadella GDP quote first, then formula, then definitions, then punchline. Headshot photo.
+32. **Slide 7 (Technology Democratizes):** Split into Yesterday (Typing, Photography) / Today (Engineering, New Expectation, "skill is knowing what to build") columns
+33. **Slide 11 (AI Progression):** Added Page 4: Benchmark Saturation (GSM8K 99%, MMLU 93%, HumanEval 98%, GPQA 92%, AIME 100% all saturated). Humanity's Last Exam (Opus 53.1%, Gemini 48.4%, GPT-5.3 39.9%). FrontierMath Tier 4 (GPT-5.2 Pro 31%). Dario Amodei "country of geniuses in the data center" quote. Now 4 scrollable pages.
+34. **Slide 11:** Added HLE + FrontierMath definitions to "What These Measure" panel
+35. **Slide 11:** Added announcement links to all model timeline entries, corrected GPT-5 AIME from 100% to 94.6%
+36. **Slide 16 (Voices):** Redesigned as white Twitter/X-style cards with real profile photos (Karpathy, Boris Cherny, Dario Amodei from Wikipedia/GitHub), verified badges, X logos
 
 ## Current Slide Order (34 slides)
-1. Title | 2. Anxiety Poll (live bar chart + survey page) | 3. ACT I: We've Been Here Before | 4. VUCA (Trudeau quote + S&P 500 stat) | 5. Production Function | 6. Waves of Creative Destruction (GDP graph + headlines carousel, manual arrows only) | 7. Technology Democratizes, Then We Abstract Higher | 8. Each Wave Climbed Higher | 9. Ceiling Quote (centered typography, magenta glow) | 10. Conflicting Views (real headshot photos, source links) | 11. AI Progression (3-page scroll, benchmark definitions, real-world signal) | 12. 5 Levels of AGI (Kurzweil exponential chart with milestones) | 13. ACT III: Ground Zero Software | 14. AI Adoption Across Industries | 15. Real Consequences (6 news headline cards with sources) | 16. Voices from the Field (4 tweet cards: Karpathy x2, Boris Cherny, Dario Amodei) | 17. Cost = Zero (+ single engineers card) | 18. Role Fusion / Builder | 19. The New Battle: Distribution | 20. Diffusion Problem | 21. ACT IV: Who Captures the Value | 22. Two Paths | 23. AI Value Chain | 24. Where Value Lives | 25. ACT V: From the Inside | 26. Microsoft's AI Journey | 27. Project Nebula | 28. The Learning | 29. ACT VI: Your Move | 30. AI Organizations | 31. Two Skills | 32. Age of the Polymath | 33. What You Should Do | 34. Closing
+1. Title | 2. Anxiety Poll (live bar chart + survey page) | 3. ACT I: We've Been Here Before | 4. VUCA (Trudeau quote + S&P 500 stat) | 5. Production Function (Satya Nadella GDP quote, Cobb-Douglas) | 6. Waves of Creative Destruction (GDP graph + headlines carousel, manual arrows only) | 7. Technology Democratizes (Yesterday/Today split) | 8. Each Wave Climbed Higher | 9. Ceiling Quote (centered typography, magenta glow) | 10. Conflicting Views (real headshot photos, source links) | 11. AI Progression (4-page scroll: timeline, frontier models, SWE-bench, benchmark saturation + HLE + FrontierMath + Dario quote) | 12. 5 Levels of AGI (Kurzweil exponential chart with milestones) | 13. ACT III: Ground Zero Software | 14. AI Adoption Across Industries | 15. Real Consequences (6 news headline cards with sources) | 16. Voices from the Field (Twitter-style white cards: Karpathy x2, Boris Cherny, Dario Amodei, with real photos) | 17. Cost = Zero (+ single engineers card) | 18. Role Fusion / Builder | 19. The New Battle: Distribution | 20. Diffusion Problem | 21. ACT IV: Who Captures the Value | 22. Two Paths | 23. AI Value Chain | 24. Where Value Lives | 25. ACT V: From the Inside | 26. Microsoft's AI Journey | 27. Project Nebula | 28. The Learning | 29. ACT VI: Your Move | 30. AI Organizations | 31. Two Skills | 32. Age of the Polymath | 33. What You Should Do | 34. Closing
 
 ## GitHub Repository
 - **Repo:** https://github.com/ashishmuralidharan/iisc-talk (private)
