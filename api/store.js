@@ -7,5 +7,6 @@ const votes = {
 };
 
 const voters = new Set(); // track IPs to prevent server-side duplicates
+const concerns = []; // free-text "biggest concern" submissions
 
-module.exports = { votes, voters };
+module.exports = { votes, voters, concerns };

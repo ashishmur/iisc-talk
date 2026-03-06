@@ -137,6 +137,90 @@
     transform: none;
   }
 
+  /* Concern input step */
+  .concern-step {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .concern-step.visible {
+    display: block;
+  }
+
+  .concern-step h2 {
+    font-size: 1.3rem;
+    color: #F0F0F5;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .concern-step p {
+    font-size: 0.85rem;
+    color: #7A7A8E;
+    margin-bottom: 20px;
+  }
+
+  .concern-input {
+    width: 100%;
+    padding: 16px;
+    background: #111118;
+    border: 1.5px solid #1E1E28;
+    border-radius: 12px;
+    color: #F0F0F5;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    transition: border-color 0.25s ease;
+    min-height: 80px;
+  }
+
+  .concern-input:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 20px rgba(59,130,246,0.1);
+  }
+
+  .concern-input::placeholder {
+    color: #3a3a4a;
+  }
+
+  .concern-submit {
+    width: 100%;
+    padding: 16px;
+    margin-top: 14px;
+    background: #3B82F6;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .concern-submit:active {
+    transform: scale(0.97);
+  }
+
+  .concern-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .concern-skip {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: #7A7A8E;
+    cursor: pointer;
+    border: none;
+    background: none;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   /* Thank you state */
   .thank-you {
     display: none;
@@ -254,6 +338,16 @@
     </div>
   </div>
 
+  <!-- Concern input step -->
+  <div class="concern-step" id="concern-step">
+    <h2>One more thing...</h2>
+    <p>What's your biggest concern about AI?</p>
+    <textarea class="concern-input" id="concern-input" placeholder="e.g. losing my job, privacy, bias in decisions..." maxlength="200"></textarea>
+    <button class="concern-submit" id="concern-submit" onclick="submitConcern()">Submit</button>
+    <br>
+    <button class="concern-skip" onclick="showThankYou()">Skip</button>
+  </div>
+
   <!-- Thank you -->
   <div class="thank-you" id="thank-you">
     <div class="checkmark">
@@ -279,10 +373,15 @@
   'use strict';
 
   var VOTED_KEY = 'iisc_poll_voted_march2026';
+  var CONCERN_KEY = 'iisc_poll_concern_march2026';
 
   // Check if already voted (client-side check)
-  if (localStorage.getItem(VOTED_KEY)) {
+  if (localStorage.getItem(CONCERN_KEY)) {
     showThankYou();
+    return;
+  }
+  if (localStorage.getItem(VOTED_KEY)) {
+    showConcernStep();
     return;
   }
 
@@ -304,20 +403,50 @@
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      // Mark as voted locally (prevents re-voting even if they refresh)
       localStorage.setItem(VOTED_KEY, key);
-      setTimeout(showThankYou, 500);
+      setTimeout(showConcernStep, 500);
     })
     .catch(function() {
-      // If API fails, still record locally so UX isn't broken
       localStorage.setItem(VOTED_KEY, key);
-      setTimeout(showThankYou, 500);
+      setTimeout(showConcernStep, 500);
     });
   };
 
-  function showThankYou() {
+  window.submitConcern = function() {
+    var input = document.getElementById('concern-input');
+    var text = (input.value || '').trim();
+    if (!text) { showThankYou(); return; }
+
+    var btn = document.getElementById('concern-submit');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    fetch('/api/concern', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text })
+    })
+    .then(function() {
+      localStorage.setItem(CONCERN_KEY, '1');
+      showThankYou();
+    })
+    .catch(function() {
+      localStorage.setItem(CONCERN_KEY, '1');
+      showThankYou();
+    });
+  };
+
+  window.showThankYou = function() {
     document.getElementById('poll-content').style.display = 'none';
+    document.getElementById('concern-step').style.display = 'none';
+    document.getElementById('concern-step').classList.remove('visible');
     document.getElementById('thank-you').classList.add('visible');
+    localStorage.setItem(CONCERN_KEY, '1');
+  };
+
+  function showConcernStep() {
+    document.getElementById('poll-content').style.display = 'none';
+    document.getElementById('concern-step').classList.add('visible');
   }
 })();
 </script>

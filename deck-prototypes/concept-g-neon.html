@@ -1425,6 +1425,13 @@ html, body {
           </div>
         </div>
       </div>
+      <!-- Word Cloud -->
+      <div id="word-cloud-section" class="reveal-item" style="margin-top:28px;display:none;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <div style="font-family:var(--font-headline);font-size:12px;font-weight:600;color:var(--dim);letter-spacing:2px;text-transform:uppercase;">Biggest Concerns</div>
+        </div>
+        <div id="word-cloud" style="position:relative;width:100%;min-height:120px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 0;"></div>
+      </div>
     </div>
     <div class="reveal-item" style="flex-shrink:0;text-align:center;padding-top:40px;">
       <a href="https://www.bluebucket.xyz/survey.html" id="poll-link" target="_blank" style="display:block;text-decoration:none;cursor:pointer;">
@@ -4758,7 +4765,9 @@ html, body {
   // ---- Live Poll System (server API polling) ----
   (function() {
     const optionKeys = ['very_anxious', 'somewhat_anxious', 'not_anxious', 'excited'];
+    const neonColors = ['#3B82F6','#EC4899','#8B5CF6','#06B6D4','#10B981','#F59E0B','#EF4444','#6366F1'];
     let pollInterval = null;
+    let knownWords = {};
 
     function updateBars(votes, total) {
       for (let i = 0; i < 4; i++) {
@@ -4775,11 +4784,78 @@ html, body {
       if (countEl) countEl.textContent = total + ' responses';
     }
 
+    function renderWordCloud(words) {
+      const section = document.getElementById('word-cloud-section');
+      const container = document.getElementById('word-cloud');
+      if (!section || !container) return;
+
+      var entries = Object.entries(words || {});
+      if (entries.length === 0) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+
+      // Sort by frequency desc, cap at 30 words
+      entries.sort(function(a, b) { return b[1] - a[1]; });
+      entries = entries.slice(0, 30);
+
+      var maxFreq = entries[0][1];
+      var minFreq = entries[entries.length - 1][1];
+
+      // Build a set of current words for diffing
+      var currentWords = {};
+      entries.forEach(function(e) { currentWords[e[0]] = e[1]; });
+
+      // Remove words no longer present
+      var existing = container.querySelectorAll('[data-word]');
+      existing.forEach(function(el) {
+        if (!currentWords[el.getAttribute('data-word')]) {
+          el.style.opacity = '0';
+          el.style.transform = 'scale(0.5)';
+          setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 300);
+        }
+      });
+
+      entries.forEach(function(entry, idx) {
+        var word = entry[0];
+        var freq = entry[1];
+        // Scale font: 14px to 42px
+        var size = minFreq === maxFreq ? 28 : 14 + (freq - minFreq) / (maxFreq - minFreq) * 28;
+        var color = neonColors[idx % neonColors.length];
+        var glowColor = color + '66';
+
+        var el = container.querySelector('[data-word="' + word + '"]');
+        if (el) {
+          // Update existing word
+          el.style.fontSize = size + 'px';
+          el.style.color = color;
+          el.style.textShadow = '0 0 8px ' + glowColor;
+        } else {
+          // New word: create with fade-in
+          el = document.createElement('span');
+          el.setAttribute('data-word', word);
+          el.textContent = word;
+          el.style.cssText = 'font-family:var(--font-headline);font-weight:700;display:inline-block;' +
+            'font-size:' + size + 'px;color:' + color + ';text-shadow:0 0 8px ' + glowColor + ';' +
+            'opacity:0;transform:scale(0.6);transition:all 0.5s cubic-bezier(0.175,0.885,0.32,1.275);';
+          container.appendChild(el);
+          // Trigger animation
+          requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+              el.style.opacity = '1';
+              el.style.transform = 'scale(1)';
+            });
+          });
+        }
+      });
+
+      knownWords = currentWords;
+    }
+
     function fetchResults() {
       fetch('/api/results')
         .then(function(r) { return r.json(); })
         .then(function(data) {
           updateBars(data.votes, data.total);
+          renderWordCloud(data.words);
         })
         .catch(function() {});
     }
