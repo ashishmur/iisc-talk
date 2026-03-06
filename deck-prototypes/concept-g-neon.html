@@ -871,6 +871,43 @@ html, body {
   transform: translateY(0);
 }
 
+/* Insight rows below principle cards */
+.np-insights-row {
+  display: flex;
+  gap: 14px;
+  margin-top: 12px;
+}
+.np-insight-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.np-insight-item {
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.np-insight-item.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+.np-insight-item .np-ins-title {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--font-headline);
+  margin-bottom: 2px;
+}
+.np-insight-item .np-ins-desc {
+  font-size: 9px;
+  color: var(--dim);
+  line-height: 1.45;
+}
+
 .np-skill-card {
   padding: 14px 16px;
   background: var(--surface);
@@ -3380,6 +3417,70 @@ html, body {
         <div style="font-size:9px;color:var(--dim);font-style:italic;margin-top:10px;">"AI is 20% algorithms, 80% organizational rewiring."</div>
       </div>
     </div>
+    <!-- Insight rows (revealed on second click) -->
+    <div class="np-insights-row" id="np-insights">
+      <!-- Column 1: Bottom-Up Learning -->
+      <div class="np-insight-col">
+        <div class="np-insight-item" style="border-color:rgba(59,130,246,0.12);">
+          <div class="np-ins-title" style="color:var(--primary);">Lead First</div>
+          <div class="np-ins-desc">Leaders must model AI use themselves. Vacate time, experiment openly, set the cultural tone from the top.</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(59,130,246,0.12);">
+          <div class="np-ins-title" style="color:var(--primary);">Allow Open Exploration</div>
+          <div class="np-ins-desc">Early tasks may seem trivial. Comfort with the tool precedes solving high-value problems.</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(59,130,246,0.12);">
+          <div class="np-ins-title" style="color:var(--primary);">Grow Internal AI Explorers</div>
+          <div class="np-ins-desc">Internal practitioners with org context outperform external consultants. They spot deployment opportunities and diffuse knowledge organically.</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(59,130,246,0.12);">
+          <div class="np-ins-title" style="color:var(--primary);">High-Friction First</div>
+          <div class="np-ins-desc">Start where AI removes daily pain points. Then close the loop on end-to-end workflows for real productivity gains.</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(59,130,246,0.12);">
+          <div class="np-ins-title" style="color:var(--primary);">Build Knowledge Networks</div>
+          <div class="np-ins-desc">Create mechanisms for teams to share AI context, patterns, and wins across the organization.</div>
+        </div>
+      </div>
+      <!-- Column 2: Human + AI Teams -->
+      <div class="np-insight-col">
+        <div class="np-insight-item" style="border-color:rgba(236,72,153,0.12);">
+          <div class="np-ins-title" style="color:var(--secondary);">Build Evaluation Muscle</div>
+          <div class="np-ins-desc">Enable employees to create agent evaluation mechanisms. Measure performance and quality of agentic workflows systematically.</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(236,72,153,0.12);">
+          <div class="np-ins-title" style="color:var(--secondary);">Default to Agentic-First</div>
+          <div class="np-ins-desc">Cultivate the instinct to ask "Can an agent do this?" before "Who should I assign this to?"</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(236,72,153,0.12);">
+          <div class="np-ins-title" style="color:var(--secondary);">Redefine the Manager Role</div>
+          <div class="np-ins-desc">Agent managers don't just delegate. They orchestrate workflows, set guardrails, and quality-check agent outputs.</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(236,72,153,0.12);">
+          <div class="np-ins-title" style="color:var(--secondary);">Rethink Team Boundaries</div>
+          <div class="np-ins-desc">Agents work across functions. Org structures must evolve from silos to fluid, task-based networks.</div>
+        </div>
+      </div>
+      <!-- Column 3: Embed First -->
+      <div class="np-insight-col">
+        <div class="np-insight-item" style="border-color:rgba(59,130,246,0.12);">
+          <div class="np-ins-title" style="color:var(--primary);">Unblock Individuals First</div>
+          <div class="np-ins-desc">Ensure every employee can augment their own work before optimizing cross-team workflows.</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(59,130,246,0.12);">
+          <div class="np-ins-title" style="color:var(--primary);">Then Solve Cross-Team Friction</div>
+          <div class="np-ins-desc">Build new playbooks for interconnected human + AI teams to move faster together.</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(59,130,246,0.12);">
+          <div class="np-ins-title" style="color:var(--primary);">Design AI-Native Workflows</div>
+          <div class="np-ins-desc">Don't just layer AI onto old processes. Rethink workflows where humans and agents each play to their strengths.</div>
+        </div>
+        <div class="np-insight-item" style="border-color:rgba(59,130,246,0.12);">
+          <div class="np-ins-title" style="color:var(--primary);">Iterate in Production</div>
+          <div class="np-ins-desc">Perfection delays adoption. Ship embedded AI early, gather feedback, refine. Speed of learning beats quality of planning.</div>
+        </div>
+      </div>
+    </div>
     <!-- Punchline -->
     <div class="reveal-item" style="text-align:center;margin-top:16px;">
       <div style="font-size:14px;color:var(--text);font-weight:600;font-family:var(--font-headline);">88% of organizations use AI. Only a third have scaled it. <span style="color:var(--secondary);">The gap is not technology. It's management.</span></div>
@@ -4017,8 +4118,20 @@ html, body {
       if (p1) p1.classList.remove('out');
     }
 
-    // Slide 27 sub-page state (page 0 = Organizations, page 1 = Individual Skills)
+    // Slide 27 sub-page state (0 = Org cards, 1 = Org cards + insights, 2 = Individual Skills)
     var npSubPage = 0;
+
+    function showNPInsights() {
+      var items = document.querySelectorAll('#np-insights .np-insight-item');
+      items.forEach(function(item, i) {
+        setTimeout(function() { item.classList.add('animate'); }, 60 + i * 50);
+      });
+    }
+
+    function hideNPInsights() {
+      var items = document.querySelectorAll('#np-insights .np-insight-item');
+      items.forEach(function(item) { item.classList.remove('animate'); });
+    }
 
     function showNPPage2() {
       var p1 = document.getElementById('np-page-1');
@@ -4070,6 +4183,12 @@ html, body {
       }
       if (current === 28 && npSubPage === 0) {
         npSubPage = 1;
+        showNPInsights();
+        return;
+      }
+      if (current === 28 && npSubPage === 1) {
+        npSubPage = 2;
+        hideNPInsights();
         showNPPage2();
         return;
       }
@@ -4091,9 +4210,15 @@ html, body {
         showNEPage1();
         return;
       }
+      if (current === 28 && npSubPage === 2) {
+        npSubPage = 1;
+        showNPPage1();
+        showNPInsights();
+        return;
+      }
       if (current === 28 && npSubPage === 1) {
         npSubPage = 0;
-        showNPPage1();
+        hideNPInsights();
         return;
       }
       goTo(current - 1);
@@ -4325,6 +4450,7 @@ html, body {
     }
     if (num === 28) {
       npSubPage = 0;
+      hideNPInsights();
       var npp1 = document.getElementById('np-page-1');
       var npp2 = document.getElementById('np-page-2');
       var npsub = document.getElementById('np-subtitle');
