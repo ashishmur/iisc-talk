@@ -16,7 +16,7 @@
 ~/claude_personal/iisc-talk/
   TALK-NARRATIVE.md          -- Master narrative (updated with research)
   deck-prototypes/
-    index.html               -- Landing page (7 concepts)
+    index.html               -- Blue Bucket Studios landing page (links to deck + explorations)
     concept-a-editorial.html -- 34 slides, Playfair Display, gold, clip-path wipe
     concept-b-terminal.html  -- 34 slides, JetBrains Mono, particles, typewriter
     concept-c-cinematic.html -- 34 slides, DM Serif Display, iris reveal, mesh gradient
@@ -24,6 +24,9 @@
     concept-e-brutalist.html -- 34 slides, Space Grotesk, B&W+red, hard-cut
     concept-f-hybrid.html    -- 34 slides, Terminal+Brutalist merged, SVG visualizations
     concept-g-neon.html      -- 38 slides, PRIMARY DECK, Neon Noir (see below)
+    all-concepts.html        -- Original 7-concept landing page (preserved)
+    survey.html              -- Mobile-friendly audience voting page (BroadcastChannel sync)
+    qr-survey.svg            -- QR code encoding https://www.bluebucket.xyz/survey.html
     poll/                    -- Firebase live poll system (QR + real-time results)
       poll-config.js         -- Firebase config (needs real credentials)
       vote.html              -- Mobile voting page
@@ -126,14 +129,25 @@
 ## Current Slide Order (38 slides)
 1. Title | 2. Anxiety Poll (live bar chart + survey page) | 3. ACT I: We've Been Here Before | 4. VUCA (Trudeau quote + S&P 500 stat) | 5. Production Function (Satya Nadella GDP quote, Cobb-Douglas) | 6. Waves of Creative Destruction (GDP graph + headlines carousel, manual arrows only) | 7. Technology Democratizes (Yesterday/Today split) | 8. Each Wave Climbed Higher | 9. ACT II: Is This Time Different? | 10. Ceiling Quote (centered typography, magenta glow) | 11. Conflicting Views (real headshot photos, source links) | 12. AI Progression (4-page scroll: timeline, frontier models, SWE-bench, benchmark saturation + HLE + FrontierMath + Dario quote) | 13. 5 Levels of AGI (Kurzweil chart + page 2: agent definition, examples with logos, YouTube demos) | 14. AI Adoption Across Industries | 15. ACT III: Ground Zero Software | 16. Real Consequences (6 news headline cards with sources) | 17. Voices from the Field (Twitter-style white cards: Karpathy x2, Boris Cherny, Dario Amodei, with real photos) | 18. Cost = Zero (+ single engineers card) | 19. Rise of the Builder | 20. The PM's Moment (Madhu Gurumurthy tweet card) | 21. The New Expectations (SVG hub-and-spoke visualization) | 22. The New Battle: Distribution | 23. Diffusion Problem (Mike Rowe tweet card) | 24. It's Already Happening (3x2 industry grid) | 25. ACT IV: Who Captures the Value | 26. Two Paths | 27. AI Value Chain | 28. Where Value Lives | 29. ACT V: From the Inside | 30. Microsoft's AI Journey | 31. Project Nebula | 32. The Learning | 33. ACT VI: Your Move | 34. AI Organizations | 35. Two Skills | 36. Age of the Polymath | 37. What You Should Do | 38. Closing
 
-## GitHub Repository
-- **Repo:** https://github.com/ashishmuralidharan/iisc-talk (private)
+## Hosting & Deployment
+- **Domain:** www.bluebucket.xyz (bare bluebucket.xyz redirects root only, subpages 404 on bare domain)
+- **Platform:** Azure Static Web Apps
+- **CI/CD:** GitHub Actions (auto-deploys on push to main)
+- **Repo:** https://github.com/ashishmur/iisc-talk
 - **Branch:** main
-- **Last push:** March 5, 2026 ~4:30 AM
+- **Last push:** March 6, 2026 ~10:22 AM IST
+- **app_location:** /deck-prototypes (served as site root)
+- **Live URLs:**
+  - Landing: https://www.bluebucket.xyz/
+  - Primary deck: https://www.bluebucket.xyz/concept-g-neon.html
+  - Survey/poll: https://www.bluebucket.xyz/survey.html
+  - QR code on slide 2 encodes: https://www.bluebucket.xyz/survey.html
 
 ## Still TODO
-- [ ] **Firebase setup for live poll:** Replace dummy simulation with real Firebase voting. Create Firebase project, add credentials to poll-config.js, host poll/ folder. NOTE: survey.html now works via BroadcastChannel for local testing.
+- [ ] **Firebase setup for live poll:** Replace dummy simulation with real Firebase voting. Create Firebase project, add credentials to poll-config.js, host poll/ folder. NOTE: survey.html works via BroadcastChannel for same-browser testing only. Audience phone votes will NOT sync to presenter screen without a backend.
+- [ ] **Fix bare domain routing:** bluebucket.xyz subpages return 404 instead of redirecting to www. Configure Azure SWA or DNS to redirect all paths, not just root.
 - [x] **Act naming:** Act II added ("IS THIS TIME DIFFERENT?"). All 6 acts now have divider slides.
+- [x] **QR code:** Replaced placeholder checkerboard with real QR code pointing to www.bluebucket.xyz/survey.html
 
 ## Narrative Changes Made to TALK-NARRATIVE.md
 1. Disruption pattern: Replaced "Shipping" with Carlota Perez framework (Physical > Electrical > Information > Cognitive Power)

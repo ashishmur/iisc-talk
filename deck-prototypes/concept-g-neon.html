@@ -4755,20 +4755,18 @@ html, body {
         };
   })();
 
-  // ---- Live Poll System (BroadcastChannel + localStorage fallback + demo simulation) ----
+  // ---- Live Poll System (server API polling) ----
   (function() {
     const optionKeys = ['very_anxious', 'somewhat_anxious', 'not_anxious', 'excited'];
-    const counts = [0, 0, 0, 0];
-    let total = 0;
-    let pollStarted = false;
-    let realVotesReceived = false;
+    let pollInterval = null;
 
-    function updateBars() {
+    function updateBars(votes, total) {
       for (let i = 0; i < 4; i++) {
         const bar = document.getElementById('poll-bar-' + (i+1));
         const pct = document.getElementById('poll-pct-' + (i+1));
         if (bar && pct) {
-          const p = total > 0 ? Math.round(counts[i] / total * 100) : 0;
+          const count = votes[optionKeys[i]] || 0;
+          const p = total > 0 ? Math.round(count / total * 100) : 0;
           bar.style.width = p + '%';
           pct.textContent = p + '%';
         }
@@ -4777,72 +4775,25 @@ html, body {
       if (countEl) countEl.textContent = total + ' responses';
     }
 
-    function handleRealVote(optionKey) {
-      const idx = optionKeys.indexOf(optionKey);
-      if (idx === -1) return;
-      realVotesReceived = true;
-      counts[idx]++;
-      total++;
-      updateBars();
+    function fetchResults() {
+      fetch('/api/results')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          updateBars(data.votes, data.total);
+        })
+        .catch(function() {});
     }
 
-    // Listen for real votes via BroadcastChannel
-    try {
-      const channel = new BroadcastChannel('iisc-poll-channel');
-      channel.onmessage = function(e) {
-        if (e.data && e.data.type === 'vote') {
-          handleRealVote(e.data.option);
-        }
-      };
-    } catch(err) {}
-
-    // Also listen via localStorage (cross-tab fallback)
-    window.addEventListener('storage', function(e) {
-      if (e.key === 'iisc_poll_last_vote' && e.newValue) {
-        try {
-          const data = JSON.parse(e.newValue);
-          if (data.option) handleRealVote(data.option);
-        } catch(err) {}
-      }
-    });
-
-    // Load any existing votes from localStorage
-    try {
-      const saved = JSON.parse(localStorage.getItem('iisc_poll_votes') || '{}');
-      let hasSaved = false;
-      optionKeys.forEach(function(key, i) {
-        if (saved[key] > 0) { counts[i] = saved[key]; total += saved[key]; hasSaved = true; }
-      });
-      if (hasSaved) { realVotesReceived = true; updateBars(); }
-    } catch(err) {}
-
-    // Demo simulation (only runs if no real votes after 10 seconds on the slide)
-    function simulateVote() {
-      if (realVotesReceived || total >= 80) return;
-      const targets = [47, 31, 14, 8];
-      const r = Math.random() * 100;
-      let idx = 0;
-      if (r < targets[0]) idx = 0;
-      else if (r < targets[0] + targets[1]) idx = 1;
-      else if (r < targets[0] + targets[1] + targets[2]) idx = 2;
-      else idx = 3;
-      counts[idx]++;
-      total++;
-      updateBars();
-      if (!realVotesReceived && total < 80) {
-        setTimeout(simulateVote, 100 + Math.random() * 350);
-      }
-    }
-
-    // Start poll when slide 2 becomes active
+    // Poll server every 2 seconds when slide 2 is active
     const observer = new MutationObserver(function() {
       const slide2 = document.querySelector('[data-slide="2"]');
-      if (slide2 && slide2.classList.contains('active') && !pollStarted) {
-        pollStarted = true;
-        // Wait 10s for real votes, then start demo if none received
-        setTimeout(function() {
-          if (!realVotesReceived && total === 0) simulateVote();
-        }, 10000);
+      if (slide2 && slide2.classList.contains('active')) {
+        if (!pollInterval) {
+          fetchResults();
+          pollInterval = setInterval(fetchResults, 2000);
+        }
+      } else {
+        if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
       }
     });
     observer.observe(document.querySelector('.deck'), { subtree: true, attributes: true, attributeFilter: ['class'] });

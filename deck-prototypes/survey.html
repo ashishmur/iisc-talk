@@ -279,16 +279,8 @@
   'use strict';
 
   var VOTED_KEY = 'iisc_poll_voted_march2026';
-  var channel = null;
 
-  // Set up BroadcastChannel for real-time sync with presenter deck
-  try {
-    channel = new BroadcastChannel('iisc-poll-channel');
-  } catch(e) {
-    // BroadcastChannel not supported, fall back to localStorage
-  }
-
-  // Check if already voted
+  // Check if already voted (client-side check)
   if (localStorage.getItem(VOTED_KEY)) {
     showThankYou();
     return;
@@ -304,23 +296,23 @@
     btn.classList.add('selected');
     if (isAnxious) btn.classList.add('anxious');
 
-    // Store vote in localStorage (for cross-tab sync)
-    localStorage.setItem(VOTED_KEY, key);
-
-    // Increment vote count in localStorage
-    var votes = JSON.parse(localStorage.getItem('iisc_poll_votes') || '{"very_anxious":0,"somewhat_anxious":0,"not_anxious":0,"excited":0}');
-    votes[key] = (votes[key] || 0) + 1;
-    localStorage.setItem('iisc_poll_votes', JSON.stringify(votes));
-
-    // Broadcast vote to presenter deck
-    if (channel) {
-      channel.postMessage({ type: 'vote', option: key, votes: votes });
-    }
-
-    // Also fire a storage event for cross-tab fallback
-    localStorage.setItem('iisc_poll_last_vote', JSON.stringify({ option: key, ts: Date.now() }));
-
-    setTimeout(showThankYou, 500);
+    // Send vote to server API
+    fetch('/api/vote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ option: key })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      // Mark as voted locally (prevents re-voting even if they refresh)
+      localStorage.setItem(VOTED_KEY, key);
+      setTimeout(showThankYou, 500);
+    })
+    .catch(function() {
+      // If API fails, still record locally so UX isn't broken
+      localStorage.setItem(VOTED_KEY, key);
+      setTimeout(showThankYou, 500);
+    });
   };
 
   function showThankYou() {
