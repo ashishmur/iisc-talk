@@ -4972,13 +4972,15 @@ html, body {
     var url = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
     if (start) url += '&start=' + start;
     iframe.src = url;
-    overlay.classList.add('visible');
+    overlay.style.opacity = '1';
+    overlay.style.pointerEvents = 'auto';
   };
 
   window.closeYT = function() {
     var overlay = document.getElementById('yt-overlay');
     var iframe = document.getElementById('yt-iframe');
-    overlay.classList.remove('visible');
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
     setTimeout(function() { iframe.src = ''; }, 300);
   };
 
@@ -5001,9 +5003,6 @@ html, body {
   </button>
   <iframe id="yt-iframe" src="" style="width:85vw;height:47.8vw;max-width:1280px;max-height:720px;border:none;border-radius:8px;box-shadow:0 0 60px rgba(59,130,246,0.15);" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>
 </div>
-<style>
-  #yt-overlay.visible { opacity:1; pointer-events:auto; }
-</style>
 
 </body>
 </html>
