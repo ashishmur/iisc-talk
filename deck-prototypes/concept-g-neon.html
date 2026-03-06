@@ -1155,9 +1155,9 @@ html, body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 14px 20px;
+  padding: 10px 16px;
   font-family: var(--font-headline);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--dim);
   white-space: nowrap;
@@ -3564,6 +3564,35 @@ html, body {
      ============================================ -->
 <div class="slide" data-slide="29">
   <div class="headline headline-medium" id="tw-29"></div>
+  <div class="pipeline" id="pipeline-viz" style="margin-top:20px;">
+    <div class="pipeline-item" data-delay="0">
+      <div class="pipeline-block">Energy</div>
+    </div>
+    <div class="pipeline-item" data-delay="1">
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-block">Chips</div>
+    </div>
+    <div class="pipeline-item" data-delay="2">
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-block">Fabricators</div>
+    </div>
+    <div class="pipeline-item" data-delay="3">
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-block">Frontier Labs</div>
+    </div>
+    <div class="pipeline-item" data-delay="4">
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-block">Hyperscalers</div>
+    </div>
+    <div class="pipeline-item" data-delay="5">
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-block">App Layer</div>
+    </div>
+    <div class="pipeline-item" data-delay="6">
+      <span class="pipeline-arrow">&rarr;</span>
+      <div class="pipeline-block" style="border-color:var(--primary);box-shadow:0 0 15px var(--glow);">Distribution</div>
+    </div>
+  </div>
   <div class="neon-line mt-24"></div>
   <div class="body-large mt-16 reveal-item" style="color:var(--dim);max-width:600px;">Not the model. Three things matter:</div>
   <div class="key-info mt-32">
@@ -4396,6 +4425,8 @@ html, body {
     // Slide 13: AGI meter
     if (num === 14) animateAGI();
     // Slide 27: New Playbook (reveal-items handle page 1)
+    // Slide 27 (29): Pipeline value chain
+    if (num === 29) animatePipeline();
     // Slide 30: Hexagons
     if (num === 31) animateHexagons();
     // Slide 32: Action grid
@@ -4462,6 +4493,7 @@ html, body {
         npp2.querySelectorAll('.np-deficit-item').forEach(function(c) { c.classList.remove('animate'); });
       }
     }
+    if (num === 29) resetPipeline();
     if (num === 31) resetHexagons();
     if (num === 34) resetActions();
   }
