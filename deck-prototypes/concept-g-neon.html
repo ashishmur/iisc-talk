@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI & The New Management Playbook - Neon Noir</title>
+<title>AI & The New Management Playbook</title>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================
@@ -109,6 +109,35 @@ html, body {
   color: var(--dim);
   z-index: 100;
   letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+#slide-num-input {
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dim);
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 2ch;
+  text-align: right;
+  letter-spacing: 0.5px;
+  padding: 0;
+  margin: 0;
+  -moz-appearance: textfield;
+}
+
+#slide-num-input::-webkit-outer-spin-button,
+#slide-num-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#slide-num-input:focus {
+  color: var(--primary);
 }
 
 /* ============================================
@@ -3867,7 +3896,7 @@ html, body {
 
 <!-- Progress bar & slide number -->
 <div id="progress-bar"></div>
-<div id="slide-number">01 / 38</div>
+<div id="slide-number"><input id="slide-num-input" type="number" value="01" min="1" max="35"><span id="slide-num-total"> / 35</span></div>
 
 <script>
 /* ============================================
@@ -4060,10 +4089,43 @@ html, body {
     }
 
   function updateUI() {
-    const num = String(current).padStart(2, '0');
-    document.getElementById('slide-number').textContent = `${num} / ${TOTAL}`;
+    const input = document.getElementById('slide-num-input');
+    if (input && document.activeElement !== input) {
+      input.value = String(current).padStart(2, '0');
+    }
     document.getElementById('progress-bar').style.width = `${(current / TOTAL) * 100}%`;
   }
+
+  // Editable slide number: Enter to jump, Escape to cancel
+  (function() {
+    const input = document.getElementById('slide-num-input');
+    if (!input) return;
+
+    input.addEventListener('focus', function() {
+      input.value = current;
+      input.select();
+    });
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const n = parseInt(input.value, 10);
+        if (n >= 1 && n <= TOTAL) {
+          isAnimating = false;
+          goTo(n);
+        }
+        input.blur();
+      } else if (e.key === 'Escape') {
+        input.value = String(current).padStart(2, '0');
+        input.blur();
+      }
+      e.stopPropagation(); // prevent deck nav while typing
+    });
+
+    input.addEventListener('blur', function() {
+      input.value = String(current).padStart(2, '0');
+    });
+  })();
 
   // ---- Keyboard ----
   document.addEventListener('keydown', (e) => {
