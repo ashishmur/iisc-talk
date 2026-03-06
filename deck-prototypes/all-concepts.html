@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deck Prototypes - AI & The New Management Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #06060A;
+    color: #E5E7EB;
+    min-height: 100vh;
+    padding: 56px 32px 48px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .header .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6B7280;
+    margin-bottom: 20px;
+    padding: 6px 16px;
+    border: 1px solid #1F2937;
+    border-radius: 100px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+
+  .header p {
+    font-size: 15px;
+    color: #6B7280;
+    line-height: 1.6;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #0C0C12;
+    border: 1px solid #1A1A24;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover { transform: translateY(-3px); }
+
+  .card__preview {
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card__body {
+    padding: 24px 24px 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card__label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #4B5563;
+    margin-bottom: 6px;
+  }
+
+  .card__title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .card__subtitle {
+    font-size: 13px;
+    color: #6B7280;
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+
+  .card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.04);
+    color: #9CA3AF;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .card__btn {
+    display: block;
+    text-align: center;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-top: auto;
+  }
+
+  /* Card A - Editorial */
+  .card--a:hover { border-color: #B8960C; box-shadow: 0 8px 24px rgba(184,150,12,0.06); }
+  .card--a .card__preview { background: #FAF8F5; }
+  .card--a .card__preview-text { font-family: 'Playfair Display', serif; font-size: 24px; font-style: italic; color: #1B2A4A; opacity: 0.5; }
+  .card--a .card__preview::after { content: ''; position: absolute; bottom: 32px; left: 40px; width: 48px; height: 1px; background: #B8960C; }
+  .card--a .card__title { color: #B8960C; }
+  .card--a .card__btn { background: #B8960C; color: #fff; }
+  .card--a .card__btn:hover { background: #a3850b; }
+
+  /* Card B - Terminal */
+  .card--b:hover { border-color: #00D4AA; box-shadow: 0 8px 24px rgba(0,212,170,0.06); }
+  .card--b .card__preview { background: #050505; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #00D4AA; opacity: 0.5; }
+  .card--b .card__preview::before { content: '> go build something_'; animation: tblink 1.2s infinite; }
+  .card--b .card__title { color: #00D4AA; }
+  .card--b .card__btn { background: #00D4AA; color: #050505; }
+  .card--b .card__btn:hover { background: #00b894; }
+  @keyframes tblink { 0%,100%{opacity:.5} 50%{opacity:.3} }
+
+  /* Card C - Cinematic */
+  .card--c:hover { border-color: #c084fc; box-shadow: 0 8px 24px rgba(192,132,252,0.06); }
+  .card--c .card__preview { background: #0a0a12; }
+  .card--c .card__preview::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 40%, rgba(99,102,241,0.2), transparent 60%), radial-gradient(circle at 70% 60%, rgba(236,72,153,0.15), transparent 50%); animation: cmesh 8s ease-in-out infinite alternate; }
+  @keyframes cmesh { from{transform:translate(0,0)} to{transform:translate(3%,-3%)} }
+  .card--c .card__preview-text { font-family: 'DM Serif Display', serif; font-size: 22px; font-style: italic; color: white; opacity: 0.35; z-index: 1; position: relative; }
+  .card--c .card__title { color: #c084fc; }
+  .card--c .card__btn { background: #7C3AED; color: #fff; }
+  .card--c .card__btn:hover { background: #6d28d9; }
+
+  /* Card D - Aurora */
+  .card--d:hover { border-color: #38bdf8; box-shadow: 0 8px 24px rgba(56,189,248,0.06); }
+  .card--d .card__preview { background: #0c1222; }
+  .card--d .card__preview::before { content: ''; position: absolute; inset: -20px; background: linear-gradient(135deg, rgba(6,182,212,0.25), rgba(124,58,237,0.2), rgba(244,114,182,0.15)); filter: blur(30px); animation: auroradrift 6s ease-in-out infinite alternate; }
+  @keyframes auroradrift { from{transform:translate(-5%,5%) rotate(-2deg)} to{transform:translate(5%,-5%) rotate(2deg)} }
+  .card--d .card__preview-glass { position: relative; z-index: 1; background: rgba(255,255,255,0.07); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 20px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.6); }
+  .card--d .card__title { color: #38bdf8; }
+  .card--d .card__btn { background: #0891b2; color: #fff; }
+  .card--d .card__btn:hover { background: #0e7490; }
+
+  /* Card E - Brutalist */
+  .card--e:hover { border-color: #ef4444; box-shadow: 0 8px 24px rgba(239,68,68,0.06); }
+  .card--e .card__preview { background: #fff; position: relative; }
+  .card--e .card__preview-text { font-family: 'Space Grotesk', sans-serif; font-size: 72px; font-weight: 700; color: #000; letter-spacing: -0.06em; line-height: 0.85; }
+  .card--e .card__preview::after { content: ''; position: absolute; top: 12px; right: 12px; width: 16px; height: 16px; background: #ef4444; }
+  .card--e .card__title { color: #ef4444; }
+  .card--e .card__btn { background: #ef4444; color: #fff; }
+  .card--e .card__btn:hover { background: #dc2626; }
+
+  .footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+    color: #374151;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="badge">7 Design Directions &middot; 34 Slides Each</div>
+    <h1>AI & The New Management Playbook</h1>
+    <p>Each prototype has animated transitions, staggered reveals, and its own visual signature. Pick the one that makes you say "wow."</p>
+  </div>
+
+  <div class="grid">
+    <div class="card card--a">
+      <div class="card__preview"><span class="card__preview-text">The Editorial</span></div>
+      <div class="card__body">
+        <div class="card__label">Concept A</div>
+        <div class="card__title">Editorial</div>
+        <div class="card__subtitle">Magazine-grade intellectual authority</div>
+        <div class="card__tags">
+          <span class="tag">Playfair Display</span>
+          <span class="tag">Diagonal wipe</span>
+          <span class="tag">Text reveal</span>
+          <span class="tag">SVG line draw</span>
+        </div>
+        <a href="concept-a-editorial.html" class="card__btn">View Editorial &rarr;</a>
+      </div>
+    </div>
+
+    <div class="card card--b">
+      <div class="card__preview"></div>
+      <div class="card__body">
+        <div class="card__label">Concept B</div>
+        <div class="card__title">Terminal</div>
+        <div class="card__subtitle">Hacker aesthetic, living code</div>
+        <div class="card__tags">
+          <span class="tag">JetBrains Mono</span>
+          <span class="tag">Typewriter FX</span>
+          <span class="tag">Particle network</span>
+          <span class="tag">Glitch morph</span>
+        </div>
+        <a href="concept-b-terminal.html" class="card__btn">View Terminal &rarr;</a>
+      </div>
+    </div>
+
+    <div class="card card--c">
+      <div class="card__preview"><span class="card__preview-text">Cinematic</span></div>
+      <div class="card__body">
+        <div class="card__label">Concept C</div>
+        <div class="card__title">Cinematic Noir</div>
+        <div class="card__subtitle">Film-quality, dramatic lighting</div>
+        <div class="card__tags">
+          <span class="tag">DM Serif Display</span>
+          <span class="tag">Iris reveal</span>
+          <span class="tag">Mesh gradient</span>
+          <span class="tag">Film grain</span>
+        </div>
+        <a href="concept-c-cinematic.html" class="card__btn">View Cinematic &rarr;</a>
+      </div>
+    </div>
+
+    <div class="card card--d">
+      <div class="card__preview"><span class="card__preview-glass">Glass panel</span></div>
+      <div class="card__body">
+        <div class="card__label">Concept D</div>
+        <div class="card__title">Aurora Glass</div>
+        <div class="card__subtitle">Flowing gradients, frosted glass</div>
+        <div class="card__tags">
+          <span class="tag">Inter</span>
+          <span class="tag">Canvas gradient</span>
+          <span class="tag">Glassmorphism</span>
+          <span class="tag">Float anim</span>
+        </div>
+        <a href="concept-d-aurora.html" class="card__btn">View Aurora &rarr;</a>
+      </div>
+    </div>
+
+    <div class="card card--e">
+      <div class="card__preview"><span class="card__preview-text">AG</span></div>
+      <div class="card__body">
+        <div class="card__label">Concept E</div>
+        <div class="card__title">Brutalist</div>
+        <div class="card__subtitle">Stark, extreme type, hard-cut</div>
+        <div class="card__tags">
+          <span class="tag">Space Grotesk</span>
+          <span class="tag">Hard-cut (0ms)</span>
+          <span class="tag">Text scramble</span>
+          <span class="tag">Counter anim</span>
+        </div>
+        <a href="concept-e-brutalist.html" class="card__btn">View Brutalist &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+    <!-- NEW: Concept F - Hybrid -->
+    <div class="card card--b" style="border-color: #1A1A1A;">
+      <div class="card__preview" style="background:#060608; position:relative;">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#00D4AA;opacity:0.6;">Terminal + Brutalist</span>
+        </div>
+        <div style="position:absolute;top:12px;right:12px;width:12px;height:12px;background:#FF3B3B;border-radius:50%;"></div>
+      </div>
+      <div class="card__body">
+        <div class="card__label" style="color:#00D4AA;">New &middot; Concept F</div>
+        <div class="card__title" style="color:#00D4AA;">Hybrid</div>
+        <div class="card__subtitle">Terminal futurism + Brutalist contrast + real SVG visualizations</div>
+        <div class="card__tags">
+          <span class="tag">JetBrains Mono</span>
+          <span class="tag">Particle network</span>
+          <span class="tag">SVG diagrams</span>
+          <span class="tag">Typewriter (no scramble)</span>
+        </div>
+        <a href="concept-f-hybrid.html" class="card__btn" style="background:#00D4AA;color:#050505;">View Hybrid &rarr;</a>
+      </div>
+    </div>
+
+    <!-- NEW: Concept G - Neon Noir -->
+    <div class="card card--c" style="border-color: #1A1A1A;">
+      <div class="card__preview" style="background:#08080C; position:relative;">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#3B82F6;text-shadow:0 0 20px rgba(59,130,246,0.4);opacity:0.7;">NEON</span>
+        </div>
+        <div style="position:absolute;bottom:12px;right:12px;width:10px;height:10px;background:#EC4899;border-radius:50%;box-shadow:0 0 8px rgba(236,72,153,0.5);"></div>
+      </div>
+      <div class="card__body">
+        <div class="card__label" style="color:#3B82F6;">New &middot; Concept G</div>
+        <div class="card__title" style="color:#3B82F6;">Neon Noir</div>
+        <div class="card__subtitle">Cyberpunk-refined, electric blue + magenta, neon glow accents</div>
+        <div class="card__tags">
+          <span class="tag">Space Grotesk</span>
+          <span class="tag">Neon glow</span>
+          <span class="tag">SVG viz</span>
+          <span class="tag">Hexagons</span>
+        </div>
+        <a href="concept-g-neon.html" class="card__btn" style="background:#3B82F6;color:#fff;">View Neon Noir &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">IISc DoMS Guest Lecture &middot; March 6, 2026 &middot; Ashish Muralidharan</div>
+</body>
+</html>
