@@ -239,6 +239,34 @@
     opacity: 1;
   }
 
+  .talk-card + .talk-card {
+    margin-top: 16px;
+  }
+
+  .talk-card.is-disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+
+  .talk-card.is-disabled:hover {
+    border-color: #1A1A24;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .badge-soon {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(107, 114, 128, 0.12);
+    color: #9CA3AF;
+    border: 1px solid rgba(107, 114, 128, 0.2);
+  }
+
   /* Footer */
   footer {
     margin-top: 48px;
@@ -315,6 +343,14 @@
       <div class="talk-card__desc">34-slide interactive deck on how AI is reshaping organizations, careers, and what it means for new graduates.</div>
       <div class="talk-card__arrow">&rarr;</div>
     </a>
+    <div class="talk-card is-disabled" aria-disabled="true">
+      <div class="talk-card__top">
+        <span class="badge-soon">Coming Soon</span>
+        <span class="talk-card__venue">Nureca</span>
+      </div>
+      <div class="talk-card__title">Nureca Pitch</div>
+      <div class="talk-card__desc">Pitch deck in progress &mdash; check back soon.</div>
+    </div>
   </div>
 </div>
 
