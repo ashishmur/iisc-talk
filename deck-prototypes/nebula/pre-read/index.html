@@ -1,0 +1,2730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Nebula · Building Scalable AI Prototypes</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="deck">
+<div class="deck-stage" id="deck-stage">
+
+<!-- ============================================================
+     SLIDE 1 - TITLE
+     ============================================================ -->
+<section class="slide active" data-slide="1">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:60px;" class="eyebrow">PM Workshop · Pre-Read</div>
+
+  <div style="position:absolute; left:80px; top:260px; max-width:680px;">
+    <div class="h-hero">
+      Project <span class="neon-magenta italic">Nebula</span>
+    </div>
+    <div class="h-3 text-dim mt-4" style="font-weight:500;">Pre-read · Session 3</div>
+    <div class="neon-line-wide mt-8"></div>
+    <div class="body-m mt-6" style="max-width:560px;">
+      Building scalable, secure, end-to-end AI prototypes with modern coding agents.
+    </div>
+    <div class="body-xs mt-8 mono" style="color:var(--dim-2); letter-spacing:1.5px; text-transform:uppercase;">Aug 2025</div>
+  </div>
+
+  <!-- Right visual: stylized brain/AI graphic -->
+  <div style="position:absolute; right:80px; top:60px; width:560px; height:600px;
+              display:flex; align-items:center; justify-content:center;">
+    <div style="position:relative; width:100%; height:100%;
+                background: radial-gradient(circle at 50% 50%, rgba(59,130,246,0.15) 0%, transparent 60%),
+                            radial-gradient(circle at 30% 70%, rgba(236,72,153,0.10) 0%, transparent 50%);
+                border-radius:200px; display:flex; align-items:center; justify-content:center;">
+      <img src="assets/images/slide01_img04.png" alt="AI brain visual"
+           style="width:88%; max-height:88%; object-fit:contain; mix-blend-mode:screen; opacity:0.88;
+                  filter: drop-shadow(0 0 24px rgba(59,130,246,0.25));"/>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 2 - JOURNEY SO FAR (3 sessions)
+     ============================================================ -->
+<section class="slide" data-slide="2">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px;">
+    <div class="eyebrow">Recap</div>
+    <div class="h-1 mt-3">Journey so far<span class="neon-blue">.</span><span class="neon-magenta">.</span></div>
+  </div>
+
+  <!-- 3-step vertical timeline -->
+  <div style="position:absolute; left:90px; top:200px; right:240px;">
+
+    <!-- Horizontal axis line -->
+    <div style="position:absolute; left:60px; right:60px; top:280px; height:1px;
+                background: linear-gradient(90deg, transparent, var(--primary), transparent);
+                box-shadow: 0 0 8px var(--glow);"></div>
+
+    <div style="display:flex; align-items:flex-start; gap:24px;">
+      <!-- Session 1 -->
+      <div style="flex:1; padding-top:160px;">
+        <div class="card card-accent-left" style="height:200px;">
+          <div class="step-pill">Session 1</div>
+          <div class="h-4 mt-4">Hands-on expertise</div>
+          <div class="body-s mt-3">
+            Used AI to transform our idea into impactful designs to communicate our vision effectively.
+          </div>
+        </div>
+        <div style="position:relative; height:60px; margin-top:18px;">
+          <div style="position:absolute; left:50%; top:0; transform:translateX(-50%);
+                      width:14px; height:14px; border-radius:50%;
+                      background:var(--primary); box-shadow: 0 0 12px var(--glow-strong);"></div>
+        </div>
+      </div>
+
+      <!-- Session 2 -->
+      <div style="flex:1; padding-top:60px;">
+        <div class="card card-accent-left" style="height:200px;">
+          <div class="step-pill">Session 2</div>
+          <div class="h-4 mt-4">Click-through prototype</div>
+          <div class="body-s mt-3">
+            Learned the basics and translated those designs into a UI prototype that simulates the app flow.
+          </div>
+        </div>
+        <div style="position:relative; height:60px; margin-top:18px;">
+          <div style="position:absolute; left:50%; top:0; transform:translateX(-50%);
+                      width:14px; height:14px; border-radius:50%;
+                      background:var(--primary); box-shadow: 0 0 12px var(--glow-strong);"></div>
+        </div>
+      </div>
+
+      <!-- Session 3 -->
+      <div style="flex:1;">
+        <div class="card card-magenta-glow" style="height:200px; border-color:rgba(236,72,153,0.35);">
+          <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">Session 3 · Today</div>
+          <div class="h-4 mt-4">Functional end-to-end</div>
+          <div class="body-s mt-3">
+            Evolve to building functional and scalable end-to-end prototypes — backend, AI, deployment.
+          </div>
+        </div>
+        <div style="position:relative; height:60px; margin-top:18px;">
+          <div style="position:absolute; left:50%; top:0; transform:translateX(-50%);
+                      width:14px; height:14px; border-radius:50%;
+                      background:var(--secondary); box-shadow: 0 0 14px var(--glow-magenta-strong);
+                      animation: glow 2s ease-in-out infinite;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; padding:0 60px; margin-top:8px;">
+      <div class="body-xs" style="color:var(--dim);">Concept → Design</div>
+      <div class="body-xs" style="color:var(--dim);">Design → UI prototype</div>
+      <div class="body-xs" style="color:var(--secondary);">UI → end-to-end product</div>
+    </div>
+  </div>
+
+  <!-- Demo badge top-right -->
+  <div style="position:absolute; right:80px; top:80px; text-align:center;">
+    <div style="width:88px; height:88px; border-radius:50%;
+                background: radial-gradient(circle, rgba(236,72,153,0.20), rgba(59,130,246,0.15) 60%, transparent);
+                border:1px solid rgba(236,72,153,0.35);
+                display:flex; align-items:center; justify-content:center; margin:0 auto;
+                box-shadow: 0 0 20px var(--glow-magenta);">
+      <span style="font-family:var(--font-headline); font-weight:800; font-size:26px; color:var(--text);">AI</span>
+    </div>
+    <div class="body-xs mt-3 uppercase tracking-wide" style="color:var(--dim);">PM Demo</div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:48px;" class="body-xs uppercase tracking-wider" >Timeline</div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 3 - DESIGN FOR SCALABILITY & SECURITY
+     ============================================================ -->
+<section class="slide" data-slide="3">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">First things first</div>
+    <div class="h-2 mt-3">Design for <span class="neon-blue">scalability</span> and <span class="neon-magenta">security</span></div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:920px;">
+      Don't just think about the UI and front-end — plan for scalability from day one.
+    </div>
+  </div>
+
+  <!-- Left column: backend-first card -->
+  <div style="position:absolute; left:80px; top:220px; width:780px;">
+    <div class="card card-glow">
+      <div class="tag">Backend-first architecture</div>
+      <div class="body-m mt-4" style="color:var(--text);">Why prioritize a backend layer from the start:</div>
+      <div class="mt-4">
+        <div class="bullet body-s">Paves the way for seamless future integration of services and capabilities.</div>
+        <div class="bullet body-s">Ensures security by preventing API credential exposure on the front end.</div>
+        <div class="bullet body-s">Optimized app data storage and management.</div>
+        <div class="bullet body-s">Smoother server deployment or hosting.</div>
+      </div>
+    </div>
+
+    <div class="card mt-6" style="border-color:var(--border-2);">
+      <div class="tag tag-magenta">How to add a backend?</div>
+      <div class="body-m mt-3" style="color:var(--text);">
+        Just ask your AI coding agent at the time of kicking off your project.
+        <span class="text-dim"> (Details in further slides)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right column: stylized lock + shield iconography -->
+  <div style="position:absolute; right:80px; top:230px; width:340px; height:380px;
+              display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;">
+    <div style="position:relative; width:240px; height:240px;
+                background: radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 65%);
+                display:flex; align-items:center; justify-content:center;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"
+           style="width:160px; height:160px; color:var(--primary); filter: drop-shadow(0 0 18px var(--glow-strong));">
+        <path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/>
+        <path d="M9 12l2 2 4-4" stroke="var(--secondary)" stroke-width="1.8"/>
+      </svg>
+    </div>
+    <div style="display:flex; gap:12px;">
+      <div class="tag tag-mono">api</div>
+      <div class="tag tag-mono tag-magenta">.env</div>
+      <div class="tag tag-mono">db</div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:40px;" class="body-xs uppercase tracking-wider text-dim">
+    Backend-first · Security · Scalability
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 4 - ACTIVITY PLAN (2 STEPS)
+     ============================================================ -->
+<section class="slide" data-slide="4">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Today's session</div>
+    <div class="h-1 mt-3">Activity plan</div>
+    <div class="body-l mt-3 text-dim">We will follow a two-step plan for today's activity.</div>
+  </div>
+
+  <!-- Step 1 block -->
+  <div style="position:absolute; left:80px; top:240px; width:1120px;
+              display:grid; grid-template-columns: 120px 1fr 80px 1fr; gap:24px; align-items:center;">
+
+    <div>
+      <div class="step-pill" style="font-size:13px;">Step 1</div>
+    </div>
+
+    <div class="card card-glow" style="padding:24px 28px;">
+      <div class="flex items-center gap-4">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M3 9h18M9 3v18"/>
+          </svg>
+        </div>
+        <div>
+          <div class="h-4">Create front-end UI</div>
+          <div class="body-xs mt-1">Skeleton screens with mock data</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative; height:2px;
+                background: linear-gradient(90deg, transparent, var(--primary));
+                box-shadow:0 0 6px var(--glow);">
+      <div style="position:absolute; right:0; top:50%; transform:translateY(-50%) rotate(45deg);
+                  width:8px; height:8px; border-right:2px solid var(--primary); border-top:2px solid var(--primary);"></div>
+    </div>
+
+    <div class="card card-glow" style="padding:24px 28px;">
+      <div class="flex items-center gap-4">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+            <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>
+          </svg>
+        </div>
+        <div>
+          <div class="h-4">Support with robust backend</div>
+          <div class="body-xs mt-1">API layer, env config, storage</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 block -->
+  <div style="position:absolute; left:80px; top:430px; width:1120px;
+              display:grid; grid-template-columns: 120px 1fr 80px 1fr; gap:24px; align-items:center;">
+
+    <div>
+      <div class="step-pill" style="font-size:13px; background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">Step 2</div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:24px 28px;">
+      <div class="flex items-center gap-4">
+        <div class="icon-box" style="background:rgba(236,72,153,0.08); border-color:rgba(236,72,153,0.20);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.6">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="h-4">Integrate AI via backend</div>
+          <div class="body-xs mt-1">Call your LLM provider server-side, not from the client</div>
+        </div>
+      </div>
+    </div>
+
+    <div></div>
+    <div></div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:48px; right:80px;
+              display:flex; align-items:center; gap:16px;">
+    <div style="flex:1; height:1px; background:var(--border-2);"></div>
+    <div class="body-xs uppercase tracking-wider text-dim">Front-end first, then backend, then AI</div>
+    <div style="flex:1; height:1px; background:var(--border-2);"></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 5 - EVOLVING FROM x TO 10x
+     ============================================================ -->
+<section class="slide" data-slide="5">
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">From simple to scalable</div>
+    <div class="h-1 mt-3">Evolving from <span class="neon-blue">x</span> to <span class="neon-magenta">10x</span></div>
+    <div class="body-m mt-3 text-dim">100 demos from 100 PMs in session 2.</div>
+  </div>
+
+  <!-- Left: 3 demo GIFs -->
+  <div style="position:absolute; left:80px; top:180px; width:340px;
+              display:flex; flex-direction:column; gap:18px;">
+    <div class="img-mask" style="height:150px;">
+      <img src="assets/images/slide05_img02.gif" alt="Demo 1" style="width:100%; height:100%; object-fit:cover;"/>
+      <div class="img-tag">Demo · 01</div>
+    </div>
+    <div class="img-mask" style="height:150px;">
+      <img src="assets/images/slide05_img03.gif" alt="Demo 2" style="width:100%; height:100%; object-fit:cover;"/>
+      <div class="img-tag">Demo · 02</div>
+    </div>
+    <div class="img-mask" style="height:150px;">
+      <img src="assets/images/slide05_img04.gif" alt="Demo 3" style="width:100%; height:100%; object-fit:cover;"/>
+      <div class="img-tag">Demo · 03</div>
+    </div>
+  </div>
+
+  <!-- Right: question -->
+  <div style="position:absolute; left:480px; right:80px; top:220px;">
+    <div class="card card-magenta-glow" style="padding:48px;">
+      <div class="body-m" style="color:var(--text);">
+        We saw some really fun prototypes during session 2.
+      </div>
+      <div class="h-2 mt-6">
+        But<span class="text-dim">…</span> how do we build applications with <span class="neon-magenta italic">much higher feature complexity?</span>
+      </div>
+      <div class="neon-line mt-6"></div>
+      <div class="body-s mt-6 text-dim">
+        Going from a click-through prototype to a real, multi-flow product means thinking about state,
+        integrations, auth, persistence, and AI behavior under edge cases.
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:36px;" class="body-xs uppercase tracking-wider text-dim">
+    100 PMs · 100 demos
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 6 - SESSION GOALS
+     ============================================================ -->
+<section class="slide" data-slide="6">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">What we'll cover today</div>
+    <div class="h-1 mt-3">Session goals</div>
+  </div>
+
+  <div style="position:absolute; left:80px; top:200px; right:80px;
+              display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+
+    <div class="card card-glow">
+      <div class="number-badge">01</div>
+      <div class="h-4 mt-4">Process &amp; best practices</div>
+      <div class="body-s mt-3">
+        Understand how to build scalable, end-to-end prototypes — the workflow that gets you from idea to a working product flow.
+      </div>
+    </div>
+
+    <div class="card card-glow">
+      <div class="number-badge">02</div>
+      <div class="h-4 mt-4">Influence your coding agent</div>
+      <div class="body-s mt-3">
+        Explore strategies to nudge AI coding agents (Copilot, Cursor, Claude Code…) toward high-quality, predictable outcomes.
+      </div>
+    </div>
+
+    <div class="card card-glow">
+      <div class="number-badge">03</div>
+      <div class="h-4 mt-4">Wire up an LLM API</div>
+      <div class="body-s mt-3">
+        Configure and integrate a cloud LLM service (Azure OpenAI, OpenAI, Anthropic, Bedrock…) to power AI-driven functionality from your backend.
+      </div>
+    </div>
+
+    <div class="card card-glow">
+      <div class="number-badge">04</div>
+      <div class="h-4 mt-4">Deploy &amp; share</div>
+      <div class="body-s mt-3">
+        Deploy and distribute the prototype within your team so others can test, click around, and feed back.
+      </div>
+    </div>
+
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:60px; right:80px;">
+    <div class="neon-divider"></div>
+    <div class="body-s mt-4 text-dim">
+      Check out the <span class="neon-blue semibold">Resources</span> section for more topics — including hosting, MCP / tool integration, and Git versioning.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 7 - SECTION DIVIDER: SESSION PRE-REQUISITE
+     ============================================================ -->
+<section class="slide" data-slide="7">
+  <div class="mesh-center"></div>
+
+  <div class="section-stack">
+    <div class="eyebrow">Part 1</div>
+    <div class="h-hero mt-6" style="text-align:center;">
+      Session <span class="neon-blue">pre-requisite</span>
+    </div>
+    <div class="neon-line-wide mt-8" style="margin:32px auto;"></div>
+    <div class="body-l mt-4 text-dim" style="max-width:680px; text-align:center;">
+      Spin up the cloud credits and LLM endpoint you'll need before we start building.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 8 - SECTION DIVIDER: ACTIVATE CLOUD LLM CREDITS
+     ============================================================ -->
+<section class="slide" data-slide="8">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Left visual block -->
+  <div style="position:absolute; left:0; top:0; width:520px; height:720px;
+              background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.20) 0%, transparent 60%),
+                          radial-gradient(circle at 70% 30%, rgba(236,72,153,0.12) 0%, transparent 50%);
+              display:flex; align-items:center; justify-content:center;">
+    <div style="display:grid; grid-template-columns: repeat(3, 60px); gap:8px; transform: rotate(-12deg);">
+      <!-- mini keyboard motif -->
+      <div class="card" style="height:60px; padding:0; display:flex; align-items:center; justify-content:center; background:var(--surface-2); border-color:var(--border);">
+        <span class="mono" style="color:var(--primary); font-size:14px;">$</span>
+      </div>
+      <div class="card" style="height:60px; padding:0; display:flex; align-items:center; justify-content:center; background:var(--surface-2); border-color:var(--border);">
+        <span class="mono" style="color:var(--secondary); font-size:14px;">⌘</span>
+      </div>
+      <div class="card" style="height:60px; padding:0; display:flex; align-items:center; justify-content:center; background:var(--surface-2); border-color:var(--border);">
+        <span class="mono" style="color:var(--accent); font-size:14px;">▷</span>
+      </div>
+      <div class="card" style="height:60px; padding:0; display:flex; align-items:center; justify-content:center; background:var(--surface-2); border-color:var(--border-2); grid-column:span 3;">
+        <span class="mono" style="color:var(--text-2); font-size:14px;">SPACE</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:560px; right:80px; top:0; bottom:0;
+              display:flex; flex-direction:column; justify-content:center;">
+    <div class="step-pill">Step 01</div>
+    <div class="h-1 mt-6">Activate <span class="neon-blue">free cloud credits</span></div>
+    <div class="body-l mt-6 text-dim" style="max-width:520px;">
+      Most major cloud providers offer free credits for development —
+      Azure, AWS, GCP, or via partner programs.
+    </div>
+    <div class="neon-line mt-8"></div>
+    <div class="body-s mt-6 text-dim mono" style="letter-spacing:1px;">
+      Azure · AWS · GCP · Anthropic · OpenAI
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 9 - STEP 1: SET UP FREE CLOUD CREDITS (detail)
+     ============================================================ -->
+<section class="slide" data-slide="9">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="step-pill">Step 01</div>
+    <div class="h-2 mt-4">Set up free cloud credits</div>
+  </div>
+
+  <div style="position:absolute; left:80px; top:200px; right:80px;">
+    <div class="card card-glow" style="padding:36px;">
+      <div class="tag">Action</div>
+      <div class="h-3 mt-4 text-text">
+        Follow your provider's free-tier onboarding flow.
+      </div>
+      <div class="body-m mt-5">
+        Examples:
+      </div>
+      <div class="mt-4" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:14px;">
+        <div class="card" style="padding:18px; background:var(--bg);">
+          <div class="tag tag-mono">Azure</div>
+          <div class="body-s mt-3 text-text">Visual Studio Subscription Benefit / Azure for Students.</div>
+        </div>
+        <div class="card" style="padding:18px; background:var(--bg);">
+          <div class="tag tag-mono">AWS</div>
+          <div class="body-s mt-3 text-text">AWS Free Tier · Bedrock model access on signup.</div>
+        </div>
+        <div class="card" style="padding:18px; background:var(--bg);">
+          <div class="tag tag-mono">Anthropic / OpenAI</div>
+          <div class="body-s mt-3 text-text">Console signup credits for API trials.</div>
+        </div>
+      </div>
+
+      <div class="mt-6" style="border-top:1px solid var(--border); padding-top:20px;">
+        <div class="tag tag-warn">Tip</div>
+        <div class="body-s mt-3">
+          Use your work account where allowed — many enterprise subscriptions include developer credits you don't have to expense.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 10 - SECTION DIVIDER: CONFIGURE LLM API CREDENTIALS
+     ============================================================ -->
+<section class="slide" data-slide="10">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:0; top:0; width:520px; height:720px;
+              background: radial-gradient(circle at 30% 50%, rgba(236,72,153,0.16) 0%, transparent 60%),
+                          radial-gradient(circle at 70% 30%, rgba(6,182,212,0.10) 0%, transparent 50%);
+              display:flex; align-items:center; justify-content:center;">
+    <div style="position:relative; width:280px; height:280px;">
+      <!-- key + lock motif -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+           style="width:100%; height:100%; color:var(--secondary); filter: drop-shadow(0 0 18px var(--glow-magenta-strong));">
+        <path d="M21 2l-9.6 9.6"/>
+        <circle cx="7.5" cy="15.5" r="5.5"/>
+        <path d="M14 8.5l2.5 2.5 4-4-2.5-2.5"/>
+      </svg>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:560px; right:80px; top:0; bottom:0;
+              display:flex; flex-direction:column; justify-content:center;">
+    <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">Step 02</div>
+    <div class="h-1 mt-6">Configure your <span class="neon-magenta">LLM API credentials</span></div>
+    <div class="body-l mt-6 text-dim" style="max-width:520px;">
+      Stand up a model endpoint and grab the key. We'll use this from our backend in a few slides.
+    </div>
+    <div class="neon-line mt-8" style="background:var(--secondary); box-shadow: 0 0 8px var(--glow-magenta-strong);"></div>
+  </div>
+</section>
+
+
+
+<!-- ============================================================
+     SLIDE 11 - STEP 2: CREATE A MODEL RESOURCE
+     ============================================================ -->
+<section class="slide" data-slide="11">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="step-pill">Step 02</div>
+    <div class="h-2 mt-4">Spin up a <span class="neon-blue">model resource</span></div>
+    <div class="body-m mt-3 text-dim" style="max-width:900px;">
+      Inside your LLM provider (Azure OpenAI / OpenAI / Anthropic / Bedrock), create the resource that will host your deployment.
+    </div>
+  </div>
+
+  <!-- Left: instructions -->
+  <div style="position:absolute; left:80px; top:220px; width:480px;">
+    <div class="card card-glow">
+      <div class="tag">Action</div>
+      <div class="mt-5">
+        <div class="bullet body-s">
+          <div>
+            Log in to <span class="mono" style="color:var(--text);">your provider's portal</span>
+            with your provider account.
+          </div>
+        </div>
+        <div class="bullet body-s">
+          Open the LLM service and click <span class="semibold text-text">Create a new resource</span>.
+        </div>
+        <div class="bullet body-s">
+          Fill in the basics: name, region, pricing tier. You can skip tagging.
+        </div>
+        <div class="bullet body-s">
+          Review and create &mdash; provisioning usually finishes in under a minute.
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-6" style="padding:16px 20px; border-color:var(--border-2);">
+      <div class="tag tag-warn">Heads-up</div>
+      <div class="body-s mt-3 text-text-2">
+        Each provider names things differently &mdash; "Resource", "Project", "Workspace" &mdash; but the flow is the same.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: stacked screenshots -->
+  <div style="position:absolute; right:80px; top:220px; width:600px;">
+    <div class="card" style="padding:14px;">
+      <div class="img-mask" style="height:150px;">
+        <img src="assets/images/slide11_img02.png" alt="Provider portal — create resource list"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">01 · Open service</div>
+      </div>
+      <div class="img-mask mt-4" style="height:180px;">
+        <img src="assets/images/slide11_img03.png" alt="Provider portal — fill resource details"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">02 · Configure &amp; create</div>
+      </div>
+      <div class="body-xs mt-3" style="color:var(--dim); text-align:center;">
+        Your provider's portal will look similar.
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:36px;" class="body-xs uppercase tracking-wider text-dim">
+    Provision · Configure · Create
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 12 - STEP 3: OPEN THE PROVIDER PORTAL
+     ============================================================ -->
+<section class="slide" data-slide="12">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="step-pill">Step 03</div>
+    <div class="h-2 mt-4">Open your <span class="neon-blue">provider's model portal</span></div>
+    <div class="body-m mt-3 text-dim" style="max-width:880px;">
+      Once the resource exists, jump into the provider's model studio &mdash; the place where you browse, deploy, and test models.
+    </div>
+  </div>
+
+  <!-- Left: instructions -->
+  <div style="position:absolute; left:80px; top:220px; width:440px;">
+    <div class="card card-glow">
+      <div class="tag">How to navigate</div>
+      <div class="mt-5">
+        <div class="bullet body-s">
+          From the resource home page, open the resource you just created.
+        </div>
+        <div class="bullet body-s">
+          Match the icon and name to find the correct one if you have multiple.
+        </div>
+        <div class="bullet body-s">
+          Click <span class="semibold text-text">Explore the model portal</span>
+          (or equivalent &mdash; "Open Studio", "Open Workbench").
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-6" style="padding:16px 20px; border-color:var(--border-2);">
+      <div class="tag tag-mono">tip</div>
+      <div class="body-s mt-3 text-text-2">
+        Bookmark this portal &mdash; you'll come back to it every time you swap models or rotate keys.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: two stacked screenshots -->
+  <div style="position:absolute; right:80px; top:220px; width:600px;">
+    <div class="card" style="padding:14px;">
+      <div class="img-mask" style="height:150px;">
+        <img src="assets/images/slide12_img02.png" alt="Resource list — pick the right one"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">01 · Find resource</div>
+      </div>
+      <div class="img-mask mt-4" style="height:190px;">
+        <img src="assets/images/slide12_img03.png" alt="Open the model portal"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">02 · Launch portal</div>
+      </div>
+      <div class="body-xs mt-3" style="color:var(--dim); text-align:center;">
+        Your provider's portal will look similar.
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:36px;" class="body-xs uppercase tracking-wider text-dim">
+    Locate · Open · Explore
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 13 - STEP 4: DEPLOY A MODEL
+     ============================================================ -->
+<section class="slide" data-slide="13">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="step-pill">Step 04</div>
+    <div class="h-2 mt-4">Deploy a <span class="neon-blue">model</span></div>
+    <div class="body-m mt-3 text-dim" style="max-width:880px;">
+      Browse the model catalog and stand up the one you'll call from your backend.
+    </div>
+  </div>
+
+  <!-- Left: instructions + model chips -->
+  <div style="position:absolute; left:80px; top:220px; width:480px;">
+    <div class="card card-glow">
+      <div class="tag">Action</div>
+      <div class="mt-5">
+        <div class="bullet body-s">
+          Open the <span class="semibold text-text">Model Catalog</span> inside the portal.
+        </div>
+        <div class="bullet body-s">
+          Pick a frontier general-purpose model.
+        </div>
+        <div class="bullet body-s">
+          Click <span class="semibold text-text">Deploy</span> &mdash; give the deployment a memorable name.
+        </div>
+      </div>
+
+      <div class="mt-6" style="border-top:1px solid var(--border); padding-top:18px;">
+        <div class="body-xs uppercase tracking-wider text-dim mb-2">For example</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <div class="tag tag-mono">GPT-4.1</div>
+          <div class="tag tag-mono tag-magenta">Claude Sonnet</div>
+          <div class="tag tag-mono">Llama 3</div>
+          <div class="tag tag-mono">Gemini 1.5</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-6" style="padding:16px 20px; border-color:var(--border-2);">
+      <div class="tag tag-warn">Pricing note</div>
+      <div class="body-s mt-3 text-text-2">
+        Pick a tier that matches your free credit balance. Smaller models are cheaper for the warmup phase.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: model catalog screenshot -->
+  <div style="position:absolute; right:80px; top:220px; width:600px;">
+    <div class="card" style="padding:14px;">
+      <div class="img-mask" style="height:380px;">
+        <img src="assets/images/slide13_img02.png" alt="Model catalog — deploy a model"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">Model catalog</div>
+      </div>
+      <div class="body-xs mt-3" style="color:var(--dim); text-align:center;">
+        Your provider's portal will look similar.
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:36px;" class="body-xs uppercase tracking-wider text-dim">
+    Browse · Choose · Deploy
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 14 - STEP 5: WIRE THE MODEL INTO YOUR APP
+     ============================================================ -->
+<section class="slide" data-slide="14">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="step-pill">Step 05</div>
+    <div class="h-2 mt-4">Wire the model into your app</div>
+    <div class="body-m mt-3 text-dim" style="max-width:920px;">
+      Three values to copy out of the portal &mdash; then we never type them again.
+    </div>
+  </div>
+
+  <!-- Left: three credentials cards -->
+  <div style="position:absolute; left:80px; top:210px; width:560px;">
+    <div class="card card-glow" style="padding:18px 22px;">
+      <div class="flex items-center gap-4">
+        <div class="number-badge">01</div>
+        <div>
+          <div class="h-4">Deployment name</div>
+          <div class="body-xs mt-1 mono">e.g. my-recipe-bot</div>
+        </div>
+      </div>
+      <div class="body-s mt-3 text-text-2">
+        The label you gave the deployment in Step 04. You'll reference this in API calls.
+      </div>
+    </div>
+
+    <div class="card card-glow mt-4" style="padding:18px 22px;">
+      <div class="flex items-center gap-4">
+        <div class="number-badge">02</div>
+        <div>
+          <div class="h-4">Key 1</div>
+          <div class="body-xs mt-1 mono">use either Key 1 or Key 2</div>
+        </div>
+      </div>
+      <div class="body-s mt-3 text-text-2">
+        Your authentication secret. Treat it like a password.
+      </div>
+    </div>
+
+    <div class="card card-glow mt-4" style="padding:18px 22px;">
+      <div class="flex items-center gap-4">
+        <div class="number-badge">03</div>
+        <div>
+          <div class="h-4">Endpoint URL</div>
+          <div class="body-xs mt-1 mono">&lt;your-resource&gt;.openai.example.com</div>
+        </div>
+      </div>
+      <div class="body-s mt-3 text-text-2">
+        The base URL your backend will POST against.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: two stacked screenshots + warning -->
+  <div style="position:absolute; right:80px; top:210px; width:560px;">
+    <div class="card" style="padding:14px;">
+      <div class="img-mask" style="height:140px;">
+        <img src="assets/images/slide14_img02.png" alt="Deployment name location"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">Find the name</div>
+      </div>
+      <div class="img-mask mt-3" style="height:140px;">
+        <img src="assets/images/slide14_img01.png" alt="Keys and endpoint location"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">Find Key &amp; Endpoint</div>
+      </div>
+      <div class="body-xs mt-3" style="color:var(--dim); text-align:center;">
+        Your provider's portal will look similar.
+      </div>
+    </div>
+
+    <div class="card-magenta-glow mt-4" style="padding:16px 20px;">
+      <div class="flex items-start gap-3">
+        <div style="font-size:18px; line-height:1;">&#9888;</div>
+        <div>
+          <div class="h-4" style="color:var(--secondary);">Never put the Key or Endpoint in front-end code.</div>
+          <div class="body-s mt-2 text-text-2">
+            They belong server-side, behind a backend route &mdash; never in your bundle, never in a public repo.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:30px;" class="body-xs uppercase tracking-wider text-dim">
+    Name · Key · Endpoint
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 15 - SESSION ACTIVITY: SMART RECIPE RECOMMENDER
+     ============================================================ -->
+<section class="slide" data-slide="15">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Session activity</div>
+    <div class="h-1 mt-3">
+      Smart <span class="neon-magenta italic">Recipe Recommender</span>
+    </div>
+    <div class="body-m mt-4 text-text-2" style="max-width:1080px;">
+      A web app that helps health-conscious, busy folks plan meals by curating creative recipes from
+      <span class="text-text">available ingredients</span>,
+      <span class="text-text">dietary needs</span>, and
+      <span class="text-text">preferred cuisines</span>.
+    </div>
+    <div class="body-s mt-3 text-dim" style="max-width:1080px;">
+      Your task: build the end-to-end prototype by completing one user flow at a time.
+    </div>
+  </div>
+
+  <!-- 3 screenshot tiles -->
+  <div style="position:absolute; left:80px; top:340px; right:80px;
+              display:grid; grid-template-columns: repeat(3, 1fr); gap:24px;">
+    <div class="card" style="padding:14px;">
+      <div class="img-mask" style="height:220px;">
+        <img src="assets/images/slide15_img05.png" alt="App state — ingredients"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">View · 01</div>
+      </div>
+      <div class="body-s mt-3 text-text" style="font-weight:500;">Pick ingredients</div>
+      <div class="body-xs mt-1">What's in your fridge right now.</div>
+    </div>
+
+    <div class="card" style="padding:14px;">
+      <div class="img-mask" style="height:220px;">
+        <img src="assets/images/slide15_img04.png" alt="App state — preferences"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">View · 02</div>
+      </div>
+      <div class="body-s mt-3 text-text" style="font-weight:500;">Add preferences</div>
+      <div class="body-xs mt-1">Diet, allergies, cuisine.</div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:14px;">
+      <div class="img-mask" style="height:220px;">
+        <img src="assets/images/slide15_img03.png" alt="App state — recipes"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">View · 03</div>
+      </div>
+      <div class="body-s mt-3 text-text" style="font-weight:500;">Fetch AI recipes</div>
+      <div class="body-xs mt-1">Curated, ranked, ready to cook.</div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:32px; right:80px;" class="body-xs text-dim">
+    Note: For the scope of the session, we'll illustrate this iterative process by building one end-to-end user flow.
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 16 - ACTIVITY SCOPE
+     ============================================================ -->
+<section class="slide" data-slide="16">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Activity scope</div>
+    <div class="h-2 mt-3">Stitch <span class="neon-blue">front-end</span>, <span class="neon-blue">backend</span> and your <span class="neon-magenta">LLM service</span></div>
+    <div class="body-m mt-3 text-dim" style="max-width:980px;">
+      Complete at least one user flow to deliver working functionality end-to-end.
+    </div>
+  </div>
+
+  <!-- Left: flow card -->
+  <div style="position:absolute; left:80px; top:220px; width:440px;">
+    <div class="card card-glow">
+      <div class="tag">User flow</div>
+      <div class="mt-5" style="display:flex; flex-direction:column; gap:14px;">
+        <div class="flex items-start gap-3">
+          <div class="number-badge">1</div>
+          <div>
+            <div class="h-4">Select ingredients</div>
+            <div class="body-s mt-1 text-text-2">From a curated grid or freeform input.</div>
+          </div>
+        </div>
+
+        <div style="margin-left:15px; height:18px; width:2px;
+                    background: linear-gradient(180deg, var(--primary), transparent);
+                    box-shadow: 0 0 6px var(--glow);"></div>
+
+        <div class="flex items-start gap-3">
+          <div class="number-badge">2</div>
+          <div>
+            <div class="h-4">Add dietary preferences <span class="body-xs text-dim">(optional)</span></div>
+            <div class="body-s mt-1 text-text-2">Vegetarian, low-carb, allergens.</div>
+          </div>
+        </div>
+
+        <div style="margin-left:15px; height:18px; width:2px;
+                    background: linear-gradient(180deg, var(--primary), var(--secondary));
+                    box-shadow: 0 0 6px var(--glow-magenta);"></div>
+
+        <div class="flex items-start gap-3">
+          <div class="number-badge" style="background:rgba(236,72,153,0.12); border-color:var(--secondary); color:var(--secondary);">3</div>
+          <div>
+            <div class="h-4">Fetch AI-generated recipes</div>
+            <div class="body-s mt-1 text-text-2">Backend calls the model and returns ranked ideas.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: app screenshot -->
+  <div style="position:absolute; right:80px; top:220px; width:640px;">
+    <div class="card" style="padding:14px;">
+      <div class="img-mask" style="height:400px;">
+        <img src="assets/images/slide16_img04.png" alt="Recipe Recommender flow"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">Reference flow</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:30px;" class="body-xs uppercase tracking-wider text-dim">
+    One flow · End-to-end · Working
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 17 - BACKEND-FIRST (RE-EMPHASIS, NEW ANGLE)
+     ============================================================ -->
+<section class="slide" data-slide="17">
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">A reminder before we build</div>
+    <div class="h-2 mt-3">Backend-first <span class="neon-blue">isn't a phase</span> &mdash; it's a posture</div>
+    <div class="body-m mt-3 text-dim" style="max-width:980px;">
+      Before you ask your coding agent for a single component, anchor the architecture in security and scale.
+    </div>
+  </div>
+
+  <!-- Compare table: front-end-only vs backend-first -->
+  <div style="position:absolute; left:80px; top:215px; right:80px;
+              display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+
+    <div class="card" style="padding:24px; border-color:var(--border-2);">
+      <div class="tag tag-warn">Front-end only</div>
+      <div class="h-3 mt-4 text-text">Quick &mdash; until it isn't.</div>
+      <div class="mt-4">
+        <div class="bullet body-s">Keys leak into the bundle the moment you ship.</div>
+        <div class="bullet body-s">Every new integration becomes a rewrite.</div>
+        <div class="bullet body-s">No place to cache, throttle, or log model calls.</div>
+        <div class="bullet body-s">Deployment story collapses past one user.</div>
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:24px;">
+      <div class="tag tag-magenta">Backend-first</div>
+      <div class="h-3 mt-4 text-text">Slower start, exponentially safer.</div>
+      <div class="mt-4">
+        <div class="bullet bullet-magenta body-s">Secrets stay on the server &mdash; client never sees them.</div>
+        <div class="bullet bullet-magenta body-s">New services drop in behind one stable API surface.</div>
+        <div class="bullet bullet-magenta body-s">Data, telemetry, and rate-limits live in one place.</div>
+        <div class="bullet bullet-magenta body-s">Hosting scales out without touching the UI.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom prompt-style row -->
+  <div style="position:absolute; left:80px; right:80px; bottom:80px;">
+    <div class="code-block magenta">
+      <div class="code-header">prompt · kickoff</div>
+      <span class="text-dim">// at project start, ask your coding agent:</span><br>
+      <span style="color:var(--text);">"Scaffold this app with a backend layer from day one. Keep all LLM and provider keys server-side. Front-end calls our own API routes only."</span>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:36px;" class="body-xs uppercase tracking-wider text-dim">
+    Posture &gt; Phase
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 18 - RECOMMENDED PROCESS PIPELINE
+     ============================================================ -->
+<section class="slide" data-slide="18">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">From idea to working AI app</div>
+    <div class="h-2 mt-3">Recommended process</div>
+    <div class="body-m mt-3 text-dim" style="max-width:980px;">
+      Six stages, in order. Skip one and you'll feel it three stages later.
+    </div>
+  </div>
+
+  <!-- Pipeline -->
+  <div style="position:absolute; left:80px; right:80px; top:280px;">
+    <div class="pipeline">
+
+      <!-- 01 Research -->
+      <div class="pipeline-step">
+        <div class="pipeline-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"/>
+            <path d="M21 21l-4.35-4.35"/>
+          </svg>
+        </div>
+        <div class="pipeline-label">Research</div>
+      </div>
+
+      <div class="pipeline-arrow"></div>
+
+      <!-- 02 PRD -->
+      <div class="pipeline-step">
+        <div class="pipeline-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <path d="M14 2v6h6"/>
+            <path d="M8 13h8M8 17h6"/>
+          </svg>
+        </div>
+        <div class="pipeline-label">PRD</div>
+      </div>
+
+      <div class="pipeline-arrow"></div>
+
+      <!-- 03 Tech architecture -->
+      <div class="pipeline-step">
+        <div class="pipeline-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="8" height="8" rx="1"/>
+            <rect x="14" y="3" width="8" height="8" rx="1"/>
+            <rect x="8" y="13" width="8" height="8" rx="1"/>
+            <path d="M6 11v2M18 11v2M12 7h2"/>
+          </svg>
+        </div>
+        <div class="pipeline-label">Tech architecture</div>
+      </div>
+
+      <div class="pipeline-arrow"></div>
+
+      <!-- 04 Frontend -->
+      <div class="pipeline-step">
+        <div class="pipeline-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <path d="M8 21h8M12 17v4"/>
+            <path d="M2 8h20"/>
+          </svg>
+        </div>
+        <div class="pipeline-label">Frontend</div>
+      </div>
+
+      <div class="pipeline-arrow"></div>
+
+      <!-- 05 Backend -->
+      <div class="pipeline-step">
+        <div class="pipeline-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+            <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>
+          </svg>
+        </div>
+        <div class="pipeline-label">Backend</div>
+      </div>
+
+      <div class="pipeline-arrow"></div>
+
+      <!-- 06 AI system -->
+      <div class="pipeline-step">
+        <div class="pipeline-icon" style="border-color:rgba(236,72,153,0.30);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a4 4 0 0 1 4 4v2h2a3 3 0 0 1 0 6h-2v2a4 4 0 0 1-8 0v-2H6a3 3 0 0 1 0-6h2V6a4 4 0 0 1 4-4z"/>
+            <circle cx="9.5" cy="11" r="1"/>
+            <circle cx="14.5" cy="11" r="1"/>
+          </svg>
+        </div>
+        <div class="pipeline-label">AI system</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Captions row -->
+  <div style="position:absolute; left:80px; right:80px; top:430px;
+              display:grid; grid-template-columns: repeat(6, 1fr); gap:32px;">
+    <div class="body-xs" style="color:var(--dim); text-align:center; line-height:1.5;">
+      Customers, market, what's been built before.
+    </div>
+    <div class="body-xs" style="color:var(--dim); text-align:center; line-height:1.5;">
+      Scope, goals, success criteria.
+    </div>
+    <div class="body-xs" style="color:var(--dim); text-align:center; line-height:1.5;">
+      Stack, data flows, contracts.
+    </div>
+    <div class="body-xs" style="color:var(--dim); text-align:center; line-height:1.5;">
+      Skeleton UI, components, states.
+    </div>
+    <div class="body-xs" style="color:var(--dim); text-align:center; line-height:1.5;">
+      APIs, auth, storage, secrets.
+    </div>
+    <div class="body-xs" style="color:var(--secondary); text-align:center; line-height:1.5;">
+      Prompts, model calls, evals, guardrails.
+    </div>
+  </div>
+
+  <!-- Bottom emphasis -->
+  <div style="position:absolute; left:80px; right:80px; bottom:60px;">
+    <div class="card-glow" style="padding:18px 24px;">
+      <div class="flex items-center gap-4">
+        <div class="tag">Why this order</div>
+        <div class="body-s text-text-2">
+          Research grounds the PRD. The PRD anchors the architecture. The architecture lets you build front and back in parallel. AI is the <span class="text-text semibold">last layer</span> &mdash; not the first &mdash; because it depends on every layer beneath it.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 19 - STEP 1: BUILD THE SKELETON UI + BACKEND
+     ============================================================ -->
+<section class="slide" data-slide="19">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="step-pill">Step 01</div>
+    <div class="h-2 mt-4">Build the skeleton UI &mdash; with a backend layer baked in</div>
+    <div class="body-m mt-3 text-dim" style="max-width:980px;">
+      Hand your coding agent a single, well-scoped prompt. Let it scaffold the UI <em>and</em> the backend layer in one shot.
+    </div>
+  </div>
+
+  <!-- Left: big screenshot -->
+  <div style="position:absolute; left:80px; top:215px; width:680px;">
+    <div class="card" style="padding:14px;">
+      <div class="img-mask" style="height:440px;">
+        <img src="assets/images/slide19_img02.png" alt="Skeleton UI + backend scaffold"
+             style="width:100%; height:100%; object-fit:cover; object-position:top center;"/>
+        <div class="img-tag">Reference scaffold</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: prompt instruction -->
+  <div style="position:absolute; left:800px; top:215px; right:80px;">
+    <div class="card card-magenta-glow">
+      <div class="tag tag-magenta">Action</div>
+      <div class="h-4 mt-4 text-text">Copy-paste the starter prompt</div>
+      <div class="body-s mt-3 text-text-2">
+        Drop this into your coding agent's chat pane to scaffold the UI and backend in one go.
+      </div>
+
+      <div class="code-block magenta mt-5">
+        <div class="code-header">prompt file</div>
+        <span style="color:var(--text);">Smart_Recipe_Recommender_UI_BE.md</span>
+      </div>
+
+      <div class="body-xs mt-4 text-dim">
+        Customize the prompt template to match your domain, design system, and tech-stack preferences before you send it.
+      </div>
+    </div>
+
+    <div class="card mt-5" style="padding:16px 20px; border-color:var(--border-2);">
+      <div class="tag tag-mono">tip</div>
+      <div class="body-s mt-3 text-text-2">
+        Same idea in Cursor, Claude Code, or Windsurf &mdash; the prompt is portable.
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:30px;" class="body-xs uppercase tracking-wider text-dim">
+    UI · Backend · One prompt
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 20 - RECOMMENDED PRACTICES (5 ROWS)
+     ============================================================ -->
+<section class="slide" data-slide="20">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">How to get the most out of your coding agent</div>
+    <div class="h-2 mt-3">Recommended practices</div>
+    <div class="body-m mt-3 text-dim" style="max-width:980px;">
+      Five habits that turn a flaky AI scaffolding session into a reliable one.
+    </div>
+  </div>
+
+  <!-- 5 rows -->
+  <div style="position:absolute; left:80px; right:80px; top:215px;
+              display:flex; flex-direction:column; gap:14px;">
+
+    <div class="card card-accent-left" style="padding:18px 24px;">
+      <div class="flex items-center gap-4">
+        <div class="number-badge">01</div>
+        <div style="flex:1;">
+          <div class="h-4">Plan before you start</div>
+          <div class="body-s mt-1">Write the flow, the data shapes, and the success criteria on paper first. Hand the agent the plan, not the vibes.</div>
+        </div>
+        <div class="tag tag-mono">PLAN</div>
+      </div>
+    </div>
+
+    <div class="card card-accent-left" style="padding:18px 24px;">
+      <div class="flex items-center gap-4">
+        <div class="number-badge">02</div>
+        <div style="flex:1;">
+          <div class="h-4">Explain requirements with specs <span class="text-dim">or</span> screenshots</div>
+          <div class="body-s mt-1">A 200-word spec or a marked-up screenshot beats a 5-line description every time.</div>
+        </div>
+        <div class="tag tag-mono">SPEC</div>
+      </div>
+    </div>
+
+    <div class="card card-accent-left" style="padding:18px 24px;">
+      <div class="flex items-center gap-4">
+        <div class="number-badge">03</div>
+        <div style="flex:1;">
+          <div class="h-4">Leverage a design system</div>
+          <div class="body-s mt-1">Point the agent at your tokens, components, and icon library &mdash; control look &amp; feel without micromanaging every class.</div>
+        </div>
+        <div class="tag tag-mono">DS</div>
+      </div>
+    </div>
+
+    <div class="card card-accent-left" style="padding:18px 24px;">
+      <div class="flex items-center gap-4">
+        <div class="number-badge">04</div>
+        <div style="flex:1;">
+          <div class="h-4">Prescribe the tech stack</div>
+          <div class="body-s mt-1">If you have preferences &mdash; framework, ORM, hosting target &mdash; state them up front. Otherwise the agent will pick for you.</div>
+        </div>
+        <div class="tag tag-mono">STACK</div>
+      </div>
+    </div>
+
+    <div class="card card-accent-left-magenta" style="padding:18px 24px;">
+      <div class="flex items-center gap-4">
+        <div class="number-badge" style="background:rgba(236,72,153,0.12); border-color:var(--secondary); color:var(--secondary);">05</div>
+        <div style="flex:1;">
+          <div class="h-4">Nudge the agent to test before handoff</div>
+          <div class="body-s mt-1">Ask it to run the app, click the flow, and screenshot the result &mdash; or wire up a Playwright MCP &mdash; before it tells you it's done.</div>
+        </div>
+        <div class="tag tag-mono tag-magenta">TEST</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:30px;" class="body-xs uppercase tracking-wider text-dim">
+    Plan · Spec · Design system · Stack · Test
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 21 - PLAN BEFORE CODING
+     ============================================================ -->
+<section class="slide" data-slide="21">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Best practice · 01</div>
+    <div class="h-2 mt-3">Plan <span class="neon-blue">before</span> jumping onto the coding bit</div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      Force a structured approach. Demand an execution plan up-front — otherwise your coding agent tends to skip instructions arbitrarily.
+    </div>
+  </div>
+
+  <!-- Left column: guidance card -->
+  <div style="position:absolute; left:80px; top:230px; width:380px;">
+    <div class="card card-magenta-glow">
+      <div class="tag tag-magenta">Why it matters</div>
+      <div class="body-s mt-4">
+        Without an explicit plan, the agent jumps straight into code — combining steps, skipping validations, and leaving you to untangle the diff.
+      </div>
+      <div class="neon-line mt-6" style="background:var(--secondary); box-shadow: 0 0 8px var(--glow-magenta-strong);"></div>
+      <div class="body-s mt-6">
+        <span class="semibold text-text">Ask first, code later.</span>
+        <span class="text-dim"> A short plan is cheap; a tangled commit is not.</span>
+      </div>
+    </div>
+
+    <div class="card mt-4" style="border-color:var(--border-2);">
+      <div class="tag tag-mono">Prompt scaffold</div>
+      <div class="body-xs mt-3 mono" style="color:var(--text-2); line-height:1.6;">
+        "Before writing any code, give me an execution plan as numbered steps. Wait for my confirmation."
+      </div>
+    </div>
+  </div>
+
+  <!-- Right column: screenshot card -->
+  <div style="position:absolute; right:80px; top:230px; width:680px;">
+    <div class="card" style="padding:14px;">
+      <div class="code-header">
+        <span>Your coding agent · chat pane</span>
+      </div>
+      <div class="img-mask" style="height:330px;">
+        <img src="assets/images/slide21_img02.png" alt="Planning prompt in coding agent"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+      <div class="body-xs mt-3 text-dim" style="font-style:italic;">
+        Example coding agent — your tool (Copilot, Cursor, Claude Code…) will look similar.
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:36px;" class="body-xs uppercase tracking-wider text-dim">
+    Step · Plan first
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 22 - EXPLAIN YOUR REQUIREMENTS
+     ============================================================ -->
+<section class="slide" data-slide="22">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Best practice · 02</div>
+    <div class="h-2 mt-3">Explain your <span class="neon-blue">requirements</span></div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      Describe the user journey. Attach a 'spec-let'. Drop in reference images. Expect to iterate.
+    </div>
+  </div>
+
+  <!-- Left column: three input types -->
+  <div style="position:absolute; left:80px; top:230px; width:380px;">
+    <div class="card card-glow">
+      <div class="flex items-center gap-3">
+        <div class="number-badge">A</div>
+        <div class="h-4">User journey</div>
+      </div>
+      <div class="body-s mt-3 text-dim">Narrate the flow end-to-end — who starts where, what they tap, what they see next.</div>
+    </div>
+
+    <div class="card card-glow mt-4">
+      <div class="flex items-center gap-3">
+        <div class="number-badge">B</div>
+        <div class="h-4">Spec-let</div>
+      </div>
+      <div class="body-s mt-3 text-dim">A short markdown brief with acceptance criteria. Saves dozens of back-and-forth messages.</div>
+    </div>
+
+    <div class="card card-glow mt-4">
+      <div class="flex items-center gap-3">
+        <div class="number-badge">C</div>
+        <div class="h-4">Reference images</div>
+      </div>
+      <div class="body-s mt-3 text-dim">Screenshots of inspiration, mockups, or your existing design system.</div>
+    </div>
+  </div>
+
+  <!-- Right column: screenshot card + iteration note -->
+  <div style="position:absolute; right:80px; top:230px; width:680px;">
+    <div class="card" style="padding:14px;">
+      <div class="code-header">
+        <span>Requirements being attached</span>
+      </div>
+      <div class="img-mask" style="height:300px;">
+        <img src="assets/images/slide22_img01.png" alt="Explaining requirements to coding agent"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+      <div class="body-xs mt-3 text-dim" style="font-style:italic;">
+        Example coding agent — your tool will look similar.
+      </div>
+    </div>
+
+    <div class="card card-accent-left-magenta mt-4" style="padding:14px 18px;">
+      <div class="body-s">
+        <span class="neon-magenta semibold">Expect multiple iterations.</span>
+        <span class="text-dim"> Refining the brief is part of the loop — not a sign of failure.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 23 - CONTROL LOOK, FEEL & TECH STACK
+     ============================================================ -->
+<section class="slide" data-slide="23">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Best practice · 03</div>
+    <div class="h-2 mt-3">Control the <span class="neon-blue">look &amp; feel</span> and the <span class="neon-magenta">tech stack</span></div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      A dedicated <span class="mono text-text">Design System</span> section in your brief — plus an explicit stack choice — keeps the agent on rails.
+    </div>
+  </div>
+
+  <!-- Top row: two side-by-side guidance cards -->
+  <div style="position:absolute; left:80px; top:230px; right:80px;
+              display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+
+    <div class="card card-glow">
+      <div class="tag">Design System section</div>
+      <div class="h-4 mt-4">Articulate look &amp; feel</div>
+      <div class="body-s mt-3">
+        Define colors, typography, spacing, and component patterns in one place. You can have your agent generate this from session #1 outputs.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow">
+      <div class="tag tag-magenta">Tech stack</div>
+      <div class="h-4 mt-4">Prescribe your stack</div>
+      <div class="body-s mt-3">
+        Pick deliberately. Example:
+        <span class="mono text-text">React</span> frontend +
+        <span class="mono text-text">Python</span> backend +
+        your icon system (Fluent, Heroicons, Lucide…).
+      </div>
+    </div>
+  </div>
+
+  <!-- Screenshot row -->
+  <div style="position:absolute; left:80px; right:80px; top:440px;">
+    <div class="card" style="padding:12px;">
+      <div class="code-header">
+        <span>Design System &amp; stack — captured in the brief</span>
+      </div>
+      <div class="img-mask" style="height:200px;">
+        <img src="assets/images/slide23_img05.png" alt="Design system section in chat"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:32px;" class="body-xs uppercase tracking-wider text-dim">
+    Example coding agent — your tool will look similar
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 24 - TEST & VALIDATE BEFORE HAND-OFF
+     ============================================================ -->
+<section class="slide" data-slide="24">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Best practice · 04</div>
+    <div class="h-2 mt-3">Ask your agent to <span class="neon-blue">test &amp; validate</span> before hand-off</div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      Instruct the agent to do a full test pass on the user flow. Provide your test cases — or have it generate them and return the report.
+    </div>
+  </div>
+
+  <!-- Left: two-card stack -->
+  <div style="position:absolute; left:80px; top:230px; width:380px;">
+    <div class="card card-glow">
+      <div class="tag">Option A</div>
+      <div class="h-4 mt-3">Bring your own test cases</div>
+      <div class="body-s mt-3">
+        Paste the user-flow scenarios you care about. Ask the agent to walk through each, report pass/fail, and fix what breaks.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow mt-4">
+      <div class="tag tag-magenta">Option B</div>
+      <div class="h-4 mt-3">Let the agent generate TCs</div>
+      <div class="body-s mt-3">
+        Ask it to enumerate the test cases first (you sanity-check the list), then run them and return a structured test report.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: screenshot of test prompt -->
+  <div style="position:absolute; right:80px; top:230px; width:680px;">
+    <div class="card" style="padding:14px;">
+      <div class="code-header">
+        <span>Test &amp; validation prompt</span>
+      </div>
+      <div class="img-mask" style="height:280px;">
+        <img src="assets/images/slide24_img01.png" alt="Test & validate prompt in coding agent"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+      <div class="body-xs mt-3 text-dim" style="font-style:italic;">
+        Example coding agent — your tool will look similar.
+      </div>
+    </div>
+
+    <div class="card card-accent-left mt-4" style="padding:14px 18px;">
+      <div class="body-s">
+        <span class="neon-blue semibold">Verify, don't trust.</span>
+        <span class="text-dim"> Treat the test report as evidence — spot-check at least one route yourself.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 25 - STEP 2: INTEGRATE LLM VIA BACKEND LAYER
+     ============================================================ -->
+<section class="slide" data-slide="25">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">Step 02</div>
+    <div class="h-2 mt-4">Integrate your <span class="neon-magenta">LLM</span> via the backend layer</div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      Paste a structured prompt into your coding agent's chat pane and let it scaffold the integration end-to-end.
+    </div>
+  </div>
+
+  <!-- Left: screenshot of recipe app -->
+  <div style="position:absolute; left:80px; top:230px; width:620px;">
+    <div class="card" style="padding:14px;">
+      <div class="code-header">
+        <span>Smart Recipe Recommender · running example</span>
+      </div>
+      <div class="img-mask" style="height:340px;">
+        <img src="assets/images/slide25_img03.png" alt="Smart Recipe Recommender app"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: prompt action card -->
+  <div style="position:absolute; right:80px; top:230px; width:440px;">
+    <div class="card card-magenta-glow">
+      <div class="tag tag-magenta">Action</div>
+      <div class="h-4 mt-3">Paste the prompt</div>
+      <div class="body-s mt-3 text-dim">
+        Drop the integration prompt into your coding agent's chat pane and run it.
+      </div>
+      <div class="code-block magenta mt-4">
+        <div class="code-header">prompt · markdown</div>
+        Smart_Recipe_Recommender_AI.md
+      </div>
+      <div class="body-s mt-4 text-dim">
+        <span class="neon-magenta semibold">Customize</span> the template to match your own use case — model name, endpoint shape, response schema.
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:32px;" class="body-xs uppercase tracking-wider text-dim">
+    Step 02 · LLM via backend
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 26 - EXPLAIN ADDITIONAL REQUIREMENT WITH CONTINUITY
+     ============================================================ -->
+<section class="slide" data-slide="26">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Iterating · keep the thread alive</div>
+    <div class="h-2 mt-3">Explain the next requirement <span class="neon-blue">while maintaining continuity</span></div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      When you add a new requirement, re-anchor the agent and ask for a fresh execution plan before any new code lands.
+    </div>
+  </div>
+
+  <!-- Left: continuity pattern -->
+  <div style="position:absolute; left:80px; top:230px; width:380px;">
+    <div class="card card-glow">
+      <div class="tag">Pattern</div>
+      <div class="h-4 mt-3">Anchor → ask → plan → code</div>
+      <div class="mt-4">
+        <div class="bullet body-s"><span class="text-text semibold">Anchor.</span><span class="text-dim"> Re-state what's done so far.</span></div>
+        <div class="bullet body-s"><span class="text-text semibold">Ask.</span><span class="text-dim"> Describe the new requirement.</span></div>
+        <div class="bullet body-s"><span class="text-text semibold">Plan.</span><span class="text-dim"> Demand an execution plan.</span></div>
+        <div class="bullet body-s"><span class="text-text semibold">Code.</span><span class="text-dim"> Only after you approve the plan.</span></div>
+      </div>
+    </div>
+
+    <div class="card card-accent-left-magenta mt-4" style="padding:14px 18px;">
+      <div class="body-s">
+        <span class="neon-magenta semibold">Continuity beats restarts.</span>
+        <span class="text-dim"> Don't open a fresh chat for every new feature — you lose context.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: screenshot -->
+  <div style="position:absolute; right:80px; top:230px; width:680px;">
+    <div class="card" style="padding:14px;">
+      <div class="code-header">
+        <span>Adding the next requirement · same thread</span>
+      </div>
+      <div class="img-mask" style="height:300px;">
+        <img src="assets/images/slide26_img02.png" alt="Adding additional requirement to coding agent"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+      <div class="body-xs mt-3 text-dim" style="font-style:italic;">
+        Example coding agent — your tool will look similar.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 27 - COMMUNICATE INTEGRATION EXPECTATIONS
+     ============================================================ -->
+<section class="slide" data-slide="27">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Integration brief</div>
+    <div class="h-2 mt-3">Communicate how you expect the <span class="neon-blue">integration to work</span></div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      Spell out the four dimensions explicitly — vague briefs cause silent regressions.
+    </div>
+  </div>
+
+  <!-- Four-quadrant grid of expectations -->
+  <div style="position:absolute; left:80px; top:220px; width:520px;
+              display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+    <div class="card card-glow" style="padding:18px;">
+      <div class="tag">UI</div>
+      <div class="h-4 mt-3" style="font-size:16px;">UI consistency</div>
+      <div class="body-xs mt-2 text-dim">Reuse existing components &amp; tokens — no one-off styles.</div>
+    </div>
+
+    <div class="card card-glow" style="padding:18px;">
+      <div class="tag">Backend</div>
+      <div class="h-4 mt-3" style="font-size:16px;">Backend functionality</div>
+      <div class="body-xs mt-2 text-dim">Route handler, request/response schema, error states.</div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:18px;">
+      <div class="tag tag-magenta">LLM</div>
+      <div class="h-4 mt-3" style="font-size:16px;">Real LLM API + fallback</div>
+      <div class="body-xs mt-2 text-dim">Live model endpoint, with mock-data fallback for offline demos.</div>
+    </div>
+
+    <div class="card card-glow" style="padding:18px;">
+      <div class="tag">Compat</div>
+      <div class="h-4 mt-3" style="font-size:16px;">Browser &amp; error handling</div>
+      <div class="body-xs mt-2 text-dim">Cross-browser checks, network failure paths, user-visible errors.</div>
+    </div>
+  </div>
+
+  <!-- Right: screenshot -->
+  <div style="position:absolute; right:80px; top:220px; width:540px;">
+    <div class="card" style="padding:14px;">
+      <div class="code-header">
+        <span>Integration expectations · in the brief</span>
+      </div>
+      <div class="img-mask" style="height:340px;">
+        <img src="assets/images/slide27_img02.png" alt="Communicating integration expectations"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+      <div class="body-xs mt-3 text-dim" style="font-style:italic;">
+        Example coding agent — your tool will look similar.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 28 - ADD LLM DETAILS FOR CONFIGURATION
+     ============================================================ -->
+<section class="slide" data-slide="28">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Wiring up the model endpoint</div>
+    <div class="h-2 mt-3">Hand the agent your <span class="neon-magenta">LLM details</span> to set up config</div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      Use the official SDK for your LLM provider, push secrets into env vars, and keep keys out of the front-end — always.
+    </div>
+  </div>
+
+  <!-- Left: three guidance cards -->
+  <div style="position:absolute; left:80px; top:230px; width:420px;">
+    <div class="card card-glow">
+      <div class="tag tag-mono">SDK</div>
+      <div class="body-s mt-3 text-text semibold">Use the official SDK</div>
+      <div class="body-xs mt-2 text-dim">
+        e.g. <span class="mono text-text">openai</span>, <span class="mono text-text">anthropic</span>, <span class="mono text-text">@aws-sdk/client-bedrock-runtime</span>.
+      </div>
+    </div>
+
+    <div class="card card-glow mt-3">
+      <div class="tag tag-mono">env vars</div>
+      <div class="body-s mt-3 text-text semibold">Set environment variables</div>
+      <div class="body-xs mt-2 text-dim">
+        Endpoint, deployment name, API key, model ID — all from <span class="mono text-text">process.env</span>.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow mt-3">
+      <div class="tag tag-magenta">.env file</div>
+      <div class="body-s mt-3 text-text semibold">Create a <span class="mono">.env</span> file</div>
+      <div class="body-xs mt-2 text-dim">
+        Add to <span class="mono text-text">.gitignore</span>. Never check in. Never bundle into the client.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: screenshot + warning -->
+  <div style="position:absolute; right:80px; top:230px; width:640px;">
+    <div class="card" style="padding:14px;">
+      <div class="code-header">
+        <span>Endpoint + key handed to the agent</span>
+      </div>
+      <div class="img-mask" style="height:260px;">
+        <img src="assets/images/slide28_img02.png" alt="Adding LLM details for configuration"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+    </div>
+
+    <div class="card card-accent-left-magenta mt-3" style="padding:14px 18px;">
+      <div class="body-s">
+        <span class="neon-magenta semibold">Keys never live in the browser.</span>
+        <span class="text-dim"> All model calls go through your backend.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 29 - FALLBACK MECHANISM TO PRESERVE CREDITS
+     ============================================================ -->
+<section class="slide" data-slide="29">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Resilience &amp; thrift</div>
+    <div class="h-2 mt-3">Build a <span class="neon-blue">fallback</span> to preserve your free credits</div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      Detect whether your LLM service is configured. If not, gracefully switch to mock data — perfect for offline demos and saving credits while iterating on UI.
+    </div>
+  </div>
+
+  <!-- Left: fallback flow logic -->
+  <div style="position:absolute; left:80px; top:230px; width:420px;">
+    <div class="card card-glow">
+      <div class="tag">Decision flow</div>
+      <div class="body-s mt-4">
+        <div class="bullet"><span class="text-text">If env vars present</span><span class="text-dim"> → call the live model endpoint.</span></div>
+        <div class="bullet"><span class="text-text">If not configured</span><span class="text-dim"> → return curated mock data.</span></div>
+        <div class="bullet"><span class="text-text">If the live call fails</span><span class="text-dim"> → fall back to mock + log.</span></div>
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow mt-4">
+      <div class="tag tag-magenta">Benefits</div>
+      <div class="body-s mt-3">
+        <div class="bullet-magenta bullet">Demo works on planes, in pitch rooms, behind firewalls.</div>
+        <div class="bullet-magenta bullet">Front-end iteration doesn't burn paid tokens.</div>
+        <div class="bullet-magenta bullet">Reviewers can clone &amp; run without credentials.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: screenshot -->
+  <div style="position:absolute; right:80px; top:230px; width:640px;">
+    <div class="card" style="padding:14px;">
+      <div class="code-header">
+        <span>Fallback being requested</span>
+      </div>
+      <div class="img-mask" style="height:230px;">
+        <img src="assets/images/slide29_img02.png" alt="Fallback mechanism prompt"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+      <div class="body-xs mt-3 text-dim" style="font-style:italic;">
+        Example coding agent — your tool will look similar.
+      </div>
+    </div>
+
+    <div class="card mt-3" style="border-color:var(--border-2); padding:14px 18px;">
+      <div class="body-s">
+        <span class="neon-blue semibold">Always-on demo.</span>
+        <span class="text-dim"> The audience never sees a broken state — even when your wifi does.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 30 - PROVIDE YOUR CUSTOM PROMPT
+     ============================================================ -->
+<section class="slide" data-slide="30">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Prompt engineering</div>
+    <div class="h-2 mt-3">Provide your <span class="neon-magenta">custom prompt</span> for the model to execute</div>
+    <div class="body-m mt-3" style="color:var(--text-2); max-width:980px;">
+      Two ways to play it: (1) hand your agent the prompts you already trust, or (2) ask it to author a prompt that matches your use case.
+    </div>
+  </div>
+
+  <!-- Two side-by-side cards: BYO vs Generate -->
+  <div style="position:absolute; left:80px; top:230px; right:80px;
+              display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+
+    <div class="card card-glow">
+      <div class="tag">Option A</div>
+      <div class="h-4 mt-3">Bring your own prompt</div>
+      <div class="body-s mt-3 text-dim">
+        Instruct the agent to use <span class="text-text">your</span> prompt when calling the LLM service — verbatim, with parameter substitution.
+      </div>
+      <div class="code-block mt-4">
+        <div class="code-header">prompt instruction</div>
+        Use the prompt in <span style="color:var(--primary);">/prompts/recipe.md</span> exactly as written when calling the model endpoint.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow">
+      <div class="tag tag-magenta">Option B</div>
+      <div class="h-4 mt-3">Let the agent build one</div>
+      <div class="body-s mt-3 text-dim">
+        Describe the use case and ask the agent to author a prompt — system message, structure, output schema and all.
+      </div>
+      <div class="code-block magenta mt-4">
+        <div class="code-header">prompt request</div>
+        Build a prompt for the recipe recommender — system + user + JSON output schema. Then wire it into the route handler.
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom: screenshot strip -->
+  <div style="position:absolute; left:80px; right:80px; top:520px;">
+    <div class="card" style="padding:10px;">
+      <div class="img-mask" style="height:140px;">
+        <img src="assets/images/slide30_img02.png" alt="Custom prompt provided to coding agent"
+             style="width:100%; height:100%; object-fit:cover; object-position:top;"/>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; bottom:32px;" class="body-xs uppercase tracking-wider text-dim">
+    Example coding agent — your tool will look similar
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 31 - REPLACE PLACEHOLDERS + NUDGE TO RESTART SERVER
+     ============================================================ -->
+<section class="slide" data-slide="31">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:40px; right:80px;">
+    <div class="step-pill">Step 2.1</div>
+    <div class="h-2 mt-3">Replace placeholders with <span class="neon-magenta">real credentials</span></div>
+    <div class="body-s mt-2 text-dim" style="max-width:1000px;">
+      Manually update the <span class="mono" style="color:var(--text-2);">.env</span> file with your real LLM API credentials and set the
+      <span class="mono" style="color:var(--text-2);">AI_Enabled</span> flag to <span class="mono" style="color:var(--secondary);">true</span>. The file lives inside the <span class="mono" style="color:var(--text-2);">backend/</span> folder.
+    </div>
+  </div>
+
+  <!-- Two .env screenshots -->
+  <div style="position:absolute; left:80px; top:188px; width:560px;">
+    <div class="img-mask" style="height:170px; background:var(--surface);">
+      <img src="assets/images/slide31_img08.png" alt="Auto-generated .env with placeholder credentials"
+           style="width:100%; height:100%; object-fit:contain; background:#0c0c12;"/>
+      <div class="img-tag">Before</div>
+    </div>
+    <div class="body-xs mt-3 text-dim">Auto-generated <span class="mono" style="color:var(--text-2);">.env</span> file with placeholder LLM API credentials.</div>
+  </div>
+
+  <div style="position:absolute; left:660px; top:188px; width:540px;">
+    <div class="img-mask" style="height:170px; background:var(--surface); border-color:rgba(236,72,153,0.25);">
+      <img src="assets/images/slide31_img07.png" alt="Manually updated .env with real credentials"
+           style="width:100%; height:100%; object-fit:contain; background:#0c0c12;"/>
+      <div class="img-tag" style="background:rgba(236,72,153,0.15); color:var(--secondary); border-color:rgba(236,72,153,0.30);">After</div>
+    </div>
+    <div class="body-xs mt-3 text-dim">Manually updated <span class="mono" style="color:var(--text-2);">.env</span> with your actual endpoint &amp; key.
+      <span class="mono" style="color:var(--dim);">&lt;your-resource&gt;.openai.example.com</span>
+    </div>
+  </div>
+
+  <!-- Step 2.2 - restart server -->
+  <div style="position:absolute; left:80px; top:412px; right:80px;">
+    <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">Step 2.2</div>
+    <div class="h-3 mt-3">Nudge your coding agent to <span class="neon-magenta">restart the server</span> to pick the updated .env</div>
+  </div>
+
+  <!-- Common issues row -->
+  <div style="position:absolute; left:80px; top:530px; right:80px;
+              display:grid; grid-template-columns: 1fr 1fr; gap:18px;">
+    <div class="card" style="padding:16px 18px; border-color:var(--border-2);">
+      <div class="tag tag-warn">Common issue</div>
+      <div class="body-s mt-2" style="color:var(--text);">
+        Server may not pick the updated <span class="mono" style="color:var(--text-2);">.env</span>.
+      </div>
+      <div class="body-xs mt-2">Nudge the agent to investigate and fix the underlying issue.</div>
+    </div>
+    <div class="card" style="padding:16px 18px; border-color:var(--border-2);">
+      <div class="tag tag-warn">Common issue</div>
+      <div class="body-s mt-2" style="color:var(--text);">
+        Agent creates <span class="mono" style="color:var(--text-2);">.env_example</span> instead of <span class="mono" style="color:var(--secondary);">.env</span>.
+      </div>
+      <div class="body-xs mt-2">Remind it explicitly to create the actual <span class="mono" style="color:var(--text-2);">.env</span> file.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 32 - SECTION DIVIDER: RESOURCES
+     ============================================================ -->
+<section class="slide" data-slide="32">
+  <div class="mesh-center"></div>
+
+  <div class="section-stack">
+    <div class="eyebrow">Part 3</div>
+    <div class="h-hero mt-6" style="text-align:center;">
+      <span class="neon-blue">Resources</span>
+    </div>
+    <div class="neon-line-wide" style="margin:32px auto;"></div>
+    <div class="body-l mt-4 text-dim" style="max-width:680px; text-align:center;">
+      Pitfalls, patterns, and process tips for getting more out of your coding agent.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 33 - COGNITIVE DEFICITS OF YOUR AGENT
+     ============================================================ -->
+<section class="slide" data-slide="33">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Know what you're working with</div>
+    <div class="h-2 mt-3">Cognitive deficits of your <span class="neon-magenta">agent</span></div>
+  </div>
+
+  <!-- Karpathy reference -->
+  <div style="position:absolute; left:80px; top:180px; width:440px;">
+    <div class="img-mask" style="height:310px; background:var(--surface);">
+      <img src="assets/images/slide33_img01.png" alt="Andrej Karpathy at Y Combinator Startup School"
+           style="width:100%; height:100%; object-fit:cover;"/>
+      <div class="img-tag">Reference</div>
+    </div>
+    <div class="body-xs mt-3 italic text-dim" style="line-height:1.5;">
+      Excerpts from <span class="text-text-2">"Software is changing again"</span> &mdash; Andrej Karpathy at Y Combinator Startup School.
+    </div>
+  </div>
+
+  <!-- Right: 5-row table -->
+  <div style="position:absolute; left:560px; right:80px; top:180px;">
+    <table class="tbl tbl-compact">
+      <thead>
+        <tr>
+          <th style="width:38%;">Deficit</th>
+          <th>Manifestation in prototyping</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="semibold text-text">Hallucination</span></td>
+          <td>Believes it completed a task it never did. Assumes code exists when it doesn't.</td>
+        </tr>
+        <tr>
+          <td><span class="semibold text-text">Jagged intelligence</span><br><span class="body-xs">(how many Rs in strawberry?)</span></td>
+          <td>Wrong logic in code, leading to bugs it struggles to discover on its own.</td>
+        </tr>
+        <tr>
+          <td><span class="semibold text-text">Anterograde amnesia</span><br><span class="body-xs">(always a new employee)</span></td>
+          <td>Starting a new chat makes the agent forget all prior work and conversations.</td>
+        </tr>
+        <tr>
+          <td><span class="semibold text-text">Gullibility</span></td>
+          <td>Prompt-injection risk. The AI in your prototype could leak API keys or other secrets.</td>
+        </tr>
+        <tr>
+          <td><span class="semibold text-text">Sycophancy</span></td>
+          <td>Your POV could be wrong, but the agent goes ahead and "fixes" it anyway.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 34 - THE AGENT IS AN EMPLOYEE, PROCESS IS THE ORG
+     ============================================================ -->
+<section class="slide" data-slide="34">
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">A mental model</div>
+    <div class="h-2 mt-3">The agent is an <span class="neon-blue">employee</span>, the process is an <span class="neon-magenta">organisation</span></div>
+    <div class="body-s mt-3 text-dim" style="max-width:920px;">
+      Each stage takes a messy braindump in, runs it through a focused agent, and emits a structured artifact.
+    </div>
+  </div>
+
+  <!-- 4-column workflow -->
+  <div style="position:absolute; left:80px; top:230px; right:80px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:18px;">
+
+    <!-- Column 1 -->
+    <div class="flex flex-col gap-3 items-center text-center">
+      <div class="step-pill">01</div>
+      <div class="card" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--dim);">Input</div>
+        <div class="body-s mt-2" style="color:var(--text);">Idea braindump</div>
+      </div>
+      <div class="arrow-v arrow-v-glow" style="height:28px;"></div>
+      <div class="card card-magenta-glow" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--secondary);">Agent</div>
+        <div class="body-s mt-2" style="color:var(--text);">Research agent</div>
+      </div>
+      <div class="arrow-v arrow-v-glow" style="height:28px;"></div>
+      <div class="card card-glow" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--primary);">Output</div>
+        <div class="body-s mt-2" style="color:var(--text);">Strategy document</div>
+      </div>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="flex flex-col gap-3 items-center text-center">
+      <div class="step-pill">02</div>
+      <div class="card" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--dim);">Input</div>
+        <div class="body-s mt-2" style="color:var(--text);">PRD braindump</div>
+      </div>
+      <div class="arrow-v arrow-v-glow" style="height:28px;"></div>
+      <div class="card card-magenta-glow" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--secondary);">Agent</div>
+        <div class="body-s mt-2" style="color:var(--text);">Your coding agent</div>
+      </div>
+      <div class="arrow-v arrow-v-glow" style="height:28px;"></div>
+      <div class="card card-glow" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--primary);">Output</div>
+        <div class="body-s mt-2" style="color:var(--text);">High-level PRD</div>
+      </div>
+    </div>
+
+    <!-- Column 3 -->
+    <div class="flex flex-col gap-3 items-center text-center">
+      <div class="step-pill">03</div>
+      <div class="card" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--dim);">Input</div>
+        <div class="body-s mt-2" style="color:var(--text);">Design ideas</div>
+      </div>
+      <div class="arrow-v arrow-v-glow" style="height:28px;"></div>
+      <div class="card card-magenta-glow" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--secondary);">Agent</div>
+        <div class="body-s mt-2" style="color:var(--text);">Your coding agent</div>
+      </div>
+      <div class="arrow-v arrow-v-glow" style="height:28px;"></div>
+      <div class="card card-glow" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--primary);">Output</div>
+        <div class="body-s mt-2" style="color:var(--text);">Frontend code</div>
+      </div>
+    </div>
+
+    <!-- Column 4 -->
+    <div class="flex flex-col gap-3 items-center text-center">
+      <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">04</div>
+      <div class="card" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--dim);">Input</div>
+        <div class="body-s mt-2" style="color:var(--text);">Page &amp; feature PRD</div>
+      </div>
+      <div class="arrow-v arrow-v-glow" style="height:28px; background:linear-gradient(180deg, transparent, var(--secondary)); box-shadow:0 0 6px var(--glow-magenta);"></div>
+      <div class="card card-magenta-glow" style="width:100%; padding:14px 12px;">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--secondary);">Agent</div>
+        <div class="body-s mt-2" style="color:var(--text);">Your coding agent</div>
+      </div>
+      <div class="arrow-v arrow-v-glow" style="height:28px; background:linear-gradient(180deg, transparent, var(--secondary)); box-shadow:0 0 6px var(--glow-magenta);"></div>
+      <div class="card card-magenta-glow" style="width:100%; padding:14px 12px; border-color:rgba(236,72,153,0.30);">
+        <div class="body-xs uppercase tracking-wide" style="color:var(--secondary);">Output</div>
+        <div class="body-s mt-2 semibold" style="color:var(--text);">Final app</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 35 - USE GIT VERSIONING
+     ============================================================ -->
+<section class="slide" data-slide="35">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Safety net</div>
+    <div class="h-2 mt-3">Use <span class="neon-blue">git versioning</span></div>
+  </div>
+
+  <!-- Pain quote -->
+  <div style="position:absolute; left:80px; top:170px; right:80px;">
+    <div class="quote-block">
+      "I worked 10 hours over the weekend to make a cool demo. Tried fixing a bug just before the presentation with my manager and it broke the entire code."
+    </div>
+  </div>
+
+  <!-- Prompt -->
+  <div style="position:absolute; left:80px; top:280px; width:560px;">
+    <div class="code-block magenta">
+      <div class="code-header">Prompt</div>
+      Implement a git versioning system with multiple branches. I want a <span style="color:var(--secondary);">production</span> branch, a <span style="color:var(--primary);">development</span> branch, and feature-specific branches. Have them on my local and remote GitHub. We will always build on the feature-specific branch. Make commits only when I explicitly ask you to.
+    </div>
+  </div>
+
+  <!-- Tip -->
+  <div style="position:absolute; left:80px; top:510px; width:560px;">
+    <div class="card" style="padding:18px;">
+      <div class="tag tag-warn">Tip</div>
+      <div class="body-s mt-3">
+        Keep your best code on the <span class="semibold text-text">production</span> branch. Make changes on feature-specific branches and merge into <span class="semibold text-text">development</span> only once confident.
+        Roll back to any checkpoint using the commit hash as a reference.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: illustrative branching visual -->
+  <div style="position:absolute; right:80px; top:280px; width:520px;">
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag">Branch model</div>
+      <div class="mt-4">
+        <!-- branches stack -->
+        <div class="flex items-center gap-3" style="margin-bottom:14px;">
+          <div style="width:10px; height:10px; border-radius:50%; background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong);"></div>
+          <div class="mono body-s" style="color:var(--secondary);">main</div>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, var(--secondary), transparent);"></div>
+          <div class="body-xs">production</div>
+        </div>
+        <div class="flex items-center gap-3" style="margin-bottom:14px;">
+          <div style="width:10px; height:10px; border-radius:50%; background:var(--primary); box-shadow:0 0 8px var(--glow-strong);"></div>
+          <div class="mono body-s" style="color:var(--primary);">develop</div>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, var(--primary), transparent);"></div>
+          <div class="body-xs">integration</div>
+        </div>
+        <div class="flex items-center gap-3" style="margin-bottom:14px;">
+          <div style="width:10px; height:10px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+          <div class="mono body-s" style="color:var(--accent);">feat/login</div>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, var(--accent), transparent);"></div>
+          <div class="body-xs">in progress</div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div style="width:10px; height:10px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+          <div class="mono body-s" style="color:var(--accent);">feat/checkout</div>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, var(--accent), transparent);"></div>
+          <div class="body-xs">in progress</div>
+        </div>
+      </div>
+      <div class="neon-divider mt-6"></div>
+      <div class="body-xs mt-4 text-dim">
+        Roll back with <span class="mono" style="color:var(--text-2);">git checkout &lt;commit-sha&gt;</span> when something goes sideways.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 36 - RUN TESTS BEFORE COMPLETING THE TASK
+     ============================================================ -->
+<section class="slide" data-slide="36">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Trust, but verify</div>
+    <div class="h-2 mt-3">Make your agent <span class="neon-blue">run tests</span> before it completes the task</div>
+  </div>
+
+  <!-- Pain quotes -->
+  <div style="position:absolute; left:80px; top:172px; right:80px;
+              display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+    <div class="quote-block">
+      "It assumes the feature works after every change but it never really makes it work."
+    </div>
+    <div class="quote-block">
+      "I was working on a different flow and it introduced a bug elsewhere which I never caught."
+    </div>
+  </div>
+
+  <!-- Prompt -->
+  <div style="position:absolute; left:80px; top:300px; width:560px;">
+    <div class="code-block">
+      <div class="code-header">Prompt</div>
+      Create a script to run automated tests on the smallest units of our app. Every time you add a new feature, also add new unit tests &mdash; you need to write the tests yourself. After any change, run the test script and ensure everything passes. On failure, debug and re-run before declaring done.
+    </div>
+  </div>
+
+  <!-- Right: 3 test types -->
+  <div style="position:absolute; right:80px; top:300px; width:520px;
+              display:flex; flex-direction:column; gap:12px;">
+    <div class="card" style="padding:14px 16px;">
+      <div class="flex items-center gap-3">
+        <div class="tag tag-mono">backend</div>
+        <div class="h-4">Unit / API tests</div>
+      </div>
+      <div class="body-xs mt-2">Share the PRD context so the agent can write meaningful test cases.</div>
+    </div>
+    <div class="card" style="padding:14px 16px;">
+      <div class="flex items-center gap-3">
+        <div class="tag tag-mono">frontend</div>
+        <div class="h-4">Browser tests</div>
+      </div>
+      <div class="body-xs mt-2">Use MCP servers (Playwright for browser, others for filesystems / APIs) so the agent can drive a real browser.</div>
+    </div>
+    <div class="card" style="padding:14px 16px;">
+      <div class="flex items-center gap-3">
+        <div class="tag tag-mono tag-magenta">llm / model</div>
+        <div class="h-4">Eval scripts</div>
+      </div>
+      <div class="body-xs mt-2">Quick eval scripts to test model output for accuracy, hallucinations, and edge cases.</div>
+    </div>
+  </div>
+
+  <!-- Tip strip -->
+  <div style="position:absolute; left:80px; bottom:40px; right:80px;">
+    <div class="card" style="padding:12px 18px; border-color:var(--border-2);">
+      <div class="flex items-center gap-4">
+        <div class="tag tag-warn">Tip</div>
+        <div class="body-s">Save a <span class="semibold text-text">custom instruction</span> so the agent always runs tests as part of its "definition of done".</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 37 - EVALUATIONS DEEP DIVE
+     ============================================================ -->
+<section class="slide" data-slide="37">
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Tests, part two</div>
+    <div class="h-2 mt-3">Don't forget the <span class="neon-magenta">AI</span> part &mdash; build evals</div>
+    <div class="body-s mt-3 text-dim" style="max-width:920px;">
+      Unit tests verify deterministic code. They <span class="italic">cannot</span> tell you whether your prompt is producing the right answer.
+      That's what evals are for.
+    </div>
+  </div>
+
+  <!-- Left: why evals matter -->
+  <div style="position:absolute; left:80px; top:230px; width:560px;">
+    <div class="card card-magenta-glow" style="padding:24px;">
+      <div class="tag tag-magenta">Why eval the model separately</div>
+      <div class="mt-4">
+        <div class="bullet-magenta bullet body-s">A passing unit test does not mean the LLM responded usefully.</div>
+        <div class="bullet-magenta bullet body-s">Prompt changes silently regress quality &mdash; nothing else will catch it.</div>
+        <div class="bullet-magenta bullet body-s">Model upgrades flip behavior. Evals are how you sleep at night.</div>
+        <div class="bullet-magenta bullet body-s">Edge cases (long inputs, weird formats, adversarial users) need known answers.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: eval prompt + structure -->
+  <div style="position:absolute; right:80px; top:230px; width:520px;">
+    <div class="code-block magenta">
+      <div class="code-header">Eval prompt</div>
+      Build an eval script for the AI feature. Define a small set of golden test cases &mdash; input prompts and the ideal output. For each case, call the model, compare to expected (exact match, contains, or LLM-as-judge), and report pass / fail with a score.
+    </div>
+
+    <div class="card mt-4" style="padding:16px;">
+      <div class="tag">What goes in an eval set</div>
+      <div class="mt-3 flex gap-2" style="flex-wrap:wrap;">
+        <div class="tag tag-mono">happy path</div>
+        <div class="tag tag-mono">edge case</div>
+        <div class="tag tag-mono">jailbreak</div>
+        <div class="tag tag-mono">long input</div>
+        <div class="tag tag-mono">empty input</div>
+        <div class="tag tag-mono">multi-lingual</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom tip -->
+  <div style="position:absolute; left:80px; bottom:40px; right:80px;">
+    <div class="card" style="padding:12px 18px; border-color:var(--border-2);">
+      <div class="flex items-center gap-4">
+        <div class="tag tag-warn">Tip</div>
+        <div class="body-s">Run evals on <span class="semibold text-text">every prompt change</span>, not just every code change. Treat the prompt as a versioned artifact.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 38 - DEPLOY YOUR APP TO THE CLOUD
+     ============================================================ -->
+<section class="slide" data-slide="38">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Share with others</div>
+    <div class="h-2 mt-3">Deploy your app to <span class="neon-blue">the cloud</span></div>
+    <div class="body-s mt-3 text-dim" style="max-width:920px;">
+      Hosting your prototype on a live URL unblocks UX testing and stakeholder feedback &mdash; no more "works on my laptop".
+    </div>
+  </div>
+
+  <!-- Prompt -->
+  <div style="position:absolute; left:80px; top:230px; width:560px;">
+    <div class="code-block">
+      <div class="code-header">Prompt</div>
+      Host my app on <span style="color:var(--secondary);">[your cloud provider]</span>. Use GitHub Actions with a workflow file to complete the build and make the deployment using the provider's CLI. Configure the domain so the app is reachable. The build should trigger automatically on every commit.
+    </div>
+
+    <div class="card mt-4" style="padding:16px;">
+      <div class="tag tag-warn">Tip</div>
+      <div class="body-s mt-2">
+        Wire up <span class="semibold text-text">one deployment per branch</span> so each feature branch gets its own preview URL &mdash; perfect for quick A/B feedback.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: deployment flow visual -->
+  <div style="position:absolute; right:80px; top:230px; width:520px;">
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag">CI / CD loop</div>
+      <div class="mt-5">
+        <div class="flex items-center gap-3" style="margin-bottom:14px;">
+          <div class="number-badge">1</div>
+          <div class="body-s text-text">Push commit to GitHub</div>
+        </div>
+        <div style="margin-left:15px; height:18px; width:2px; background:linear-gradient(180deg, var(--primary), transparent); box-shadow:0 0 6px var(--glow);"></div>
+        <div class="flex items-center gap-3" style="margin-bottom:14px;">
+          <div class="number-badge">2</div>
+          <div class="body-s text-text">GitHub Actions runs the workflow</div>
+        </div>
+        <div style="margin-left:15px; height:18px; width:2px; background:linear-gradient(180deg, var(--primary), transparent); box-shadow:0 0 6px var(--glow);"></div>
+        <div class="flex items-center gap-3" style="margin-bottom:14px;">
+          <div class="number-badge">3</div>
+          <div class="body-s text-text">Build + cloud CLI deploy</div>
+        </div>
+        <div style="margin-left:15px; height:18px; width:2px; background:linear-gradient(180deg, var(--secondary), transparent); box-shadow:0 0 6px var(--glow-magenta);"></div>
+        <div class="flex items-center gap-3">
+          <div class="number-badge" style="background:rgba(236,72,153,0.12); border-color:var(--secondary); color:var(--secondary);">4</div>
+          <div class="body-s text-text"><span class="semibold">Live URL</span> &mdash; share with anyone</div>
+        </div>
+      </div>
+      <div class="neon-divider mt-6"></div>
+      <div class="body-xs mt-4 text-dim mono" style="letter-spacing:1px;">
+        works on: Azure · AWS · GCP · Vercel · Render · Fly.io
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 39 - CONVERSATIONAL TIPS WITH YOUR AGENT
+     ============================================================ -->
+<section class="slide" data-slide="39">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:40px; right:80px;">
+    <div class="eyebrow">Guard-rails</div>
+    <div class="h-2 mt-3">Conversational tips with your <span class="neon-blue">agent</span></div>
+    <div class="body-s mt-2 text-dim" style="max-width:1100px;">
+      Six rule-types you can drop into any prompt. Each one is a guard-rail &mdash; structure beats vibes.
+    </div>
+  </div>
+
+  <!-- 6-row table -->
+  <div style="position:absolute; left:80px; top:175px; right:80px;">
+    <table class="tbl tbl-compact">
+      <thead>
+        <tr>
+          <th style="width:18%;">Rule type (guard-rail)</th>
+          <th style="width:32%;">Use it when you want the AI to…</th>
+          <th>Say it like this in your coding agent's chat</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="semibold text-text">1. Scope</span></td>
+          <td>Touch only a specific file, screen, or component.</td>
+          <td class="italic">"Work only in <span class="mono" style="color:var(--accent); font-style:normal;">checkout_page.jsx</span>, nothing else."</td>
+        </tr>
+        <tr>
+          <td><span class="semibold text-text">2. Outcome / Goal</span></td>
+          <td>Deliver a clear end-result, not random tweaks.</td>
+          <td class="italic">"Add a 'Dark Mode' toggle that flips our primary colours."</td>
+        </tr>
+        <tr>
+          <td><span class="semibold text-text">3. Brand &amp; Style</span></td>
+          <td>Keep colours, fonts, spacing on-brand.</td>
+          <td class="italic">"Follow our design tokens: <span class="mono" style="color:var(--accent); font-style:normal;">primary=#0052CC</span>, <span class="mono" style="color:var(--accent); font-style:normal;">radius=8px</span>."</td>
+        </tr>
+        <tr>
+          <td><span class="semibold text-text">4. Constraints</span></td>
+          <td>Avoid risk &mdash; new libraries, API changes, PII exposure.</td>
+          <td class="italic">"Do NOT add new packages or collect extra user data."</td>
+        </tr>
+        <tr>
+          <td><span class="semibold text-text">5. Feedback / Preview</span></td>
+          <td>Show a quick mock before finalising.</td>
+          <td class="italic">"Give me a visual diff or screenshot preview first &mdash; no file overwrite yet."</td>
+        </tr>
+        <tr>
+          <td><span class="semibold text-text">6. Test / Validation</span></td>
+          <td>Prove it works without a deep code review.</td>
+          <td class="italic">"Include a quick self-test: toggle Dark Mode on/off and log state."</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 40 - FIRST THINGS FIRST: DESIGN TO SCALE (contd)
+     ============================================================ -->
+<section class="slide" data-slide="40">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">First things first &mdash; continued</div>
+    <div class="h-2 mt-3">Design to <span class="neon-blue">scale</span> contd<span class="text-dim">…</span></div>
+    <div class="body-s mt-3 text-dim" style="max-width:920px;">
+      A framework for building a scalable and secure prototype.
+    </div>
+  </div>
+
+  <!-- Three principle cards -->
+  <div style="position:absolute; left:80px; top:210px; right:80px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px;">
+
+    <div class="card card-glow" style="padding:22px;">
+      <div class="number-badge">01</div>
+      <div class="h-4 mt-4">Plan for future integrations</div>
+      <div class="body-s mt-3">
+        Telling your coding agent which integrations are coming next helps it design an architecture that accommodates new APIs, services, or data sources with minimal disruption.
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:22px;">
+      <div class="number-badge">02</div>
+      <div class="h-4 mt-4">Prioritize backend development</div>
+      <div class="body-s mt-3">
+        Build the backend layer alongside the front-end. It saves a lot of rework later in the cycle, when increasing complexity raises the risk of unexpected breaks.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:22px;">
+      <div class="number-badge" style="background:rgba(236,72,153,0.12); border-color:var(--secondary); color:var(--secondary);">03</div>
+      <div class="h-4 mt-4">Integrate services via backend</div>
+      <div class="body-s mt-3">
+        Integrating services (including AI) via the backend reduces security risk &mdash; credentials and business logic stay server-side, reducing exposure.
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom callout -->
+  <div style="position:absolute; left:80px; bottom:48px; right:80px;">
+    <div class="card" style="padding:14px 20px; border-color:var(--border-2); background:linear-gradient(90deg, rgba(59,130,246,0.06), transparent);">
+      <div class="flex items-center gap-4">
+        <div class="neon-line" style="width:24px;"></div>
+        <div class="body-s">
+          In the upcoming slides we follow this framework to build a scalable, future-integration-ready prototype.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 41 - JOURNEY SO FAR (RECAP, SESSIONS 1 & 2)
+     ============================================================ -->
+<section class="slide" data-slide="41">
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Recap</div>
+    <div class="h-2 mt-3">Journey so far<span class="neon-blue">.</span><span class="neon-magenta">.</span></div>
+  </div>
+
+  <!-- Wins -->
+  <div style="position:absolute; left:80px; top:190px; width:560px;">
+    <div class="card card-glow" style="padding:22px;">
+      <div class="tag">We learned to…</div>
+      <div class="mt-4">
+        <div class="bullet body-s">Convert our concept into impressive, cohesive visual designs.</div>
+        <div class="bullet body-s">Configure VS Code to integrate with our coding agent, navigating its occasional quirks.</div>
+        <div class="bullet body-s">Develop a click-through UI prototype that simulates the complete user journey.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Challenges -->
+  <div style="position:absolute; right:80px; top:190px; width:560px;">
+    <div class="card card-magenta-glow" style="padding:22px;">
+      <div class="tag tag-magenta">Inadvertently, we may have felt lacking control…</div>
+      <div class="mt-4">
+        <div class="bullet-magenta bullet body-s">The agent independently selected design elements and interactions.</div>
+        <div class="bullet-magenta bullet body-s">We had limited input on the technology stack used to build the prototype.</div>
+        <div class="bullet-magenta bullet body-s">The process varied across individuals, even given identical instructions or prompts.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing line -->
+  <div style="position:absolute; left:80px; bottom:60px; right:80px;">
+    <div class="neon-divider"></div>
+    <div class="h-4 mt-4 text-center" style="color:var(--text);">
+      Most importantly, we had <span class="neon-magenta italic">reservations</span> about creating a full prototype for the larger initiative.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 42 - SEQUENTIAL VERTICAL FOCUS PIPELINE
+     ============================================================ -->
+<section class="slide" data-slide="42">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">The shape of the process</div>
+    <div class="h-2 mt-3">Sequential vertical focus turns a vague idea into <span class="neon-blue">shippable code</span></div>
+    <div class="body-s mt-3 text-dim" style="max-width:1100px;">
+      Six stages, each with a defined input, output, and set of tasks. Don't skip ahead.
+    </div>
+  </div>
+
+  <!-- Stage row -->
+  <div style="position:absolute; left:80px; top:220px; right:80px;">
+
+    <!-- Stage headers with icons -->
+    <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:6px; margin-bottom:14px;">
+      <div class="text-center">
+        <div class="number-badge" style="margin:0 auto;">1</div>
+        <div class="body-xs mt-2 uppercase tracking-wide" style="color:var(--primary);">Research</div>
+      </div>
+      <div class="text-center">
+        <div class="number-badge" style="margin:0 auto;">2</div>
+        <div class="body-xs mt-2 uppercase tracking-wide" style="color:var(--primary);">PRD</div>
+      </div>
+      <div class="text-center">
+        <div class="number-badge" style="margin:0 auto;">3</div>
+        <div class="body-xs mt-2 uppercase tracking-wide" style="color:var(--primary);">Tech architecture</div>
+      </div>
+      <div class="text-center">
+        <div class="number-badge" style="margin:0 auto;">4</div>
+        <div class="body-xs mt-2 uppercase tracking-wide" style="color:var(--primary);">Frontend</div>
+      </div>
+      <div class="text-center">
+        <div class="number-badge" style="margin:0 auto;">5</div>
+        <div class="body-xs mt-2 uppercase tracking-wide" style="color:var(--primary);">Backend</div>
+      </div>
+      <div class="text-center">
+        <div class="number-badge" style="margin:0 auto; background:rgba(236,72,153,0.12); border-color:var(--secondary); color:var(--secondary);">6</div>
+        <div class="body-xs mt-2 uppercase tracking-wide" style="color:var(--secondary);">AI system</div>
+      </div>
+    </div>
+
+    <!-- Stage cells -->
+    <div class="stage-row">
+      <div class="stage-cell">
+        <div class="stage-cell-title">Research</div>
+        <ul class="stage-cell-list">
+          <li>Problem framing &amp; goals</li>
+          <li>Stakeholder &amp; user mapping</li>
+          <li>Competitive / comparable analysis</li>
+        </ul>
+      </div>
+      <div class="stage-cell">
+        <div class="stage-cell-title">PRD</div>
+        <ul class="stage-cell-list">
+          <li>Outcome-oriented feature list</li>
+          <li>User stories / jobs</li>
+          <li>Acceptance criteria</li>
+        </ul>
+      </div>
+      <div class="stage-cell">
+        <div class="stage-cell-title">Tech architecture</div>
+        <ul class="stage-cell-list">
+          <li>System context diagram</li>
+          <li>Component &amp; service decomposition</li>
+          <li>Data model / schema</li>
+        </ul>
+      </div>
+      <div class="stage-cell">
+        <div class="stage-cell-title">Frontend</div>
+        <ul class="stage-cell-list">
+          <li>Interaction flow</li>
+          <li>Design system</li>
+        </ul>
+      </div>
+      <div class="stage-cell">
+        <div class="stage-cell-title">Backend</div>
+        <ul class="stage-cell-list">
+          <li>API endpoint definition</li>
+          <li>Business logic</li>
+          <li>Data persistence</li>
+        </ul>
+      </div>
+      <div class="stage-cell" style="border-color:rgba(236,72,153,0.25); box-shadow:0 0 0 1px rgba(236,72,153,0.06), 0 0 20px rgba(236,72,153,0.05);">
+        <div class="stage-cell-title" style="color:var(--secondary);">AI system</div>
+        <ul class="stage-cell-list">
+          <li>Prompt instruction</li>
+          <li>Orchestration</li>
+          <li>Data context</li>
+          <li>Evaluations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom hint -->
+  <div style="position:absolute; left:80px; bottom:48px; right:80px;
+              display:flex; align-items:center; gap:16px;">
+    <div style="flex:1; height:1px; background:var(--border-2);"></div>
+    <div class="body-xs uppercase tracking-wider text-dim">Vague idea &rarr; shippable code</div>
+    <div style="flex:1; height:1px; background:var(--border-2);"></div>
+  </div>
+</section>
+
+
+</div><!-- /.deck-stage -->
+</div><!-- /.deck -->
+
+<!-- Progress + slide number -->
+<div id="progress-bar" style="width: 2.38%;"></div>
+<div id="slide-number">01<span class="sep">/</span><span class="total">42</span></div>
+<div id="help-hint"><kbd>←</kbd><kbd>→</kbd> navigate · <kbd>F</kbd> fullscreen</div>
+
+<script src="deck.js"></script>
+</body>
+</html>

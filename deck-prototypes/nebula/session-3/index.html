@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Nebula · Session 3 · Orchestration — From Skills to Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="deck">
+<div class="deck-stage" id="deck-stage">
+
+<!-- ============================================================
+     SLIDE 1 - TITLE
+     ============================================================ -->
+<section class="slide active" data-slide="1">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:60px;" class="eyebrow">PM Workshop · Module 3 · Session 3</div>
+
+  <div style="position:absolute; left:80px; top:200px; right:80px;">
+    <div class="eyebrow text-dim mb-4" style="color:var(--secondary);">Orchestration</div>
+    <div class="h-hero">
+      From <span class="text-dim italic" style="font-weight:400;">Skills</span> to <span class="neon-magenta">Systems</span>
+    </div>
+    <div class="neon-line-wide mt-8"></div>
+    <div class="h-3 mt-6 text-text" style="font-weight:500;">Building Your Personal <span class="neon-blue">workOS</span></div>
+    <div class="body-m mt-4 text-dim" style="max-width:880px;">
+      From discrete skills to an integrated system that plans, captures, refines, and learns.
+    </div>
+  </div>
+
+  <!-- bottom session navigator -->
+  <div style="position:absolute; left:80px; bottom:80px; right:80px; display:flex; align-items:center; gap:14px;">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div style="width:28px; height:28px; border-radius:50%; background:var(--surface); border:1px solid var(--border-2);
+                  display:flex; align-items:center; justify-content:center; font-family:var(--font-headline);
+                  font-size:11px; font-weight:700; color:var(--dim);">1</div>
+      <div class="body-xs text-dim">Foundations</div>
+    </div>
+    <div style="flex:1; height:1px; background:var(--border-2);"></div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div style="width:28px; height:28px; border-radius:50%; background:var(--surface); border:1px solid var(--border-2);
+                  display:flex; align-items:center; justify-content:center; font-family:var(--font-headline);
+                  font-size:11px; font-weight:700; color:var(--dim);">2</div>
+      <div class="body-xs text-dim">Skills</div>
+    </div>
+    <div style="flex:1; height:1px; background:linear-gradient(90deg, var(--border-2), var(--secondary)); box-shadow:0 0 6px var(--glow-magenta);"></div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div style="width:28px; height:28px; border-radius:50%; background:rgba(236,72,153,0.10); border:1px solid var(--secondary);
+                  display:flex; align-items:center; justify-content:center; font-family:var(--font-headline);
+                  font-size:11px; font-weight:700; color:var(--secondary);
+                  box-shadow: 0 0 12px var(--glow-magenta-strong);">3</div>
+      <div class="body-xs" style="color:var(--secondary);">Systems · Today</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 2 - WHERE WE'VE BEEN
+     ============================================================ -->
+<section class="slide" data-slide="2">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Recap of the journey</div>
+    <div class="h-1 mt-3">Where we've been</div>
+  </div>
+
+  <!-- Three session columns -->
+  <div style="position:absolute; left:80px; top:200px; right:80px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px;">
+
+    <div class="card card-glow">
+      <div class="step-pill">Session 1</div>
+      <div class="h-3 mt-4">Foundations</div>
+      <div class="neon-line mt-4"></div>
+      <div class="body-s mt-5 text-dim">Prompts, agents, knowledge bases.</div>
+      <div class="body-m mt-6" style="color:var(--text);">
+        You can build a <span class="semibold neon-blue">simple agent</span> with tools.
+      </div>
+    </div>
+
+    <div class="card card-glow">
+      <div class="step-pill">Session 2</div>
+      <div class="h-3 mt-4">Skills</div>
+      <div class="neon-line mt-4"></div>
+      <div class="body-s mt-5 text-dim">Discrete capabilities, single workflows.</div>
+      <div class="body-m mt-6" style="color:var(--text);">
+        You can build <span class="semibold neon-blue">reusable context</span>.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow">
+      <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">Session 3 · Today</div>
+      <div class="h-3 mt-4">Systems</div>
+      <div class="neon-line mt-4" style="background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong);"></div>
+      <div class="body-s mt-5 text-dim">Composition, orchestration, flywheel.</div>
+      <div class="body-m mt-6" style="color:var(--text);">
+        Your skills work together as <span class="semibold neon-magenta">one system</span>.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tagline at bottom -->
+  <div style="position:absolute; left:80px; right:80px; bottom:60px; text-align:center;">
+    <div class="body-l" style="color:var(--text);">
+      <span class="text-dim">Vocabulary</span>
+      <span class="neon-blue mono" style="margin:0 12px;">&rarr;</span>
+      <span class="text-dim">Sentences</span>
+      <span class="neon-blue mono" style="margin:0 12px;">&rarr;</span>
+      <span style="color:var(--secondary);" class="semibold">Paragraphs &amp; Essays</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 3 - AGENT FRAMEWORK
+     ============================================================ -->
+<section class="slide" data-slide="3">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">The agent framework · where we're going</div>
+    <div class="h-2 mt-3">You built the <span class="neon-blue">engine</span>. Today you build the <span class="neon-magenta">vehicle</span>.</div>
+  </div>
+
+  <!-- Left: What We Learned -->
+  <div style="position:absolute; left:80px; top:200px; width:540px;">
+    <div class="card card-glow">
+      <div class="tag">What we learned</div>
+      <div class="body-s mt-4 text-text">An agent is a system that pursues a goal by repeatedly:</div>
+
+      <div class="mt-5 flex flex-col gap-3">
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div class="number-badge" style="flex-shrink:0;">01</div>
+          <div>
+            <div class="body-m semibold" style="color:var(--text);">Reasoning / Planning</div>
+            <div class="body-xs mt-1 text-dim">&rarr; Deciding what to do next</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div class="number-badge" style="flex-shrink:0;">02</div>
+          <div>
+            <div class="body-m semibold" style="color:var(--text);">Acting on Environment <span class="text-dim">(Tools)</span></div>
+            <div class="body-xs mt-1 text-dim">&rarr; Executing actions via tools</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div class="number-badge" style="flex-shrink:0;">03</div>
+          <div>
+            <div class="body-m semibold" style="color:var(--text);">Updating Itself <span class="text-dim">(Context / Memory)</span></div>
+            <div class="body-xs mt-1 text-dim">&rarr; Learning from results</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="neon-line mt-5"></div>
+      <div class="body-xs mt-3 text-dim italic">
+        Sessions 1–2: we built self-learning agents that complete routine tasks, packaged as <span class="mono">skills</span>.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: What We Add Today -->
+  <div style="position:absolute; right:80px; top:200px; width:540px;">
+    <div class="card card-magenta-glow">
+      <div class="tag tag-magenta">What we add today</div>
+      <div class="body-s mt-4 text-text">Five principles. One system.</div>
+
+      <div class="mt-5 flex flex-col gap-3">
+        <div style="display:flex; gap:14px; align-items:center;">
+          <div style="flex-shrink:0; width:170px;">
+            <div class="body-m semibold neon-blue">Goals as Gravity</div>
+          </div>
+          <div class="body-xs text-dim">Skills know what matters</div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center;">
+          <div style="flex-shrink:0; width:170px;">
+            <div class="body-m semibold neon-blue">Hooks as Senses</div>
+          </div>
+          <div class="body-xs text-dim">Skills know what's happening</div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center;">
+          <div style="flex-shrink:0; width:170px;">
+            <div class="body-m semibold neon-cyan">Structure as Intelligence</div>
+          </div>
+          <div class="body-xs text-dim">Skills know where to look</div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center;">
+          <div style="flex-shrink:0; width:170px;">
+            <div class="body-m semibold neon-magenta">Agent as Partner</div>
+          </div>
+          <div class="body-xs text-dim">Skills ask, draft, seek feedback</div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center;">
+          <div style="flex-shrink:0; width:170px;">
+            <div class="body-m semibold neon-magenta">The Flywheel</div>
+          </div>
+          <div class="body-xs text-dim">Skills feed each other daily</div>
+        </div>
+      </div>
+
+      <div class="neon-line mt-5" style="background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong);"></div>
+      <div class="body-xs mt-3 text-dim italic">
+        Session 3: The agent loop stays the same. Today we build the <span class="semibold text-text">SYSTEM</span> around it.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 4 - THE PROBLEM: SKILLS IN ISOLATION
+     ============================================================ -->
+<section class="slide" data-slide="4">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">The problem</div>
+    <div class="h-1 mt-3">Skills in <span class="neon-magenta italic">isolation</span></div>
+  </div>
+
+  <!-- Four isolated skill cards -->
+  <div style="position:absolute; left:80px; right:80px; top:240px;
+              display:grid; grid-template-columns: repeat(4, 1fr); gap:20px;">
+    <div class="card" style="text-align:center; padding:28px 16px; border-color:var(--border-2);">
+      <div class="icon-box" style="margin:0 auto;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>
+        </svg>
+      </div>
+      <div class="h-4 mt-4">Kusto Skill</div>
+      <div class="body-xs mt-2 text-dim">Works alone</div>
+    </div>
+    <div class="card" style="text-align:center; padding:28px 16px; border-color:var(--border-2);">
+      <div class="icon-box" style="margin:0 auto;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+      <div class="h-4 mt-4">Email Skill</div>
+      <div class="body-xs mt-2 text-dim">Works alone</div>
+    </div>
+    <div class="card" style="text-align:center; padding:28px 16px; border-color:var(--border-2);">
+      <div class="icon-box" style="margin:0 auto;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M3 9h18M9 21V9"/>
+        </svg>
+      </div>
+      <div class="h-4 mt-4">Deck Skill</div>
+      <div class="body-xs mt-2 text-dim">Works alone</div>
+    </div>
+    <div class="card" style="text-align:center; padding:28px 16px; border-color:var(--border-2);">
+      <div class="icon-box" style="margin:0 auto;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M21 21l-4.35-4.35"/>
+          <circle cx="11" cy="11" r="8"/>
+        </svg>
+      </div>
+      <div class="h-4 mt-4">Analysis Skill</div>
+      <div class="body-xs mt-2 text-dim">Works alone</div>
+    </div>
+  </div>
+
+  <!-- Diagnosis -->
+  <div style="position:absolute; left:80px; right:80px; top:480px;">
+    <div class="card card-magenta-glow" style="padding:32px;">
+      <div class="body-l text-text">
+        Each skill works alone. <span class="text-dim">Every conversation starts from zero. No shared context. No memory between skills. No system.</span>
+      </div>
+      <div class="neon-line mt-5" style="background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong);"></div>
+      <div class="h-3 mt-4 text-center">
+        The gap isn't <span class="text-dim italic">intelligence</span> — it's <span class="neon-magenta">structure</span>.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 5 - FIVE PRINCIPLES
+     ============================================================ -->
+<section class="slide" data-slide="5">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">The mental model</div>
+    <div class="h-1 mt-3">Five principles for system design</div>
+  </div>
+
+  <div style="position:absolute; left:80px; top:200px; right:80px;
+              display:flex; flex-direction:column; gap:14px;">
+
+    <div class="card card-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0;">01</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 neon-blue">Goals as Gravity</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Everything orbits your goals — tasks, priorities, recommendations.
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0; background:rgba(6,182,212,0.10); border-color:var(--accent); color:var(--accent);">02</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 neon-cyan">Hooks as Senses</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Your system perceives the world (time, calendar, signals) without you asking.
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0;">03</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 neon-blue">Structure as Intelligence</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Right folders + right files = right context, automatically.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">04</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 neon-magenta">Agent as Partner</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Claude recommends, asks, drafts, seeks feedback — not just executes.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">05</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 neon-magenta">The Flywheel</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Each day's work feeds tomorrow's intelligence; skills get better over time.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 6 - DEMO: A PM MONDAY (END STATE)
+     ============================================================ -->
+<section class="slide" data-slide="6">
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">The end state · what you're building toward</div>
+    <div class="h-1 mt-3">Demo · A PM <span class="neon-magenta">Monday</span></div>
+  </div>
+
+  <!-- Timeline table -->
+  <div style="position:absolute; left:80px; right:80px; top:180px;">
+    <table class="tbl tbl-compact" style="width:100%;">
+      <thead>
+        <tr>
+          <th style="width:120px;">Time</th>
+          <th style="width:160px;">Action</th>
+          <th>What happens</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">8:30 AM</td>
+          <td><span class="mono neon-blue">/morning</span></td>
+          <td>Goals + tasks + work-graph signals <span class="mono text-dim">&rarr;</span> daily priorities</td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">9:00 AM</td>
+          <td><span class="mono neon-blue">/prep</span></td>
+          <td>Project context + work-graph calendar <span class="mono text-dim">&rarr;</span> meeting brief</td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">10:15 AM</td>
+          <td><span class="mono neon-blue">/capture</span></td>
+          <td>Meeting notes <span class="mono text-dim">&rarr;</span> action items routed to projects</td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">10:30 AM</td>
+          <td>Deep work</td>
+          <td>Claude recommends a task, drafts, asks for your feedback</td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">1–3 PM</td>
+          <td>Meetings</td>
+          <td>Repeat the <span class="mono neon-blue">/prep</span> &mdash; <span class="mono neon-blue">/capture</span> cycle</td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">3:30 PM</td>
+          <td>Check-in</td>
+          <td>Claude flags stale tasks, suggests next focus</td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">5:00 PM</td>
+          <td><span class="mono neon-magenta">/eod</span></td>
+          <td>Archive done, flag deferred, update goals</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer note -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px;">
+    <div class="card" style="padding:14px 22px; background:rgba(6,182,212,0.06); border-color:rgba(6,182,212,0.25);">
+      <div class="body-s">
+        <span class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent); margin-right:12px;">WORK IQ</span>
+        <span class="text-dim">Your work-graph MCP (Microsoft Graph / Google Workspace API / equivalent) provides calendar, chat, and email signals throughout.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ============================================================
+     SLIDE 7 - SYSTEM ARCHITECTURE
+     ============================================================ -->
+<section class="slide" data-slide="7">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:40px; right:80px;">
+    <div class="eyebrow">The whole machine · how the pieces fit</div>
+    <div class="h-1 mt-3">System <span class="neon-blue">Architecture</span></div>
+  </div>
+
+  <!-- TOP ROW: HOOKS · GOALS+TASKS · WORK IQ -->
+  <div style="position:absolute; left:60px; right:60px; top:160px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:16px;">
+
+    <!-- HOOKS (left, cyan) -->
+    <div class="card" style="border-color:rgba(6,182,212,0.30); background:rgba(6,182,212,0.04); padding:16px 18px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">HOOKS · Senses</div>
+      <div style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
+        <div class="body-s text-text"><span class="mono text-dim">›</span> Time context</div>
+        <div class="body-s text-text"><span class="mono text-dim">›</span> Stale detection</div>
+        <div class="body-s text-text"><span class="mono text-dim">›</span> Sub-agents</div>
+      </div>
+    </div>
+
+    <!-- GOALS + TASKS (centre, blue, big) -->
+    <div class="card card-glow" style="padding:16px 18px;">
+      <div class="tag">GOALS · the gravity</div>
+      <div class="h-4 mt-2 mono neon-blue">goals.md</div>
+      <div class="neon-line mt-3"></div>
+      <div class="tag mt-3" style="background:rgba(59,130,246,0.06);">TASKS</div>
+      <div class="body-s mt-2 text-text-2">
+        <span class="mono neon-blue">active</span> · <span class="mono neon-blue">backlog</span> · <span class="mono neon-blue">archive</span>
+      </div>
+    </div>
+
+    <!-- WORK IQ (right, cyan) -->
+    <div class="card" style="border-color:rgba(6,182,212,0.30); background:rgba(6,182,212,0.04); padding:16px 18px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">WORK IQ</div>
+      <div style="margin-top:10px; display:grid; grid-template-columns: 1fr 1fr; gap:4px 12px;">
+        <div class="body-s text-text">Calendar</div>
+        <div class="body-s text-text">Team chat</div>
+        <div class="body-s text-text">Email</div>
+        <div class="body-s text-text">Org graph</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIDDLE ROW: /morning · FEEDBACK · /capture -->
+  <div style="position:absolute; left:60px; right:60px; top:362px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:16px;">
+
+    <div class="card" style="padding:14px 18px; border-color:var(--border-2);">
+      <div class="body-xs mono neon-blue">/morning</div>
+      <div class="body-s mt-1 text-text">Plan the day</div>
+    </div>
+    <div class="card card-magenta-glow" style="padding:14px 18px;">
+      <div class="body-xs" style="color:var(--secondary); font-family:var(--font-headline); font-weight:600; letter-spacing:1.5px;">FEEDBACK</div>
+      <div class="body-s mt-1 text-text">You review · Claude refines</div>
+    </div>
+    <div class="card" style="padding:14px 18px; border-color:var(--border-2);">
+      <div class="body-xs mono neon-blue">/capture</div>
+      <div class="body-s mt-1 text-text">Context out</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM ROW: /prep · PROJECTS · /eod -->
+  <div style="position:absolute; left:60px; right:60px; top:454px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:16px;">
+
+    <div class="card" style="padding:14px 18px; border-color:var(--border-2);">
+      <div class="body-xs mono neon-blue">/prep</div>
+      <div class="body-s mt-1 text-text">Context in</div>
+    </div>
+    <div class="card card-glow" style="padding:14px 18px;">
+      <div class="body-xs" style="color:var(--primary); font-family:var(--font-headline); font-weight:600; letter-spacing:1.5px;">PROJECTS</div>
+      <div class="body-s mt-1 text-text">Structure · the containers</div>
+    </div>
+    <div class="card" style="padding:14px 18px; border-color:var(--border-2);">
+      <div class="body-xs mono" style="color:var(--secondary); text-shadow:0 0 10px rgba(236,72,153,0.5);">/eod</div>
+      <div class="body-s mt-1 text-text">Close the day</div>
+    </div>
+  </div>
+
+  <!-- FLYWHEEL FOOTER -->
+  <div style="position:absolute; left:60px; right:60px; bottom:48px;">
+    <div class="card card-magenta-glow" style="padding:14px 22px; text-align:center;">
+      <div class="body-s" style="color:var(--text);">
+        <span class="tag tag-magenta" style="margin-right:14px;">THE FLYWHEEL</span>
+        <span class="mono" style="color:var(--secondary);">/eod</span>
+        <span class="text-dim mono"> › </span>sleep<span class="text-dim mono"> › </span>
+        <span class="mono neon-blue">/morning</span>
+        <span class="text-dim mono"> › </span>work<span class="text-dim mono"> › </span>
+        <span class="mono neon-blue">/capture</span>
+        <span class="text-dim mono"> › </span>feedback<span class="text-dim mono"> › </span>
+        <span class="mono" style="color:var(--secondary);">/eod</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 8 - PRINCIPLE 2: HOOKS AS SENSES (introduction)
+     ============================================================ -->
+<section class="slide" data-slide="8">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Principle 02</div>
+    <div class="h-1 mt-3">Hooks as <span class="neon-cyan">Senses</span></div>
+    <div class="body-l mt-5 text-text-2" style="max-width:1080px;">
+      Hooks are shell commands that fire at key moments. They inject context automatically — and can even trigger sub-agents working in parallel.
+    </div>
+  </div>
+
+  <!-- Three hook-event cards -->
+  <div style="position:absolute; left:80px; right:80px; top:280px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px;">
+
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);" >
+        <span class="mono tag-mono">UserPromptSubmit</span>
+      </div>
+      <div class="neon-line mt-4" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">When</div>
+      <div class="body-m mt-1 text-text">Before your message is sent to Claude</div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">Use case</div>
+      <div class="body-m mt-1 text-text">Inject context — time, calendar, signals</div>
+    </div>
+
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">
+        <span class="mono tag-mono">PreToolUse</span>
+      </div>
+      <div class="neon-line mt-4" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">When</div>
+      <div class="body-m mt-1 text-text">Before Claude uses a tool</div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">Use case</div>
+      <div class="body-m mt-1 text-text">Validate actions, trigger sub-agents</div>
+    </div>
+
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">
+        <span class="mono tag-mono">PostToolUse</span>
+      </div>
+      <div class="neon-line mt-4" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">When</div>
+      <div class="body-m mt-1 text-text">After a tool completes</div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">Use case</div>
+      <div class="body-m mt-1 text-text">Process results, kick off parallel work</div>
+    </div>
+  </div>
+
+  <!-- Footer note -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px;">
+    <div class="card" style="padding:16px 22px; background:rgba(6,182,212,0.06); border-color:rgba(6,182,212,0.25); text-align:center;">
+      <div class="body-m text-text">
+        <span class="semibold neon-cyan">Hooks can trigger sub-agents</span>
+        <span class="text-dim"> — while you work on task A, a sub-agent completes task B in the background.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 9 - WHAT YOU'LL BUILD TODAY
+     ============================================================ -->
+<section class="slide" data-slide="9">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">The next ~2 hours · agenda</div>
+    <div class="h-1 mt-3">What you'll <span class="neon-blue">build</span> today</div>
+  </div>
+
+  <!-- Table -->
+  <div style="position:absolute; left:80px; right:80px; top:200px;">
+    <table class="tbl tbl-compact" style="width:100%;">
+      <thead>
+        <tr>
+          <th style="width:88px;">Part</th>
+          <th style="width:200px;">What</th>
+          <th>You Build</th>
+          <th style="width:88px;">Time</th>
+          <th style="width:220px;">Principle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">Part 2</td>
+          <td class="text-text">The Spine</td>
+          <td><span class="mono neon-blue">goals.md</span> + tasks + projects</td>
+          <td class="mono text-dim">25 min</td>
+          <td><span class="neon-blue semibold">Goals as Gravity</span></td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">Part 3</td>
+          <td class="text-text">Hooks &amp; Signals</td>
+          <td>Time hook + Work IQ signals</td>
+          <td class="mono text-dim">20 min</td>
+          <td><span class="neon-cyan semibold">Hooks as Senses</span></td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">Part 4</td>
+          <td class="text-text">Morning Brief</td>
+          <td><span class="mono neon-blue">/morning</span> skill + Work IQ</td>
+          <td class="mono text-dim">25 min</td>
+          <td><span class="neon-blue semibold">Skills Compose</span></td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">Part 5</td>
+          <td class="text-text">Prep &amp; Capture</td>
+          <td><span class="mono neon-blue">/prep</span> + <span class="mono neon-blue">/capture</span> + Work IQ</td>
+          <td class="mono text-dim">20 min</td>
+          <td><span class="neon-blue semibold">Structure = Intelligence</span></td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">Part 6</td>
+          <td class="text-text">Proactive Partner</td>
+          <td>Proactive feedback behavior</td>
+          <td class="mono text-dim">20 min</td>
+          <td><span class="neon-magenta semibold">Agent as Partner</span></td>
+        </tr>
+        <tr>
+          <td class="mono semibold" style="color:var(--text);">Part 7</td>
+          <td class="text-text">The Flywheel</td>
+          <td><span class="mono" style="color:var(--secondary);">/eod</span> + full walkthrough</td>
+          <td class="mono text-dim">15 min</td>
+          <td><span class="neon-magenta semibold">The Flywheel</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 10 - BEFORE WE START
+     ============================================================ -->
+<section class="slide" data-slide="10">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Prerequisites check</div>
+    <div class="h-1 mt-3">Before we <span class="neon-blue">start</span></div>
+  </div>
+
+  <!-- Left: Prerequisites list -->
+  <div style="position:absolute; left:80px; top:200px; width:680px;">
+    <div class="card card-glow" style="padding:24px 28px;">
+      <div class="tag">Prerequisites</div>
+      <div class="mt-4 flex flex-col gap-2">
+        <div class="bullet body-s text-text">Claude Code installed and working</div>
+        <div class="bullet body-s text-text">Work IQ MCP server configured <span class="text-dim">(work-graph MCP — Microsoft 365 / Google Workspace)</span></div>
+        <div class="bullet body-s text-text">Completed Sessions 1 and 2 <span class="text-dim">(or equivalent experience)</span></div>
+        <div class="bullet body-s text-text">Have 2–3 real quarterly goals in mind</div>
+        <div class="bullet body-s text-text">Know your active projects and current tasks</div>
+        <div class="bullet body-s text-text">~2 hours of focused time available</div>
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow mt-4" style="padding:16px 22px;">
+      <div class="body-m text-text italic">
+        Everything you build today <span class="semibold neon-magenta">IS</span> your starting workOS.
+        <span class="text-dim">Not a throwaway exercise — real goals, real tasks, real system.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Prompt convention -->
+  <div style="position:absolute; right:80px; top:200px; width:420px;">
+    <div class="card" style="padding:20px 22px; border-color:var(--border-2);">
+      <div class="body-xs uppercase tracking-wide text-dim semibold">Prompt convention</div>
+      <div class="body-s mt-2 text-text-2">Copy everything in this format:</div>
+
+      <div class="code-block warn mt-4" style="color:var(--gold); background:#000; border-color:rgba(245,158,11,0.20);">
+        What should I focus on today?
+      </div>
+
+      <div class="neon-divider mt-5"></div>
+      <div class="body-xs mt-4 text-text-2 italic">
+        <span class="semibold" style="color:var(--gold);">Black box + orange text</span> = copy-paste directly into Claude. If it's highlighted like this, it's meant to be used as-is.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 11 - FROM HERE: SELF-GUIDED EXPLORATION
+     ============================================================ -->
+<section class="slide" data-slide="11">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">How the next 2 hours work</div>
+    <div class="h-1 mt-3">From here · <span class="neon-blue">self-guided exploration</span></div>
+    <div class="body-l mt-5 text-text-2" style="max-width:1080px;">
+      The exercises that follow are designed for you to work through at your own pace. Build each piece, test it, make it yours.
+    </div>
+  </div>
+
+  <!-- Four numbered rows -->
+  <div style="position:absolute; left:80px; right:80px; top:280px;
+              display:flex; flex-direction:column; gap:14px;">
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="flex-shrink:0;">01</div>
+      <div style="width:300px; flex-shrink:0;">
+        <div class="h-4">Work at your own pace</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Each exercise builds on the last — go in order, but take your time.
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="flex-shrink:0;">02</div>
+      <div style="width:300px; flex-shrink:0;">
+        <div class="h-4">In-person trainers are here</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Raise your hand if you get stuck — we're circulating to help.
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="flex-shrink:0;">03</div>
+      <div style="width:300px; flex-shrink:0;">
+        <div class="h-4">Use real data</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Your real goals, real projects, real meetings — not toy examples.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:16px 22px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">04</div>
+      <div style="width:300px; flex-shrink:0;">
+        <div class="h-4 neon-magenta">We regroup in the last 15 minutes</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Share what we built and close the session together.
+      </div>
+    </div>
+  </div>
+
+  <!-- Tagline -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px; text-align:center;">
+    <div class="body-l italic" style="color:var(--text);">
+      Everything you build in these exercises <span class="semibold neon-magenta">IS</span> your starting workOS.
+      <span class="text-dim">Take it home.</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 12 - PRINCIPLE 1: GOALS AS GRAVITY
+     ============================================================ -->
+<section class="slide" data-slide="12">
+  <div class="mesh-center"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Principle 01</div>
+    <div class="h-1 mt-3">Goals as <span class="neon-blue">Gravity</span></div>
+  </div>
+
+  <!-- Orbital diagram -->
+  <div style="position:absolute; left:0; right:0; top:200px; height:340px;">
+
+    <!-- Orbital ring (visual) -->
+    <div style="position:absolute; left:50%; top:50%; transform:translate(-50%, -50%);
+                width:520px; height:300px; border:1px dashed var(--border-2); border-radius:50%; opacity:0.6;"></div>
+    <div style="position:absolute; left:50%; top:50%; transform:translate(-50%, -50%);
+                width:680px; height:380px; border:1px dashed var(--border); border-radius:50%; opacity:0.4;"></div>
+
+    <!-- Centre: goals.md -->
+    <div style="position:absolute; left:50%; top:50%; transform:translate(-50%, -50%);
+                width:240px; height:240px; border-radius:50%;
+                background:radial-gradient(circle, rgba(59,130,246,0.20) 0%, rgba(59,130,246,0.05) 60%, transparent 100%);
+                border:2px solid var(--primary); display:flex; flex-direction:column; align-items:center; justify-content:center;
+                box-shadow: 0 0 40px var(--glow-strong), 0 0 80px var(--glow); animation: glow 4s ease-in-out infinite;">
+      <div class="body-xs text-dim uppercase tracking-wide">the centre</div>
+      <div class="h-2 neon-blue mt-2 mono">goals.md</div>
+    </div>
+
+    <!-- Orbital labels (4 around) -->
+    <!-- Tasks (top-left) -->
+    <div style="position:absolute; left:280px; top:30px;">
+      <div class="card" style="padding:12px 20px; border-color:var(--border-2); background:var(--surface);">
+        <div class="h-4 neon-blue">Tasks</div>
+        <div class="body-xs mt-1 text-dim">What you act on</div>
+      </div>
+    </div>
+
+    <!-- Projects (top-right) -->
+    <div style="position:absolute; right:280px; top:30px;">
+      <div class="card" style="padding:12px 20px; border-color:var(--border-2); background:var(--surface);">
+        <div class="h-4 neon-blue">Projects</div>
+        <div class="body-xs mt-1 text-dim">Where work lives</div>
+      </div>
+    </div>
+
+    <!-- Skills (bottom-left) -->
+    <div style="position:absolute; left:280px; bottom:30px;">
+      <div class="card" style="padding:12px 20px; border-color:var(--border-2); background:var(--surface);">
+        <div class="h-4 neon-blue">Skills</div>
+        <div class="body-xs mt-1 text-dim">How Claude acts</div>
+      </div>
+    </div>
+
+    <!-- Priorities (bottom-right) -->
+    <div style="position:absolute; right:280px; bottom:30px;">
+      <div class="card" style="padding:12px 20px; border-color:var(--border-2); background:var(--surface);">
+        <div class="h-4 neon-blue">Priorities</div>
+        <div class="body-xs mt-1 text-dim">What rises to the top</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px;">
+    <div class="card card-glow" style="padding:18px 28px; text-align:center;">
+      <div class="body-l text-text">
+        Your goals determine what Claude <span class="semibold neon-blue">recommends</span>, <span class="semibold neon-blue">prioritizes</span>, and <span class="semibold neon-blue">flags</span>.
+      </div>
+      <div class="body-s mt-2 text-dim italic">
+        Without <span class="mono">goals.md</span>, Claude is intelligent but aimless.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 13 - THE 3-FILE TASK SYSTEM
+     ============================================================ -->
+<section class="slide" data-slide="13">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Tasks · the working memory</div>
+    <div class="h-1 mt-3">The 3-file <span class="neon-blue">task system</span></div>
+  </div>
+
+  <!-- Three task cards -->
+  <div style="position:absolute; left:80px; right:80px; top:220px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px;">
+
+    <div class="card card-glow" style="padding:28px;">
+      <div class="h-3 mono neon-blue">active.md</div>
+      <div class="tag mt-3">This Week</div>
+      <div class="neon-line mt-5"></div>
+      <div class="body-m mt-5 text-text">5–10 tasks max.</div>
+      <div class="body-m mt-2 text-dim">What you're doing <span class="semibold text-text">NOW</span>.</div>
+    </div>
+
+    <div class="card card-glow" style="padding:28px;">
+      <div class="h-3 mono neon-blue">backlog.md</div>
+      <div class="tag mt-3">Queued</div>
+      <div class="neon-line mt-5"></div>
+      <div class="body-m mt-5 text-text">Prioritized, not infinite.</div>
+      <div class="body-m mt-2 text-dim">What's coming <span class="semibold text-text">NEXT</span>.</div>
+    </div>
+
+    <div class="card card-glow" style="padding:28px;">
+      <div class="h-3 mono neon-blue">archive/</div>
+      <div class="tag mt-3">Completed</div>
+      <div class="neon-line mt-5"></div>
+      <div class="body-m mt-5 text-text">By date. The system's memory.</div>
+      <div class="body-m mt-2 text-dim">What's <span class="semibold text-text">DONE</span>.</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:60px;">
+    <div class="card card-magenta-glow" style="padding:18px 28px; text-align:center;">
+      <div class="body-l text-text">
+        This is <span class="semibold neon-magenta">NOT</span> a project management replacement.
+        <span class="text-dim">It's a context source for Claude.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 14 - PROJECT FOLDERS AS CONTEXT CONTAINERS
+     ============================================================ -->
+<section class="slide" data-slide="14">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Projects · the containers</div>
+    <div class="h-1 mt-3">Project folders as <span class="neon-blue">context containers</span></div>
+  </div>
+
+  <!-- Left: Folder tree -->
+  <div style="position:absolute; left:80px; top:200px; width:540px;">
+    <div class="card" style="padding:24px 28px; border-color:var(--border-2);">
+      <div class="code-header">filesystem · ~/.claude/projects/</div>
+      <pre class="code-block" style="margin:0; white-space:pre; padding:18px 20px;">
+<span class="mono neon-blue">~/.claude/projects/</span>
+├── <span class="mono" style="color:var(--text);">mobile-onboarding/</span>
+│   ├── <span class="mono text-dim">brief.md</span>
+│   ├── <span class="mono text-dim">decisions.md</span>
+│   └── <span class="mono text-dim">notes/</span>
+├── <span class="mono" style="color:var(--text);">data-pipeline/</span>
+│   ├── <span class="mono text-dim">brief.md</span>
+│   ├── <span class="mono text-dim">decisions.md</span>
+│   └── <span class="mono text-dim">notes/</span>
+└── <span class="mono" style="color:var(--text);">compete-q2/</span>
+    ├── <span class="mono text-dim">brief.md</span>
+    ├── <span class="mono text-dim">decisions.md</span>
+    └── <span class="mono text-dim">notes/</span></pre>
+    </div>
+  </div>
+
+  <!-- Right: File type cards -->
+  <div style="position:absolute; right:80px; top:200px; width:540px;
+              display:flex; flex-direction:column; gap:14px;">
+
+    <div class="card card-glow" style="padding:18px 22px;">
+      <div class="h-4 mono neon-blue">brief.md</div>
+      <div class="body-s mt-2 text-text">1-page project summary</div>
+      <div class="body-xs mt-1 text-dim">Goal, scope, team, timeline</div>
+    </div>
+
+    <div class="card card-glow" style="padding:18px 22px;">
+      <div class="h-4 mono neon-blue">decisions.md</div>
+      <div class="body-s mt-2 text-text">Decision log with dates</div>
+      <div class="body-xs mt-1 text-dim">What was decided + why</div>
+    </div>
+
+    <div class="card card-glow" style="padding:18px 22px;">
+      <div class="h-4 mono neon-blue">notes/</div>
+      <div class="body-s mt-2 text-text">Meeting notes &amp; research</div>
+      <div class="body-xs mt-1 text-dim">Chronological history</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:40px;">
+    <div class="body-s text-dim italic text-center">
+      One folder per project. Three predictable files. Claude knows exactly where to look.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 15 - EXERCISE 1: BUILD YOUR WORKSPACE SPINE
+     ============================================================ -->
+<section class="slide" data-slide="15">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Header -->
+  <div style="position:absolute; left:80px; top:48px; right:80px; display:flex; align-items:flex-end; justify-content:space-between;">
+    <div>
+      <div class="eyebrow" style="color:var(--secondary);">Exercise 1</div>
+      <div class="h-1 mt-3">Build your <span class="neon-blue">workspace spine</span></div>
+    </div>
+    <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary); font-size:13px; padding:6px 16px;">
+      15 min
+    </div>
+  </div>
+
+  <!-- Left: bullets -->
+  <div style="position:absolute; left:80px; top:220px; width:540px;">
+    <div class="card card-glow" style="padding:28px;">
+      <div class="tag">You'll build</div>
+      <div class="mt-5 flex flex-col gap-3">
+        <div class="bullet body-m text-text">Create <span class="mono neon-blue">goals.md</span> with your real quarterly OKRs</div>
+        <div class="bullet body-m text-text">Set up task system: <span class="mono neon-blue">active.md</span>, <span class="mono neon-blue">backlog.md</span>, <span class="mono neon-blue">archive/</span></div>
+        <div class="bullet body-m text-text">Create project folders with <span class="mono neon-blue">brief.md</span> each</div>
+        <div class="bullet body-m text-text">Verify: ask Claude what to focus on today</div>
+      </div>
+      <div class="neon-line mt-6"></div>
+      <div class="body-xs mt-3 text-dim italic">
+        Use your <span class="semibold text-text">real</span> quarterly goals. This becomes your starting workOS.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: prompt -->
+  <div style="position:absolute; right:80px; top:220px; width:540px;">
+    <div class="card" style="padding:18px 20px; border-color:var(--border-2);">
+      <div class="code-header" style="margin-bottom:8px;">paste into Claude</div>
+      <div class="code-block warn" style="background:#000; color:var(--gold); padding:18px 20px; white-space:pre-wrap; line-height:1.55; border-color:rgba(245,158,11,0.25);">Create a file at ~/.claude/goals.md with my
+top priorities. Here are my goals for this
+quarter:
+
+1. [Your Goal 1]
+2. [Your Goal 2]
+3. [Your Goal 3]
+
+For each goal, include: description, key
+results, current status, related projects.
+Ask me any clarifying questions as required.
+
+Set up my task management system...</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 16 - PRINCIPLE 2: HOOKS AS SENSES (in-session re-intro)
+     ============================================================ -->
+<section class="slide" data-slide="16">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Principle 02 · now it's your turn</div>
+    <div class="h-1 mt-3">Hooks as <span class="neon-cyan">Senses</span></div>
+    <div class="body-l mt-5 text-text-2" style="max-width:1080px;">
+      Hooks are shell commands that fire at key moments. They inject context automatically — and can even trigger sub-agents working in parallel.
+    </div>
+  </div>
+
+  <!-- Three hook-event cards -->
+  <div style="position:absolute; left:80px; right:80px; top:280px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px;">
+
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">
+        <span class="mono tag-mono">UserPromptSubmit</span>
+      </div>
+      <div class="neon-line mt-4" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">When</div>
+      <div class="body-m mt-1 text-text">Before your message is sent to Claude</div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">Use case</div>
+      <div class="body-m mt-1 text-text">Inject context — time, calendar, signals</div>
+    </div>
+
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">
+        <span class="mono tag-mono">PreToolUse</span>
+      </div>
+      <div class="neon-line mt-4" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">When</div>
+      <div class="body-m mt-1 text-text">Before Claude uses a tool</div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">Use case</div>
+      <div class="body-m mt-1 text-text">Validate actions, trigger sub-agents</div>
+    </div>
+
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">
+        <span class="mono tag-mono">PostToolUse</span>
+      </div>
+      <div class="neon-line mt-4" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">When</div>
+      <div class="body-m mt-1 text-text">After a tool completes</div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">Use case</div>
+      <div class="body-m mt-1 text-text">Process results, kick off parallel work</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px;">
+    <div class="card" style="padding:16px 22px; background:rgba(6,182,212,0.06); border-color:rgba(6,182,212,0.25); text-align:center;">
+      <div class="body-m text-text">
+        <span class="semibold neon-cyan">Hooks can trigger sub-agents</span>
+        <span class="text-dim"> — while you work on task A, a sub-agent completes task B in the background.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 17 - THE TIME HOOK — MORE THAN JUST A CLOCK
+     ============================================================ -->
+<section class="slide" data-slide="17">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">The time hook · more than just a clock</div>
+    <div class="h-2 mt-3">Time awareness reshapes <span class="neon-cyan">every conversation</span></div>
+  </div>
+
+  <!-- BEFORE / AFTER comparison -->
+  <div style="position:absolute; left:80px; right:80px; top:170px;
+              display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+
+    <div class="card" style="padding:20px 22px; border-color:var(--border-2);">
+      <div class="tag tag-warn">Before · no hook</div>
+      <div class="neon-divider mt-4"></div>
+      <div class="body-s mt-4">
+        <span class="text-dim semibold mono">You:</span>
+        <span class="text-text"> "It's Monday, Jan 15. What should I do?"</span>
+      </div>
+      <div class="body-s mt-2">
+        <span class="text-dim semibold mono">Claude:</span>
+        <span class="text-dim italic"> (no time awareness — you tell it every time)</span>
+      </div>
+    </div>
+
+    <div class="card" style="padding:20px 22px; border-color:rgba(6,182,212,0.30); background:rgba(6,182,212,0.04);">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">After · time hook active</div>
+      <div class="neon-divider mt-4"></div>
+      <div class="body-s mt-4">
+        <span class="text-dim semibold mono">You:</span>
+        <span class="text-text"> "What should I focus on?"</span>
+      </div>
+      <div class="body-s mt-2">
+        <span class="text-dim semibold mono">Claude:</span>
+        <span class="text-text italic"> (knows it's Monday PM — adjusts priorities)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- What time awareness enables -->
+  <div style="position:absolute; left:80px; right:80px; top:360px;">
+    <div class="eyebrow">What time awareness enables</div>
+    <div class="mt-4 flex flex-col gap-2">
+      <div class="card" style="padding:10px 18px; border-color:var(--border); display:grid; grid-template-columns: 240px 1fr; gap:20px; align-items:center;">
+        <div class="body-m semibold neon-cyan">Monday morning</div>
+        <div class="body-s text-text-2">Suggest weekly planning, review last week's carry-overs</div>
+      </div>
+      <div class="card" style="padding:10px 18px; border-color:var(--border); display:grid; grid-template-columns: 240px 1fr; gap:20px; align-items:center;">
+        <div class="body-m semibold neon-cyan">Before a meeting</div>
+        <div class="body-s text-text-2">Auto-trigger <span class="mono neon-blue">/prep</span> for upcoming calendar event</div>
+      </div>
+      <div class="card" style="padding:10px 18px; border-color:var(--border); display:grid; grid-template-columns: 240px 1fr; gap:20px; align-items:center;">
+        <div class="body-m semibold neon-cyan">Friday afternoon</div>
+        <div class="body-s text-text-2">Prompt end-of-week reflection, flag unfinished items</div>
+      </div>
+      <div class="card" style="padding:10px 18px; border-color:var(--border); display:grid; grid-template-columns: 240px 1fr; gap:20px; align-items:center;">
+        <div class="body-m semibold neon-cyan">Task stale 3+ days</div>
+        <div class="body-s text-text-2">Proactively ask: still relevant? blocked? need help?</div>
+      </div>
+      <div class="card" style="padding:10px 18px; border-color:var(--border); display:grid; grid-template-columns: 240px 1fr; gap:20px; align-items:center;">
+        <div class="body-m semibold neon-cyan">Deadline tomorrow</div>
+        <div class="body-s text-text-2">Escalate priority, offer to help clear blockers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 18 - WORK IQ — YOUR WORK-GRAPH SIGNAL
+     ============================================================ -->
+<section class="slide" data-slide="18">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Work IQ · your work-graph signal</div>
+    <div class="h-2 mt-3">Connect Claude to your <span class="neon-cyan">real work context</span></div>
+    <div class="body-m mt-3 text-text-2" style="max-width:1080px;">
+      Work IQ connects Claude to your real work context via your <span class="semibold text-text">work-graph</span>
+      <span class="text-dim">(Microsoft Graph for M365; similar APIs for Google Workspace).</span>
+    </div>
+  </div>
+
+  <!-- Four signal cards -->
+  <div style="position:absolute; left:80px; right:80px; top:240px;
+              display:grid; grid-template-columns: repeat(4, 1fr); gap:14px;">
+
+    <div class="card" style="padding:18px; border-color:rgba(6,182,212,0.25); background:rgba(6,182,212,0.04);">
+      <div class="h-4 neon-cyan">Calendar</div>
+      <div class="neon-line mt-3" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide semibold">Provides</div>
+      <div class="body-s mt-1 text-text">Today's meetings, attendees, response status, time blocks</div>
+      <div class="body-xs mt-3 text-dim uppercase tracking-wide semibold">Enables</div>
+      <div class="body-s mt-1 text-text">Auto-trigger <span class="mono neon-blue">/prep</span> before each meeting</div>
+    </div>
+
+    <div class="card" style="padding:18px; border-color:rgba(6,182,212,0.25); background:rgba(6,182,212,0.04);">
+      <div class="h-4 neon-cyan">Team chat</div>
+      <div class="body-xs text-dim italic">Teams / Slack</div>
+      <div class="neon-line mt-3" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide semibold">Provides</div>
+      <div class="body-s mt-1 text-text">Channel messages, DMs, group conversations, mentions</div>
+      <div class="body-xs mt-3 text-dim uppercase tracking-wide semibold">Enables</div>
+      <div class="body-s mt-1 text-text">Surface key signals in <span class="mono neon-blue">/morning</span> brief</div>
+    </div>
+
+    <div class="card" style="padding:18px; border-color:rgba(6,182,212,0.25); background:rgba(6,182,212,0.04);">
+      <div class="h-4 neon-cyan">Email</div>
+      <div class="neon-line mt-3" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide semibold">Provides</div>
+      <div class="body-s mt-1 text-text">Important threads, flags, attachments, follow-ups</div>
+      <div class="body-xs mt-3 text-dim uppercase tracking-wide semibold">Enables</div>
+      <div class="body-s mt-1 text-text">Route signals to relevant projects</div>
+    </div>
+
+    <div class="card" style="padding:18px; border-color:rgba(6,182,212,0.25); background:rgba(6,182,212,0.04);">
+      <div class="h-4 neon-cyan">Org Graph</div>
+      <div class="neon-line mt-3" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide semibold">Provides</div>
+      <div class="body-s mt-1 text-text">Manager chain, team structure, stakeholders</div>
+      <div class="body-xs mt-3 text-dim uppercase tracking-wide semibold">Enables</div>
+      <div class="body-s mt-1 text-text">Personalize meeting prep by audience</div>
+    </div>
+  </div>
+
+  <!-- Example prompt -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px;">
+    <div class="code-block" style="padding:14px 22px; background:#000; color:var(--gold); border-color:rgba(245,158,11,0.25);">
+      <span style="font-style:italic;">"What meetings do I have today, Feb 26? Include times, attendees, and response status."</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 19 - ADVANCED HOOK PATTERNS (REFERENCE)
+     ============================================================ -->
+<section class="slide" data-slide="19">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Reference · don't build these now</div>
+    <div class="h-1 mt-3">Advanced <span class="neon-cyan">hook patterns</span></div>
+    <div class="body-m mt-3 text-text-2">
+      Don't build these now — understand the possibilities.
+    </div>
+  </div>
+
+  <!-- Three pattern cards -->
+  <div style="position:absolute; left:80px; right:80px; top:240px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px;">
+
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">Pattern 01</div>
+      <div class="h-3 mt-3">Calendar Hook</div>
+      <div class="neon-line mt-4" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-m mt-5 text-text">Auto-fetch today's meetings via Work IQ.</div>
+      <div class="neon-divider mt-5"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">Mechanic</div>
+      <div class="body-s mt-2 text-text-2 mono">UserPromptSubmit:</div>
+      <div class="body-s mt-1 text-text-2">call Work IQ for calendar on startup</div>
+    </div>
+
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">Pattern 02</div>
+      <div class="h-3 mt-3">Sub-Agent Hook</div>
+      <div class="neon-line mt-4" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-m mt-5 text-text">Trigger background work automatically.</div>
+      <div class="neon-divider mt-5"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">Mechanic</div>
+      <div class="body-s mt-2 text-text-2 mono">PostToolUse:</div>
+      <div class="body-s mt-1 text-text-2">when a draft completes, kick off analysis</div>
+    </div>
+
+    <div class="card card-glow" style="padding:24px;">
+      <div class="tag" style="background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">Pattern 03</div>
+      <div class="h-3 mt-3">Stale Task Hook</div>
+      <div class="neon-line mt-4" style="background:var(--accent); box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+      <div class="body-m mt-5 text-text">Flag tasks that haven't moved in 3+ days.</div>
+      <div class="neon-divider mt-5"></div>
+      <div class="body-xs mt-4 text-dim uppercase tracking-wide">Mechanic</div>
+      <div class="body-s mt-2 text-text-2 mono">UserPromptSubmit:</div>
+      <div class="body-s mt-1 text-text-2">check <span class="mono neon-blue">active.md</span> dates and surface warnings</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 20 - EXERCISE 2: TIME HOOK + WORK IQ
+     ============================================================ -->
+<section class="slide" data-slide="20">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Header -->
+  <div style="position:absolute; left:80px; top:48px; right:80px; display:flex; align-items:flex-end; justify-content:space-between;">
+    <div>
+      <div class="eyebrow" style="color:var(--secondary);">Exercise 2</div>
+      <div class="h-1 mt-3">Create your <span class="neon-cyan">time hook</span> + explore Work IQ</div>
+    </div>
+    <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary); font-size:13px; padding:6px 16px;">
+      10 min
+    </div>
+  </div>
+
+  <!-- Left: bullets -->
+  <div style="position:absolute; left:80px; top:220px; width:540px;">
+    <div class="card card-glow" style="padding:28px;">
+      <div class="tag">You'll build</div>
+      <div class="mt-5 flex flex-col gap-3">
+        <div class="bullet body-m text-text">Add <span class="mono neon-blue">UserPromptSubmit</span> hook to <span class="mono neon-blue">settings.json</span></div>
+        <div class="bullet body-m text-text">Hook injects date, time, and day of week</div>
+        <div class="bullet body-m text-text">Test: ask Claude <span class="italic">"What time is it?"</span></div>
+        <div class="bullet body-m text-text">Bonus: try a Work IQ query for your calendar</div>
+      </div>
+      <div class="neon-line mt-6"></div>
+      <div class="body-xs mt-3 text-dim italic">
+        After this, every conversation has time awareness — for free.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: prompt -->
+  <div style="position:absolute; right:80px; top:220px; width:540px;">
+    <div class="card" style="padding:18px 20px; border-color:var(--border-2);">
+      <div class="code-header" style="margin-bottom:8px;">paste into Claude</div>
+      <div class="code-block warn" style="background:#000; color:var(--gold); padding:18px 20px; white-space:pre-wrap; line-height:1.55; border-color:rgba(245,158,11,0.25);">Add a UserPromptSubmit hook to my
+~/.claude/settings.json that injects the
+current date, time, and day of week into
+every conversation.
+
+Use a simple shell command — no external
+dependencies. Keep it under 1 second.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 21 - PRINCIPLE 3: SKILLS COMPOSE INTO WORKFLOWS
+     ============================================================ -->
+<section class="slide" data-slide="21">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Principle 03</div>
+    <div class="h-1 mt-3">Skills compose into <span class="neon-blue">workflows</span></div>
+  </div>
+
+  <!-- Diagram: 4 inputs > /morning > output -->
+  <div style="position:absolute; left:60px; right:60px; top:200px; display:grid;
+              grid-template-columns: 240px 60px 280px 60px 1fr; gap:8px; align-items:center;">
+
+    <!-- INPUTS column -->
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div class="card" style="padding:12px 16px; border-color:var(--border-2);">
+        <div class="body-xs text-dim uppercase tracking-wide">Source</div>
+        <div class="body-m mt-1 mono neon-blue">goals.md</div>
+      </div>
+      <div class="card" style="padding:12px 16px; border-color:var(--border-2);">
+        <div class="body-xs text-dim uppercase tracking-wide">Source</div>
+        <div class="body-m mt-1 mono neon-blue">active.md</div>
+      </div>
+      <div class="card" style="padding:12px 16px; border-color:rgba(6,182,212,0.25); background:rgba(6,182,212,0.04);">
+        <div class="body-xs text-dim uppercase tracking-wide">Sense</div>
+        <div class="body-m mt-1 neon-cyan">Time Hook</div>
+      </div>
+      <div class="card" style="padding:12px 16px; border-color:rgba(6,182,212,0.25); background:rgba(6,182,212,0.04);">
+        <div class="body-xs text-dim uppercase tracking-wide">Sense</div>
+        <div class="body-m mt-1 neon-cyan">Work IQ</div>
+      </div>
+    </div>
+
+    <!-- Arrow 1 -->
+    <div style="display:flex; justify-content:center; align-items:center;">
+      <div class="arrow-h arrow-h-glow" style="width:50px;"></div>
+    </div>
+
+    <!-- /morning skill (centre) -->
+    <div class="card card-magenta-glow" style="padding:32px 18px; text-align:center;">
+      <div class="tag tag-magenta">Skill</div>
+      <div class="h-2 mt-4 mono" style="color:var(--secondary); text-shadow:0 0 14px rgba(236,72,153,0.6);">/morning</div>
+      <div class="neon-line mt-5" style="background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong); margin:20px auto 0;"></div>
+      <div class="body-s mt-4 text-text-2">Orchestrate · reason · synthesize</div>
+    </div>
+
+    <!-- Arrow 2 -->
+    <div style="display:flex; justify-content:center; align-items:center;">
+      <div class="arrow-h arrow-h-glow" style="width:50px;"></div>
+    </div>
+
+    <!-- OUTPUT (right) -->
+    <div class="card card-glow" style="padding:18px 20px;">
+      <div class="tag">Output</div>
+      <div class="h-4 mt-2">Prioritized Brief</div>
+      <div class="neon-line mt-3"></div>
+      <div class="mt-4 flex flex-col gap-2">
+        <div class="bullet body-s text-text-2" style="margin-bottom:0;">Top 3 priorities <span class="text-dim">(goal-aligned)</span></div>
+        <div class="bullet body-s text-text-2" style="margin-bottom:0;">Today's meetings <span class="text-dim">(from Work IQ)</span></div>
+        <div class="bullet body-s text-text-2" style="margin-bottom:0;">Flags &amp; blockers</div>
+        <div class="bullet body-s text-text-2" style="margin-bottom:0;">Quick wins for gaps</div>
+        <div class="bullet body-s text-text-2" style="margin-bottom:0;">Recommended focus blocks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px;">
+    <div class="card card-glow" style="padding:16px 28px; text-align:center;">
+      <div class="body-l text-text">
+        A skill is an <span class="semibold neon-blue">orchestrator</span>: it reads from your spine + signals, applies reasoning, and produces actionable output.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 22 - ANATOMY OF A WORKFLOW SKILL
+     ============================================================ -->
+<section class="slide" data-slide="22">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">How a skill works · 5 steps</div>
+    <div class="h-1 mt-3">Anatomy of a <span class="neon-blue">workflow skill</span></div>
+  </div>
+
+  <!-- 5 numbered rows -->
+  <div style="position:absolute; left:80px; right:80px; top:200px; display:flex; flex-direction:column; gap:12px;">
+
+    <div class="card card-glow" style="padding:16px 22px; display:grid; grid-template-columns: 56px 200px 1fr; gap:20px; align-items:center;">
+      <div class="number-badge" style="width:44px; height:44px; font-size:16px;">01</div>
+      <div class="h-4">Arguments</div>
+      <div class="body-m text-text-2"><span class="mono neon-blue">$ARGUMENTS</span> — user input passed to the skill</div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:grid; grid-template-columns: 56px 200px 1fr; gap:20px; align-items:center;">
+      <div class="number-badge" style="width:44px; height:44px; font-size:16px;">02</div>
+      <div class="h-4">Read Sources</div>
+      <div class="body-m text-text-2">Load goals, tasks, project files, Work IQ signals</div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:grid; grid-template-columns: 56px 200px 1fr; gap:20px; align-items:center;">
+      <div class="number-badge" style="width:44px; height:44px; font-size:16px;">03</div>
+      <div class="h-4">Analyze</div>
+      <div class="body-m text-text-2">Apply reasoning: priority, urgency, goal alignment</div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:grid; grid-template-columns: 56px 200px 1fr; gap:20px; align-items:center;">
+      <div class="number-badge" style="width:44px; height:44px; font-size:16px;">04</div>
+      <div class="h-4">Generate Output</div>
+      <div class="body-m text-text-2">Structured format: headers, bullets, callouts</div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:16px 22px; display:grid; grid-template-columns: 56px 200px 1fr; gap:20px; align-items:center;">
+      <div class="number-badge" style="width:44px; height:44px; font-size:16px; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">05</div>
+      <div class="h-4 neon-magenta">Invite Action</div>
+      <div class="body-m text-text-2"><span class="italic">"Want me to dive deeper?"</span> — proactive next step</div>
+    </div>
+  </div>
+
+  <!-- Footer · prompt to build -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px;">
+    <div class="code-block warn" style="padding:14px 22px; background:#000; color:var(--gold); border-color:rgba(245,158,11,0.25); text-align:center;">
+      Create a skill called 'morning'
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 23 - SAME CLAUDE. DIFFERENT STRUCTURE. DIFFERENT OUTPUT.
+     ============================================================ -->
+<section class="slide" data-slide="23">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">A/B · same model, different system</div>
+    <div class="h-1 mt-3">Same Claude. Different <span class="neon-blue">Structure</span>. Different <span class="neon-magenta">Output</span>.</div>
+    <div class="body-xs mt-3 text-dim italic">Illustrative comparison — not for copying</div>
+  </div>
+
+  <!-- WITHOUT Structure -->
+  <div style="position:absolute; left:80px; top:220px; width:540px;">
+    <div class="card" style="padding:24px; border-color:var(--border-2); height:380px;">
+      <div class="tag tag-warn">WITHOUT STRUCTURE</div>
+      <div class="quote-block mt-5" style="border-left-color:var(--gold); box-shadow:-1px 0 8px rgba(245,158,11,0.18);">
+        "Look at my tasks and tell me what to do"
+      </div>
+
+      <div class="mt-6 flex flex-col gap-2">
+        <div class="bullet" style="margin-bottom:4px;">
+          <div class="body-s text-text-2">No goals context — can't prioritize</div>
+        </div>
+        <div class="bullet" style="margin-bottom:4px;">
+          <div class="body-s text-text-2">No time awareness — can't schedule</div>
+        </div>
+        <div class="bullet" style="margin-bottom:4px;">
+          <div class="body-s text-text-2">No calendar — misses meetings</div>
+        </div>
+        <div class="bullet" style="margin-bottom:4px;">
+          <div class="body-s text-text-2">Starts from zero every time</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WITH Structure -->
+  <div style="position:absolute; right:80px; top:220px; width:540px;">
+    <div class="card card-glow" style="padding:24px; height:380px;">
+      <div class="tag">WITH STRUCTURE · GOALS + HOOKS + WORK IQ</div>
+      <div class="quote-block mt-5" style="border-left-color:var(--primary); box-shadow:-1px 0 8px var(--glow);">
+        "What should I focus on today?"
+      </div>
+
+      <div class="mt-6 flex flex-col gap-2">
+        <div class="bullet" style="margin-bottom:4px;">
+          <div class="body-s text-text-2">Reads <span class="mono neon-blue">goals.md</span> — aligns priorities to OKRs</div>
+        </div>
+        <div class="bullet" style="margin-bottom:4px;">
+          <div class="body-s text-text-2">Knows the time — suggests focus blocks</div>
+        </div>
+        <div class="bullet" style="margin-bottom:4px;">
+          <div class="body-s text-text-2">Has Work IQ — knows your meetings</div>
+        </div>
+        <div class="bullet" style="margin-bottom:4px;">
+          <div class="body-s text-text-2">Builds on yesterday's <span class="mono neon-blue">/eod</span> output</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom takeaway -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px; text-align:center;">
+    <div class="body-m text-dim">
+      The model is identical. The <span class="text-text semibold">system around it</span> is what changes the answer.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 24 - EXERCISE 3: BUILD THE /morning SKILL
+     ============================================================ -->
+<section class="slide" data-slide="24">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px; display:flex; align-items:flex-end; justify-content:space-between;">
+    <div>
+      <div class="eyebrow">Hands-on</div>
+      <div class="h-1 mt-3">Exercise 3</div>
+      <div class="h-3 mt-3 text-text" style="font-weight:500;">Build the <span class="mono neon-blue">/morning</span> skill</div>
+    </div>
+    <div class="tag tag-magenta" style="font-family:var(--font-mono); font-size:13px; padding:6px 14px;">15 MIN</div>
+  </div>
+
+  <!-- Left: bullet list -->
+  <div style="position:absolute; left:80px; top:240px; width:520px;">
+    <div class="card card-glow" style="padding:28px; min-height:340px;">
+      <div class="tag">WHAT YOU'LL DO</div>
+      <div class="mt-5 flex flex-col gap-3">
+        <div class="bullet">
+          <div class="body-s text-text-2">Create a skill called <span class="mono neon-blue">'morning'</span></div>
+        </div>
+        <div class="bullet">
+          <div class="body-s text-text-2">Reads <span class="mono">goals</span> + <span class="mono">tasks</span> + time + Work IQ signals</div>
+        </div>
+        <div class="bullet">
+          <div class="body-s text-text-2">Outputs: top 3 priorities, meetings, focus plan</div>
+        </div>
+        <div class="bullet">
+          <div class="body-s text-text-2">Test: run <span class="mono neon-blue">/morning</span> and see your personalized brief</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: prompt block + try-it -->
+  <div style="position:absolute; right:80px; top:240px; width:560px;">
+    <div class="code-block" style="padding:18px 22px;">
+      <div class="code-header">PROMPT</div>
+      <div style="white-space:pre-line; font-size:12.5px; line-height:1.55;">Create a skill called 'morning' that:
+1. Reads my goals, active tasks, time context
+2. Queries Work IQ for today's calendar
+3. Analyzes priorities vs meetings vs goals
+4. Outputs a prioritized daily brief
+5. Offers to start drafting for my review</div>
+    </div>
+    <div class="mt-6">
+      <div class="body-xs text-dim mb-2">Then try it</div>
+      <div class="code-block magenta" style="padding:14px 22px;">
+        <span class="mono neon-magenta" style="font-size:18px; font-weight:600;">/morning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 25 - PRINCIPLE 4: STRUCTURE = RIGHT CONTEXT AT RIGHT TIME
+     ============================================================ -->
+<section class="slide" data-slide="25">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Principle 4 · Structure as Intelligence</div>
+    <div class="h-2 mt-3">Principle 4: <span class="neon-cyan">Structure</span> = Right Context at Right Time</div>
+    <div class="body-m mt-4 text-dim" style="max-width:1080px;">
+      Your project folders are context infrastructure. Work IQ adds live signals. Together, Claude knows everything before you walk into a meeting.
+    </div>
+  </div>
+
+  <!-- 4-stage flow -->
+  <div style="position:absolute; left:80px; right:80px; top:300px;">
+    <div style="display:grid; grid-template-columns: 1fr 24px 1fr 24px 1fr 24px 1fr; gap:0; align-items:stretch;">
+
+      <div class="card card-glow" style="padding:18px; text-align:center; height:140px; display:flex; flex-direction:column; justify-content:center;">
+        <div class="step-pill" style="margin:0 auto;">STEP 01</div>
+        <div class="mono mt-3 neon-blue" style="font-size:15px; font-weight:600;">/prep mobile-onboarding</div>
+        <div class="body-xs mt-2 text-dim">You type</div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <div class="mono" style="color:var(--primary); font-size:22px;">&rarr;</div>
+      </div>
+
+      <div class="card card-glow" style="padding:18px; text-align:center; height:140px; display:flex; flex-direction:column; justify-content:center;">
+        <div class="step-pill" style="margin:0 auto;">STEP 02</div>
+        <div class="h-4 mt-3 text-text">Match project + fetch Work IQ</div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <div class="mono" style="color:var(--primary); font-size:22px;">&rarr;</div>
+      </div>
+
+      <div class="card card-glow" style="padding:18px; text-align:center; height:140px; display:flex; flex-direction:column; justify-content:center;">
+        <div class="step-pill" style="margin:0 auto;">STEP 03</div>
+        <div class="h-4 mt-3 text-text">Read brief + decisions + notes</div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <div class="mono" style="color:var(--primary); font-size:22px;">&rarr;</div>
+      </div>
+
+      <div class="card card-magenta-glow" style="padding:18px; text-align:center; height:140px; display:flex; flex-direction:column; justify-content:center;">
+        <div class="step-pill" style="margin:0 auto; background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">STEP 04</div>
+        <div class="h-4 mt-3 text-text">Generate 1-page prep</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quote-line + example -->
+  <div style="position:absolute; left:80px; right:80px; bottom:130px;">
+    <div class="quote-block" style="text-align:center; border-left:none; padding:0; box-shadow:none;">
+      <div class="body-l text-text italic">
+        You didn't explain the project. The <span class="neon-cyan semibold">structure + Work IQ</span> did that for you.
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:80px; right:80px; bottom:45px;">
+    <div class="body-xs text-dim mb-2">Example — illustrative, not for copying</div>
+    <div class="code-block" style="padding:12px 18px; font-size:12px;">
+      <span class="mono neon-blue">/prep mobile onboarding</span>  <span class="text-dim">&rarr;</span>  auto-matches project folder  <span class="text-dim">&rarr;</span>  fetches Work IQ calendar  <span class="text-dim">&rarr;</span>  reads brief + decisions  <span class="text-dim">&rarr;</span>  generates prep
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 26 - THE /prep SKILL — MEETING PREPARATION
+     ============================================================ -->
+<section class="slide" data-slide="26">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Skill anatomy · context in</div>
+    <div class="h-1 mt-3">The <span class="mono neon-blue">/prep</span> skill — Meeting Preparation</div>
+  </div>
+
+  <!-- 5 numbered rows -->
+  <div style="position:absolute; left:80px; right:80px; top:200px; display:flex; flex-direction:column; gap:12px;">
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0;">01</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Status Snapshot</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        2–3 sentence project status from <span class="mono neon-blue">brief.md</span>
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0;">02</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Meeting Context</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Attendees + agenda from Work IQ calendar
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0;">03</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Open Action Items</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Your tasks + others' for this project
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0;">04</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Recent Decisions</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Last 3 decisions with rationale
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0;">05</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Talking Points</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        What to report, ask, and flag
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:40px; text-align:center;">
+    <div class="body-s text-dim italic">
+      Readable in 2 minutes. Work IQ adds live meeting context that files alone can't provide.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 27 - THE /capture WORKFLOW — CONTEXT IN, CONTEXT OUT
+     ============================================================ -->
+<section class="slide" data-slide="27">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Composition · paired skills</div>
+    <div class="h-1 mt-3">The <span class="mono neon-magenta">/capture</span> workflow — Context In, Context Out</div>
+  </div>
+
+  <!-- Left: /prep -->
+  <div style="position:absolute; left:80px; top:200px; width:540px;">
+    <div class="card card-glow" style="padding:24px; height:240px;">
+      <div class="tag"><span class="mono">/prep</span>&nbsp;&nbsp;·&nbsp;&nbsp;CONTEXT IN</div>
+      <div class="mt-5 flex flex-col gap-2">
+        <div class="bullet">
+          <div class="body-s text-text-2">Reads project files + Work IQ calendar</div>
+        </div>
+        <div class="bullet">
+          <div class="body-s text-text-2">Assembles talking points</div>
+        </div>
+        <div class="bullet">
+          <div class="body-s text-text-2">Surfaces open items and risks</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Centre arrow swap symbol -->
+  <div style="position:absolute; left:50%; top:280px; transform:translate(-50%, 0); z-index:5;">
+    <div style="width:60px; height:60px; border-radius:50%; background:var(--surface);
+                border:1px solid var(--border-2); display:flex; align-items:center; justify-content:center;
+                box-shadow:0 0 20px var(--glow);">
+      <div class="mono" style="color:var(--primary); font-size:22px; font-weight:600;">&harr;</div>
+    </div>
+  </div>
+
+  <!-- Right: /capture -->
+  <div style="position:absolute; right:80px; top:200px; width:540px;">
+    <div class="card card-magenta-glow" style="padding:24px; height:240px;">
+      <div class="tag tag-magenta"><span class="mono">/capture</span>&nbsp;&nbsp;·&nbsp;&nbsp;CONTEXT OUT</div>
+      <div class="mt-5 flex flex-col gap-2">
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Extracts decisions and action items</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Routes to project folders + task list</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Asks you to review what was captured</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mid-line summary -->
+  <div style="position:absolute; left:80px; right:80px; top:470px; text-align:center;">
+    <div class="body-m text-text-2 italic">
+      Together, <span class="mono neon-blue">/prep</span> and <span class="mono neon-magenta">/capture</span> keep your projects current. Claude always asks: <span class="text-text semibold">did I capture everything?</span>
+    </div>
+  </div>
+
+  <!-- Bottom prompt example -->
+  <div style="position:absolute; left:80px; right:80px; bottom:40px;">
+    <div class="code-block magenta" style="padding:14px 18px; font-size:11.5px; line-height:1.55;">
+      <span class="text-dim">Example prompt:</span> "What was discussed in my last meeting? Include all messages, discussion points, decisions, and action items shared in the Teams / your team chat. Include sender names and timestamps. Take my feedback on which tasks need to be included in <span class="mono">tasks.md</span>."
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 28 - EXERCISE 4: BUILD /prep AND /capture
+     ============================================================ -->
+<section class="slide" data-slide="28">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px; display:flex; align-items:flex-end; justify-content:space-between;">
+    <div>
+      <div class="eyebrow">Hands-on</div>
+      <div class="h-1 mt-3">Exercise 4</div>
+      <div class="h-3 mt-3 text-text" style="font-weight:500;">Build <span class="mono neon-blue">/prep</span> and <span class="mono neon-magenta">/capture</span></div>
+    </div>
+    <div class="tag tag-magenta" style="font-family:var(--font-mono); font-size:13px; padding:6px 14px;">15 MIN</div>
+  </div>
+
+  <!-- Left: bullet list -->
+  <div style="position:absolute; left:80px; top:240px; width:520px;">
+    <div class="card card-glow" style="padding:28px; min-height:340px;">
+      <div class="tag">WHAT YOU'LL DO</div>
+      <div class="mt-5 flex flex-col gap-3">
+        <div class="bullet">
+          <div class="body-s text-text-2">Create a <span class="mono neon-blue">'prep'</span> skill: match project + fetch Work IQ</div>
+        </div>
+        <div class="bullet">
+          <div class="body-s text-text-2">Create a <span class="mono neon-magenta">'capture'</span> skill: pull meeting chat via Work IQ</div>
+        </div>
+        <div class="bullet">
+          <div class="body-s text-text-2">Test <span class="mono neon-blue">/prep</span> with a real project</div>
+        </div>
+        <div class="bullet">
+          <div class="body-s text-text-2">Test <span class="mono neon-magenta">/capture</span>: pull a real Teams / your team chat meeting and route it</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: prompt block + try-it -->
+  <div style="position:absolute; right:80px; top:240px; width:560px;">
+    <div class="code-block" style="padding:18px 22px;">
+      <div class="code-header">PROMPT</div>
+      <div style="white-space:pre-line; font-size:12.5px; line-height:1.55;">Create a skill called 'prep' that:
+1. Matches project from $ARGUMENTS
+2. Fetches meeting context via Work IQ
+3. Reads brief.md + decisions.md + notes/
+4. Generates 1-page meeting prep
+
+Then create a skill called 'capture'
+that extracts action items + decisions
+and routes them to the right files.</div>
+    </div>
+    <div class="mt-6">
+      <div class="body-xs text-dim mb-2">Then try them</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div class="code-block" style="padding:12px 18px;">
+          <span class="mono neon-blue" style="font-size:14px;">/prep [project]</span>
+        </div>
+        <div class="code-block magenta" style="padding:12px 18px;">
+          <span class="mono neon-magenta" style="font-size:14px;">/capture</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 29 - AGENT AS PROACTIVE PARTNER
+     ============================================================ -->
+<section class="slide" data-slide="29">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Principle 4 · Agent as Partner</div>
+    <div class="h-1 mt-3">Agent as <span class="neon-magenta">Proactive Partner</span></div>
+  </div>
+
+  <!-- Left: Reactive -->
+  <div style="position:absolute; left:80px; top:200px; width:540px;">
+    <div class="card" style="padding:24px; border-color:var(--border-2); height:420px;">
+      <div class="tag tag-warn">REACTIVE · COMMAND EXECUTOR</div>
+
+      <div class="mt-5 flex flex-col gap-3">
+        <div style="display:flex; gap:8px; align-items:flex-start;">
+          <div class="body-s" style="color:var(--dim); width:60px; flex-shrink:0;">You:</div>
+          <div class="body-s text-text-2">"Write me a PRD"</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:flex-start;">
+          <div class="body-s" style="color:var(--dim); width:60px; flex-shrink:0;">Claude:</div>
+          <div class="body-s text-text-2">Writes a PRD</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:flex-start;">
+          <div class="body-s" style="color:var(--dim); width:60px; flex-shrink:0;">You:</div>
+          <div class="body-s text-text-2">"Review it"</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:flex-start;">
+          <div class="body-s" style="color:var(--dim); width:60px; flex-shrink:0;">Claude:</div>
+          <div class="body-s text-text-2">"Looks good!"</div>
+        </div>
+      </div>
+
+      <div class="neon-line mt-6" style="background:var(--gold); box-shadow:0 0 8px rgba(245,158,11,0.4);"></div>
+      <div class="body-s mt-4 text-dim italic">
+        No challenge. No initiative.<br>
+        Waits passively for every command.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Proactive -->
+  <div style="position:absolute; right:80px; top:200px; width:540px;">
+    <div class="card card-magenta-glow" style="padding:24px; height:420px;">
+      <div class="tag tag-magenta">PROACTIVE · THOUGHT PARTNER</div>
+
+      <div class="mt-5 flex flex-col gap-2">
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Recommends what to work on (from goals)</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Asks clarifying questions before starting</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Drafts while you think (parallel work)</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Presents output + asks for <span class="text-text semibold">YOUR</span> feedback</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Refines based on what you say</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Remembers preferences for next time</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 30 - THE FEEDBACK LOOP — YOU REVIEW, IT LEARNS
+     ============================================================ -->
+<section class="slide" data-slide="30">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">The mechanism · how the partner gets sharper</div>
+    <div class="h-1 mt-3">The Feedback Loop — You <span class="neon-magenta">Review</span>, It <span class="neon-blue">Learns</span></div>
+  </div>
+
+  <!-- 5-stage pipeline -->
+  <div style="position:absolute; left:60px; right:60px; top:220px;">
+    <div style="display:grid; grid-template-columns: 1fr 18px 1fr 18px 1fr 18px 1fr 18px 1fr; gap:0; align-items:stretch;">
+
+      <div class="card card-glow" style="padding:18px 14px; text-align:center; height:200px; display:flex; flex-direction:column;">
+        <div class="number-badge" style="margin:0 auto;">01</div>
+        <div class="h-4 mt-4 neon-blue">Recommend</div>
+        <div class="neon-line mt-3" style="margin:12px auto 0;"></div>
+        <div class="body-xs mt-3 text-dim" style="line-height:1.5;">Claude suggests what to work on (from goals)</div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <div class="mono" style="color:var(--primary); font-size:18px;">&rarr;</div>
+      </div>
+
+      <div class="card card-glow" style="padding:18px 14px; text-align:center; height:200px; display:flex; flex-direction:column;">
+        <div class="number-badge" style="margin:0 auto;">02</div>
+        <div class="h-4 mt-4 neon-blue">Draft</div>
+        <div class="neon-line mt-3" style="margin:12px auto 0;"></div>
+        <div class="body-xs mt-3 text-dim" style="line-height:1.5;">Starts work, asks you clarifying questions</div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <div class="mono" style="color:var(--primary); font-size:18px;">&rarr;</div>
+      </div>
+
+      <div class="card card-magenta-glow" style="padding:18px 14px; text-align:center; height:200px; display:flex; flex-direction:column;">
+        <div class="number-badge" style="margin:0 auto; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">03</div>
+        <div class="h-4 mt-4 neon-magenta">Present</div>
+        <div class="neon-line mt-3" style="margin:12px auto 0; background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong);"></div>
+        <div class="body-xs mt-3 text-dim" style="line-height:1.5;">Shows output + asks: What's missing? What's wrong?</div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <div class="mono" style="color:var(--secondary); font-size:18px;">&rarr;</div>
+      </div>
+
+      <div class="card card-magenta-glow" style="padding:18px 14px; text-align:center; height:200px; display:flex; flex-direction:column;">
+        <div class="number-badge" style="margin:0 auto; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">04</div>
+        <div class="h-4 mt-4 neon-magenta">Refine</div>
+        <div class="neon-line mt-3" style="margin:12px auto 0; background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong);"></div>
+        <div class="body-xs mt-3 text-dim" style="line-height:1.5;">Applies YOUR feedback, shows what changed</div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <div class="mono" style="color:var(--primary); font-size:18px;">&rarr;</div>
+      </div>
+
+      <div class="card card-glow" style="padding:18px 14px; text-align:center; height:200px; display:flex; flex-direction:column;">
+        <div class="number-badge" style="margin:0 auto;">05</div>
+        <div class="h-4 mt-4 neon-blue">Learn</div>
+        <div class="neon-line mt-3" style="margin:12px auto 0;"></div>
+        <div class="body-xs mt-3 text-dim" style="line-height:1.5;">Updates context + skills get better</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer text + quote -->
+  <div style="position:absolute; left:80px; right:80px; bottom:120px; text-align:center;">
+    <div class="body-m text-text-2">
+      The human reviews the work, not the AI. You give feedback, Claude refines.
+      <span class="text-text semibold">Each cycle makes the system smarter.</span>
+    </div>
+  </div>
+
+  <div style="position:absolute; left:140px; right:140px; bottom:45px;">
+    <div class="quote-block" style="text-align:center; font-size:15px;">
+      "What can I start drafting for you to review and give feedback on?" — <span class="text-dim">embed this in every skill</span>.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 31 - SKILLS GET BETTER OVER TIME
+     ============================================================ -->
+<section class="slide" data-slide="31">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">The compounding return on feedback</div>
+    <div class="h-1 mt-3">Skills get <span class="neon-magenta">better</span> over time</div>
+  </div>
+
+  <!-- 3-column timeline -->
+  <div style="position:absolute; left:80px; right:80px; top:230px;
+              display:grid; grid-template-columns: 1fr 1fr 1fr; gap:24px;">
+
+    <div class="card card-glow" style="padding:26px; min-height:280px;">
+      <div class="step-pill">Week 1</div>
+      <div class="h-3 mt-5 text-text">First Drafts</div>
+      <div class="neon-line mt-4"></div>
+      <div class="body-s mt-5 text-text-2">
+        Claude uses <span class="mono neon-blue">goals.md</span> and project brief to generate.
+        Output is generic, needs heavy feedback.
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:26px; min-height:280px;">
+      <div class="step-pill">Week 4</div>
+      <div class="h-3 mt-5 text-text">Calibrated</div>
+      <div class="neon-line mt-4"></div>
+      <div class="body-s mt-5 text-text-2">
+        Claude remembers your <span class="text-text semibold">preferences, tone, and framing</span>.
+        First drafts are closer to final.
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:26px; min-height:280px;">
+      <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">Month 3</div>
+      <div class="h-3 mt-5 text-text">Anticipatory</div>
+      <div class="neon-line mt-4" style="background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong);"></div>
+      <div class="body-s mt-5 text-text-2">
+        Claude recommends <span class="text-text semibold">before you ask</span>. Knows your style,
+        your stakeholders, your patterns. Truly proactive.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:60px; text-align:center;">
+    <div class="body-l text-text-2 italic">
+      Every time you give feedback, you're not just improving today's output — <span class="neon-magenta semibold">you're training tomorrow's first draft</span>.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 32 - EXERCISE 5: EXPERIENCE THE PROACTIVE PARTNER
+     ============================================================ -->
+<section class="slide" data-slide="32">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px; display:flex; align-items:flex-end; justify-content:space-between;">
+    <div>
+      <div class="eyebrow">Hands-on</div>
+      <div class="h-1 mt-3">Exercise 5</div>
+      <div class="h-3 mt-3 text-text" style="font-weight:500;">Experience the <span class="neon-magenta">proactive partner</span></div>
+    </div>
+    <div class="tag tag-magenta" style="font-family:var(--font-mono); font-size:13px; padding:6px 14px;">12 MIN</div>
+  </div>
+
+  <!-- Left: bullet list -->
+  <div style="position:absolute; left:80px; top:240px; width:520px;">
+    <div class="card card-magenta-glow" style="padding:28px; min-height:360px;">
+      <div class="tag tag-magenta">WHAT YOU'LL DO</div>
+      <div class="mt-5 flex flex-col gap-3">
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Ask Claude to recommend what to work on (from goals)</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Let it draft proactively, then give it real feedback</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Watch it refine and show what changed</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Update <span class="mono neon-blue">/morning</span>, <span class="mono neon-blue">/prep</span>, <span class="mono neon-blue">/capture</span> to always offer next drafts</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: prompt block -->
+  <div style="position:absolute; right:80px; top:240px; width:560px;">
+    <div class="code-block magenta" style="padding:18px 22px;">
+      <div class="code-header" style="color:var(--secondary);">PROMPT</div>
+      <div style="white-space:pre-line; font-size:12.5px; line-height:1.55;">Based on my goals and tasks, what should
+I work on right now? I have 2 hours.
+
+1. What do you recommend and why?
+2. What questions do you need from me?
+3. What can you start drafting that I can
+   review and give feedback on?
+
+Ensure to do this every time — always
+offer to draft something for my review.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 33 - PRINCIPLE 5: THE FLYWHEEL
+     ============================================================ -->
+<section class="slide" data-slide="33">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="mesh-center"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Principle 5 · the system that compounds</div>
+    <div class="h-1 mt-3">Principle 5: The <span class="neon-magenta">Flywheel</span></div>
+  </div>
+
+  <!-- Circular flywheel - 6 nodes around centre -->
+  <div style="position:absolute; left:50%; top:380px; transform:translate(-50%, -50%); width:780px; height:380px;">
+
+    <!-- Centre label -->
+    <div style="position:absolute; left:50%; top:50%; transform:translate(-50%, -50%);
+                width:240px; text-align:center; z-index:5;">
+      <div style="width:240px; height:240px; border-radius:50%;
+                  background:radial-gradient(circle, rgba(236,72,153,0.10), rgba(59,130,246,0.05) 60%, transparent);
+                  border:1px solid rgba(236,72,153,0.25);
+                  display:flex; flex-direction:column; align-items:center; justify-content:center;
+                  box-shadow:0 0 30px var(--glow-magenta), inset 0 0 40px rgba(236,72,153,0.05);">
+        <div class="h-4 neon-magenta" style="font-style:italic;">Each day's work</div>
+        <div class="h-4 neon-magenta" style="font-style:italic;">feeds tomorrow's</div>
+        <div class="h-4 neon-magenta" style="font-style:italic;">intelligence</div>
+      </div>
+    </div>
+
+    <!-- 6 nodes in a circle (using clock positions) -->
+    <!-- 12 o'clock: /morning (plan) -->
+    <div style="position:absolute; left:50%; top:-10px; transform:translateX(-50%);
+                width:150px; text-align:center;">
+      <div class="card card-glow" style="padding:12px 8px;">
+        <div class="mono neon-blue" style="font-size:14px; font-weight:600;">/morning</div>
+        <div class="body-xs mt-1 text-dim">plan</div>
+      </div>
+    </div>
+
+    <!-- 2 o'clock: Work + Feedback -->
+    <div style="position:absolute; right:0; top:60px;
+                width:160px; text-align:center;">
+      <div class="card card-glow" style="padding:12px 8px;">
+        <div class="h-4 neon-blue" style="font-size:14px;">Work + Feedback</div>
+        <div class="body-xs mt-1 text-dim">execute + refine</div>
+      </div>
+    </div>
+
+    <!-- 4 o'clock: /capture -->
+    <div style="position:absolute; right:0; bottom:60px;
+                width:150px; text-align:center;">
+      <div class="card card-glow" style="padding:12px 8px;">
+        <div class="mono neon-blue" style="font-size:14px; font-weight:600;">/capture</div>
+        <div class="body-xs mt-1 text-dim">record</div>
+      </div>
+    </div>
+
+    <!-- 6 o'clock: Context -->
+    <div style="position:absolute; left:50%; bottom:-10px; transform:translateX(-50%);
+                width:160px; text-align:center;">
+      <div class="card card-magenta-glow" style="padding:12px 8px;">
+        <div class="h-4 neon-magenta" style="font-size:14px;">Context</div>
+        <div class="body-xs mt-1 text-dim">gets richer</div>
+      </div>
+    </div>
+
+    <!-- 8 o'clock: /eod -->
+    <div style="position:absolute; left:0; bottom:60px;
+                width:150px; text-align:center;">
+      <div class="card card-magenta-glow" style="padding:12px 8px;">
+        <div class="mono neon-magenta" style="font-size:14px; font-weight:600;">/eod</div>
+        <div class="body-xs mt-1 text-dim">reflect</div>
+      </div>
+    </div>
+
+    <!-- 10 o'clock: Tomorrow -->
+    <div style="position:absolute; left:0; top:60px;
+                width:160px; text-align:center;">
+      <div class="card card-glow" style="padding:12px 8px;">
+        <div class="h-4 neon-blue" style="font-size:14px;">Tomorrow</div>
+        <div class="body-xs mt-1 text-dim">smarter</div>
+      </div>
+    </div>
+
+    <!-- Arrow indicators (rotational, between positions) -->
+    <!-- Top right arrow -->
+    <div style="position:absolute; left:65%; top:20px; color:var(--primary); font-family:var(--font-mono); font-size:18px;">&searr;</div>
+    <!-- Right bottom arrow -->
+    <div style="position:absolute; right:0; top:50%; transform:translateY(-50%); color:var(--primary); font-family:var(--font-mono); font-size:18px;">&darr;</div>
+    <!-- Bottom right arrow -->
+    <div style="position:absolute; left:60%; bottom:20px; color:var(--secondary); font-family:var(--font-mono); font-size:18px;">&swarr;</div>
+    <!-- Bottom left arrow -->
+    <div style="position:absolute; left:35%; bottom:20px; color:var(--secondary); font-family:var(--font-mono); font-size:18px;">&larr;</div>
+    <!-- Left arrow -->
+    <div style="position:absolute; left:0; top:50%; transform:translateY(-50%); color:var(--primary); font-family:var(--font-mono); font-size:18px;">&uarr;</div>
+    <!-- Top left arrow -->
+    <div style="position:absolute; left:30%; top:20px; color:var(--primary); font-family:var(--font-mono); font-size:18px;">&nearr;</div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:40px; text-align:center;">
+    <div class="body-s text-dim">
+      <span class="mono neon-blue">/morning</span>
+      <span class="mono text-dim" style="margin:0 8px;">&rarr;</span>
+      Work + Feedback
+      <span class="mono text-dim" style="margin:0 8px;">&rarr;</span>
+      <span class="mono neon-blue">/capture</span>
+      <span class="mono text-dim" style="margin:0 8px;">&rarr;</span>
+      Context
+      <span class="mono text-dim" style="margin:0 8px;">&rarr;</span>
+      <span class="mono neon-magenta">/eod</span>
+      <span class="mono text-dim" style="margin:0 8px;">&rarr;</span>
+      Tomorrow
+      <span class="mono text-dim" style="margin:0 8px;">&rarr;</span>
+      <span class="mono neon-blue">/morning</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 34 - THE /eod SKILL — CLOSE THE DAY
+     ============================================================ -->
+<section class="slide" data-slide="34">
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Skill anatomy · closing the loop</div>
+    <div class="h-1 mt-3">The <span class="mono neon-magenta">/eod</span> skill — Close the Day</div>
+  </div>
+
+  <!-- 6 numbered rows -->
+  <div style="position:absolute; left:80px; right:80px; top:180px; display:flex; flex-direction:column; gap:10px;">
+
+    <div class="card card-magenta-glow" style="padding:14px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">01</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Show active tasks</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Display task list with current status
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:14px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">02</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Interactive check-in</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Done / Carry / Defer / New — <span class="text-text semibold">you decide</span>
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:14px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">03</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Ask for feedback</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        How did today go? Any preferences to remember?
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:14px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">04</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Process updates</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Archive completed, update active, move deferred
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:14px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">05</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Update goals</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Adjust goal status if key results changed
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:14px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">06</div>
+      <div style="width:240px; flex-shrink:0;">
+        <div class="h-4 text-text">Generate summary</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Wins, carry-overs, tomorrow's preview
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 35 - EXERCISE 6: BUILD /eod + FULL MONDAY WALKTHROUGH
+     ============================================================ -->
+<section class="slide" data-slide="35">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px; display:flex; align-items:flex-end; justify-content:space-between;">
+    <div>
+      <div class="eyebrow">Hands-on · final exercise</div>
+      <div class="h-1 mt-3">Exercise 6</div>
+      <div class="h-3 mt-3 text-text" style="font-weight:500;">Build <span class="mono neon-magenta">/eod</span> + Full Monday Walkthrough</div>
+    </div>
+    <div class="tag tag-magenta" style="font-family:var(--font-mono); font-size:13px; padding:6px 14px;">10 MIN</div>
+  </div>
+
+  <!-- Left: bullet list -->
+  <div style="position:absolute; left:80px; top:240px; width:520px;">
+    <div class="card card-magenta-glow" style="padding:28px; min-height:340px;">
+      <div class="tag tag-magenta">WHAT YOU'LL DO</div>
+      <div class="mt-5 flex flex-col gap-3">
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Create <span class="mono neon-magenta">/eod</span> with interactive task check-in + feedback</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Run the flywheel: <span class="mono neon-magenta">/eod</span> then immediately <span class="mono neon-blue">/morning</span></div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Verify: <span class="mono neon-blue">/morning</span> reflects changes <span class="mono neon-magenta">/eod</span> made</div>
+        </div>
+        <div class="bullet bullet-magenta">
+          <div class="body-s text-text-2">Bonus: full PM Monday walkthrough (s3-08)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: prompt block + try-it -->
+  <div style="position:absolute; right:80px; top:240px; width:560px;">
+    <div class="code-block magenta" style="padding:18px 22px;">
+      <div class="code-header" style="color:var(--secondary);">PROMPT</div>
+      <div style="white-space:pre-line; font-size:12.5px; line-height:1.55;">Create a skill called 'eod' that:
+1. Shows active tasks, asks Done/Carry/Defer
+2. Asks for feedback on today's work
+3. Archives completed, updates active
+4. Updates goal progress if changed
+5. Previews tomorrow's priorities</div>
+    </div>
+    <div class="mt-6">
+      <div class="body-xs text-dim mb-2">Then try the flywheel</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div class="code-block magenta" style="padding:12px 18px;">
+          <span class="mono neon-magenta" style="font-size:16px; font-weight:600;">/eod</span>
+        </div>
+        <div class="code-block" style="padding:12px 18px;">
+          <span class="mono neon-blue" style="font-size:16px; font-weight:600;">/morning</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 36 - THE COMPLETE ARCHITECTURE
+     ============================================================ -->
+<section class="slide" data-slide="36">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Final-state recap · the whole system</div>
+    <div class="h-1 mt-3">The Complete <span class="neon-blue">Architecture</span></div>
+  </div>
+
+  <!-- Top row: HOOKS · GOALS+TASKS centre · WORK IQ -->
+  <div style="position:absolute; left:60px; right:60px; top:160px; display:grid; grid-template-columns: 1fr 1.4fr 1fr; gap:18px;">
+
+    <div class="card card-glow" style="padding:14px 18px;">
+      <div class="tag" style="font-size:10px;">HOOKS</div>
+      <div class="body-s mt-3 text-text-2">Time, stale detection, sub-agents</div>
+    </div>
+
+    <div class="card" style="padding:14px 18px; background:rgba(59,130,246,0.06); border-color:rgba(59,130,246,0.25); text-align:center;">
+      <div class="body-s" style="color:var(--text);">
+        <span class="mono neon-blue semibold">YOUR GOALS</span>
+        <span class="text-dim">&nbsp;·&nbsp;</span>
+        <span class="mono text-dim">goals.md</span>
+        <span class="text-dim">&nbsp;—&nbsp;the gravity</span>
+      </div>
+      <div class="body-s mt-2" style="color:var(--text);">
+        <span class="mono neon-blue semibold">YOUR TASKS</span>
+        <span class="text-dim">&nbsp;·&nbsp;</span>
+        <span class="mono text-dim">active / backlog / archive</span>
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:14px 18px; border-color:rgba(6,182,212,0.30);">
+      <div class="tag" style="font-size:10px; background:rgba(6,182,212,0.10); border-color:rgba(6,182,212,0.30); color:var(--accent);">WORK IQ</div>
+      <div class="body-s mt-3 text-text-2">Calendar, Teams / your team chat, email, org graph</div>
+    </div>
+
+  </div>
+
+  <!-- Middle row: /morning · FEEDBACK · /capture -->
+  <div style="position:absolute; left:60px; right:60px; top:320px; display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px;">
+
+    <div class="card card-glow" style="padding:14px 18px; text-align:center;">
+      <div class="mono neon-blue" style="font-size:15px; font-weight:600;">/morning</div>
+      <div class="body-xs mt-1 text-dim">plan</div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:14px 18px; text-align:center;">
+      <div class="h-4 neon-magenta" style="font-size:15px;">FEEDBACK</div>
+      <div class="body-xs mt-1 text-dim">you review</div>
+    </div>
+
+    <div class="card card-glow" style="padding:14px 18px; text-align:center;">
+      <div class="mono neon-blue" style="font-size:15px; font-weight:600;">/capture</div>
+      <div class="body-xs mt-1 text-dim">record</div>
+    </div>
+
+  </div>
+
+  <!-- Bottom row: /prep · PROJECTS · /eod -->
+  <div style="position:absolute; left:60px; right:60px; top:430px; display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px;">
+
+    <div class="card card-glow" style="padding:14px 18px; text-align:center;">
+      <div class="mono neon-blue" style="font-size:15px; font-weight:600;">/prep</div>
+      <div class="body-xs mt-1 text-dim">context in</div>
+    </div>
+
+    <div class="card" style="padding:14px 18px; text-align:center; background:rgba(6,182,212,0.06); border-color:rgba(6,182,212,0.25);">
+      <div class="h-4 neon-cyan" style="font-size:15px;">PROJECTS</div>
+      <div class="body-xs mt-1 text-dim">structure</div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:14px 18px; text-align:center;">
+      <div class="mono neon-magenta" style="font-size:15px; font-weight:600;">/eod</div>
+      <div class="body-xs mt-1 text-dim">close day</div>
+    </div>
+
+  </div>
+
+  <!-- The Flywheel footer -->
+  <div style="position:absolute; left:60px; right:60px; bottom:50px;">
+    <div class="card card-magenta-glow" style="padding:16px 22px; text-align:center;">
+      <div class="tag tag-magenta">THE FLYWHEEL</div>
+      <div class="body-s mt-3" style="color:var(--text);">
+        <span class="mono neon-magenta">/eod</span>
+        <span class="text-dim" style="margin:0 8px;">&rarr;</span>
+        sleep
+        <span class="text-dim" style="margin:0 8px;">&rarr;</span>
+        <span class="mono neon-blue">/morning</span>
+        <span class="text-dim" style="margin:0 8px;">&rarr;</span>
+        work
+        <span class="text-dim" style="margin:0 8px;">&rarr;</span>
+        <span class="mono neon-blue">/capture</span>
+        <span class="text-dim" style="margin:0 8px;">&rarr;</span>
+        feedback
+        <span class="text-dim" style="margin:0 8px;">&rarr;</span>
+        <span class="mono neon-magenta">/eod</span>
+        <span class="text-dim">&nbsp;&nbsp;(skills get better each cycle)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 37 - YOUR HOMEWORK: KEEP BUILDING
+     ============================================================ -->
+<section class="slide" data-slide="37">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">After the workshop · keep the flywheel spinning</div>
+    <div class="h-1 mt-3">Your Homework: <span class="neon-magenta">Keep Building</span></div>
+  </div>
+
+  <!-- 5 numbered rows -->
+  <div style="position:absolute; left:80px; right:80px; top:200px; display:flex; flex-direction:column; gap:12px;">
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0;">01</div>
+      <div style="width:380px; flex-shrink:0;">
+        <div class="h-4 text-text">Run <span class="mono neon-blue">/morning</span> and <span class="mono neon-magenta">/eod</span> every day this week</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Let the flywheel spin — each day gets smarter
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0;">02</div>
+      <div style="width:380px; flex-shrink:0;">
+        <div class="h-4 text-text">Give feedback every time Claude delivers</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Your feedback trains the system — don't skip it
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0;">03</div>
+      <div style="width:380px; flex-shrink:0;">
+        <div class="h-4 text-text">Add one new skill per week</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Automate things you do repeatedly
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0;">04</div>
+      <div style="width:380px; flex-shrink:0;">
+        <div class="h-4 text-text">Expand project folders for all active projects</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        More structure = better context for Claude
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:16px 22px; display:flex; align-items:center; gap:22px;">
+      <div class="number-badge" style="flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">05</div>
+      <div style="width:380px; flex-shrink:0;">
+        <div class="h-4 text-text">Share with your team</div>
+      </div>
+      <div class="body-s text-text-2" style="flex:1;">
+        Skills and structures can be shared and adapted
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:45px; text-align:center;">
+    <div class="body-l text-text-2 italic">
+      The workshop gave you the structure. <span class="neon-magenta semibold">The habit makes it a system.</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 38 - THE FIVE PRINCIPLES — WHAT YOU EXPERIENCED
+     ============================================================ -->
+<section class="slide" data-slide="38">
+  <div class="mesh-tr"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:48px; right:80px;">
+    <div class="eyebrow">Recap of the mental model</div>
+    <div class="h-1 mt-3">The Five Principles — <span class="text-dim">what you experienced</span></div>
+  </div>
+
+  <!-- 5 rows matching slide 5 colour scheme: 1 blue, 2 cyan, 3 blue, 4 magenta, 5 magenta -->
+  <div style="position:absolute; left:80px; top:200px; right:80px; display:flex; flex-direction:column; gap:14px;">
+
+    <div class="card card-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0;">01</div>
+      <div style="width:280px; flex-shrink:0;">
+        <div class="h-4 neon-blue">Goals as Gravity</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Every recommendation tied back to your OKRs
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0; background:rgba(6,182,212,0.10); border-color:var(--accent); color:var(--accent);">02</div>
+      <div style="width:280px; flex-shrink:0;">
+        <div class="h-4 neon-cyan">Hooks as Senses</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Time + Work IQ signals were always available
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0;">03</div>
+      <div style="width:280px; flex-shrink:0;">
+        <div class="h-4 neon-blue">Structure as Intelligence</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Project folders + Work IQ gave Claude instant context
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">04</div>
+      <div style="width:280px; flex-shrink:0;">
+        <div class="h-4 neon-magenta">Agent as Partner</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        Claude asked, recommended, drafted, sought your feedback
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:18px 24px; display:flex; align-items:center; gap:20px;">
+      <div class="number-badge" style="width:48px; height:48px; font-size:18px; flex-shrink:0; background:rgba(236,72,153,0.10); border-color:var(--secondary); color:var(--secondary);">05</div>
+      <div style="width:280px; flex-shrink:0;">
+        <div class="h-4 neon-magenta">The Flywheel</div>
+      </div>
+      <div class="body-m text-text-2" style="flex:1;">
+        <span class="mono neon-magenta">/eod</span>
+        <span class="text-dim" style="margin:0 6px;">&rarr;</span>
+        <span class="mono neon-blue">/morning</span>
+        &nbsp;+ feedback made the system smarter each day
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 39 - CLOSING: YOU BUILT A SYSTEM
+     ============================================================ -->
+<section class="slide" data-slide="39">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="mesh-center"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:60px;" class="eyebrow">Closing</div>
+
+  <!-- Hero stack -->
+  <div style="position:absolute; left:80px; top:160px; right:80px;">
+    <div class="eyebrow text-dim mb-4" style="color:var(--secondary);">Nebula · Session 3</div>
+    <div class="h-hero" style="font-size:78px;">
+      You Built a <span class="text-dim italic" style="font-weight:400;">System</span>.<br>
+      Now Make It <span class="neon-magenta">Yours</span>.
+    </div>
+    <div class="neon-line-wide mt-8" style="background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong);"></div>
+    <div class="h-3 mt-6 text-text" style="font-weight:500;">
+      Orchestration: From Skills to Systems
+    </div>
+    <div class="body-l mt-5 text-dim" style="max-width:960px;">
+      Not a collection of tools — a system where <span class="text-text">structure drives intelligence</span>, skills compose into workflows, and <span class="text-text">every day's work feeds the next day's clarity</span>.
+    </div>
+  </div>
+
+  <!-- Footer "Welcome to workOS." -->
+  <div style="position:absolute; left:80px; right:80px; bottom:80px;">
+    <div class="card card-magenta-glow" style="padding:22px 28px; text-align:center;">
+      <div class="h-2" style="color:var(--text);">
+        Welcome to <span class="neon-magenta">workOS</span>.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 40 - NEBULA: PROGRAM CLOSING
+     ============================================================ -->
+<section class="slide" data-slide="40">
+  <div class="mesh-tr"></div>
+  <div class="mesh-bl"></div>
+  <div class="mesh-center"></div>
+  <div class="grid-overlay"></div>
+
+  <div style="position:absolute; left:80px; top:60px;" class="eyebrow">The umbrella program</div>
+
+  <!-- Title -->
+  <div style="position:absolute; left:80px; top:120px; right:80px;">
+    <div class="h-hero" style="font-size:104px;">
+      <span class="neon-blue">Nebula</span>
+    </div>
+    <div class="neon-line-wide mt-6"></div>
+    <div class="body-l mt-6 text-text-2" style="max-width:960px;">
+      Nebula set out to turn PMs into AI-first builders.
+      <span class="text-text semibold">Three modules later, that mission is complete.</span>
+    </div>
+  </div>
+
+  <!-- 3 modules -->
+  <div style="position:absolute; left:80px; right:80px; top:380px; display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px;">
+
+    <div class="card card-glow" style="padding:20px;">
+      <div class="step-pill">Module 1</div>
+      <div class="h-3 mt-4 text-text">Prototyping</div>
+      <div class="neon-line mt-3"></div>
+      <div class="body-s mt-4 text-text-2">
+        Learning to speak the language of AI and building AI apps
+      </div>
+    </div>
+
+    <div class="card card-glow" style="padding:20px;">
+      <div class="step-pill">Module 2</div>
+      <div class="h-3 mt-4 text-text">Evals</div>
+      <div class="neon-line mt-3"></div>
+      <div class="body-s mt-4 text-text-2">
+        Measuring quality of your AI product
+      </div>
+    </div>
+
+    <div class="card card-magenta-glow" style="padding:20px;">
+      <div class="step-pill" style="background:rgba(236,72,153,0.10); border-color:rgba(236,72,153,0.30); color:var(--secondary);">Module 3</div>
+      <div class="h-3 mt-4 text-text">Agentic Systems</div>
+      <div class="neon-line mt-3" style="background:var(--secondary); box-shadow:0 0 8px var(--glow-magenta-strong);"></div>
+      <div class="body-s mt-4 text-text-2">
+        Orchestrating agents into living systems to improve your productivity
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute; left:80px; right:80px; bottom:50px;">
+    <div class="body-m text-dim italic" style="text-align:center; line-height:1.6;">
+      But this isn't the end. It's the beginning of a community that continuously explores the new era of AI —
+      <span class="text-text">charting the new ways of product management, together</span>.
+    </div>
+  </div>
+</section>
+
+
+</div><!-- /.deck-stage -->
+</div><!-- /.deck -->
+
+<!-- Progress + slide number -->
+<div id="progress-bar" style="width: 2.5%;"></div>
+<div id="slide-number">01<span class="sep">/</span><span class="total">40</span></div>
+<div id="help-hint"><kbd>&larr;</kbd><kbd>&rarr;</kbd> navigate · <kbd>F</kbd> fullscreen</div>
+
+<script src="deck.js"></script>
+</body>
+</html>

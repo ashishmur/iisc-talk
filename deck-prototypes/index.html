@@ -207,6 +207,48 @@
     border: 1px solid rgba(16, 185, 129, 0.2);
   }
 
+  .badge-series {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(236, 72, 153, 0.10);
+    color: #EC4899;
+    border: 1px solid rgba(236, 72, 153, 0.25);
+  }
+
+  .group-heading {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6B7280;
+    margin: 28px 0 14px;
+  }
+
+  .group-heading:first-of-type {
+    margin-top: 0;
+  }
+
+  .talk-card + .talk-card {
+    margin-top: 14px;
+  }
+
+  /* Make the presentations screen scrollable when content overflows */
+  #presentations {
+    overflow-y: auto;
+    padding-top: 80px;
+    padding-bottom: 60px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  #presentations .screen-inner {
+    max-width: 720px;
+  }
+
   .talk-card__venue {
     font-size: 13px;
     color: #6B7280;
@@ -334,15 +376,52 @@
 <div class="screen" id="presentations">
   <div class="screen-inner">
     <div class="section-heading">Presentations</div>
+
+    <div class="group-heading">Guest Lecture</div>
     <a href="iisc-doms-2026-03-06.html" class="talk-card">
       <div class="talk-card__top">
         <span class="badge-live">Delivered</span>
         <span class="talk-card__venue">IISc DoMS &middot; March 6, 2026</span>
       </div>
-      <div class="talk-card__title">AI & The New Management Playbook</div>
+      <div class="talk-card__title">AI &amp; The New Management Playbook</div>
       <div class="talk-card__desc">34-slide interactive deck on how AI is reshaping organizations, careers, and what it means for new graduates.</div>
       <div class="talk-card__arrow">&rarr;</div>
     </a>
+
+    <div class="group-heading">Workshop Series &middot; Project Nebula</div>
+
+    <a href="nebula/pre-read/" class="talk-card">
+      <div class="talk-card__top">
+        <span class="badge-series">Workshop</span>
+        <span class="talk-card__venue">Pre-read &middot; 42 slides</span>
+      </div>
+      <div class="talk-card__title">Building Scalable AI Prototypes</div>
+      <div class="talk-card__desc">Backend-first architecture, agent coding best practices, and end-to-end LLM integration &mdash; the playbook for going from idea to a working AI product flow.</div>
+      <div class="talk-card__arrow">&rarr;</div>
+    </a>
+
+    <a href="nebula/session-2/" class="talk-card">
+      <div class="talk-card__top">
+        <span class="badge-series">Workshop &middot; Session 2</span>
+        <span class="talk-card__venue">32 slides</span>
+      </div>
+      <div class="talk-card__title">Building Self-Learning Agents with Claude Code</div>
+      <div class="talk-card__desc">Context &amp; memory, MCPs, skills, and custom tools &mdash; building an agent that gets better with every interaction.</div>
+      <div class="talk-card__arrow">&rarr;</div>
+    </a>
+
+    <a href="nebula/session-3/" class="talk-card">
+      <div class="talk-card__top">
+        <span class="badge-series">Workshop &middot; Session 3</span>
+        <span class="talk-card__venue">40 slides</span>
+      </div>
+      <div class="talk-card__title">Orchestration &mdash; From Skills to Systems</div>
+      <div class="talk-card__desc">Five principles for composing discrete skills into a personal workOS that plans, captures, refines, and learns &mdash; every day.</div>
+      <div class="talk-card__arrow">&rarr;</div>
+    </a>
+
+    <div class="group-heading">In Progress</div>
+
     <div class="talk-card is-disabled" aria-disabled="true">
       <div class="talk-card__top">
         <span class="badge-soon">Coming Soon</span>
